@@ -6,6 +6,7 @@ import Layout from "../components/layout/Layout";
 import Login from "../pages/Login";
 import ProfilePage from "../pages/ProfilePage";
 import Projectpage from "../pages/Projectpage";
+import ProtectedRoutes from "./ProtectedRoutes";
 import Registartion from "../pages/Registartion";
 import TestProfile from "../pages/TestProfile";
 import { createBrowserRouter } from "react-router-dom";
@@ -22,11 +23,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "project",
-        element: <Projectpage />,
+        element: (
+          <ProtectedRoutes>
+            <Projectpage />
+          </ProtectedRoutes>
+        ),
       },
       {
         path: "create",
-        element: <CreateProject />,
+        element: (
+          <ProtectedRoutes>
+            <CreateProject />
+          </ProtectedRoutes>
+        ),
       },
       {
         path: "login",
