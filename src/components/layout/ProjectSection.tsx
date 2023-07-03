@@ -38,7 +38,7 @@ const ProjectSection: FC = () => {
       </header>
       <div className="w-full h-[1px] bg-gray" />
       <section className="grid grid-cols-2">
-        <img src="./img/circle.png" className="col-span-1" />
+        <img src="../img/circle.png" className="col-span-1" />
         <div className="flex flex-col gap-3">
           <TaskList />
           <button className="flex justify-end" onClick={() => setForm(!form)}>

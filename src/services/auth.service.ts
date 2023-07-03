@@ -6,11 +6,14 @@ export const AuthService = {
   async registartion(
     userData: IUserData
   ): Promise<IResponseUserData | undefined> {
-    const { data } = await instance.post<IResponseUserData>("user", userData);
+    const { data } = await instance.post<IResponseUserData>(
+      "auth/register",
+      userData
+    );
     return data;
   },
   async login(userData: IUserData): Promise<IUser> {
-    const { data } = await instance.post<IUser>("auth/login", userData);
+    const { data } = await instance.post<IUser>("auth/log-in", userData);
     return data;
   },
   async getMe(): Promise<IUser | undefined> {

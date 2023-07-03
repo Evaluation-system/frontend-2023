@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 const TestProfile: FC = () => {
-  return <div>TestProfile</div>;
+  return <div>f</div>;
 };
 
 export default TestProfile;
