@@ -3,6 +3,9 @@ import Modal from "../components/ui/Modal";
 import { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast, Toaster } from "react-hot-toast";
+import { useAppDispatch } from "../store/hooks/hooks";
+import { addProject } from "../store/projects/projectSlice";
+import { useNavigate } from "react-router";
 
 type Form = {
   title: string;
@@ -16,9 +19,16 @@ const CreateProject: FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Form>();
-  const onSubmit: SubmitHandler<Form> = async (data) => {
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<Form> = (data) => {
+    dispatch(addProject(data));
+    navigate("/profile");
     reset();
   };
+
   return (
     <Modal text="Создать проект">
       <Toaster />

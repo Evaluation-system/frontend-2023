@@ -1,9 +1,13 @@
 import { FC } from "react";
 import ProjectSection from "../components/layout/ProjectSection";
+import { useParams } from "react-router";
+import { useAppSelector } from "../store/hooks/hooks";
 const Projectpage: FC = () => {
+  const { title } = useParams();
+  const project = useAppSelector((state) => state.project.items);
   return (
     <section className="bg-primary p-5">
-      <h2>Текущие проекты</h2>
+      <h2>{title}</h2>
       <h3>Мой проект по технологии</h3>
       <section className="flex gap-28">
         <p className="text-gray font-light max-w-xl">

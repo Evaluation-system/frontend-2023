@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./user/userSlice";
 import taskReducer from "./tasks/taskSlice";
+import projectReducer from "./projects/projectSlice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     tasker: taskReducer,
+    project: projectReducer,
   },
 });
 

@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
         element: <Homepage />,
       },
       {
-        path: "project",
+        path: "project/:title",
         element: (
           <ProtectedRoutes>
             <Projectpage />
@@ -49,11 +49,11 @@ export const router = createBrowserRouter([
         path: "test",
         element: <TestProfile />,
       },
+      {
+        path: "profile",
+        element: <ProfilePage />,
+      },
     ],
-  },
-  {
-    path: "profile",
-    element: <ProfilePage />,
   },
   {
     path: "edit",
