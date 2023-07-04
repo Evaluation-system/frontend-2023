@@ -57,11 +57,19 @@ const Registartion: FC = () => {
           placeholder="Имя"
           type="text"
         />
+        {errors.name && (
+          <div className="text-red">{errors.name.message || ""}</div>
+        )}
+
         <input
           {...register("email", { required: "Поле «Почта» обязательно" })}
           placeholder="Почта"
           type="email"
         />
+        {errors.email && (
+          <div className="text-red">{errors.email.message || ""}</div>
+        )}
+
         <input
           {...register("password", {
             required: "Поле «Пароль» обязательно",
@@ -73,6 +81,10 @@ const Registartion: FC = () => {
           placeholder="Пароль"
           type="password"
         />
+        {errors.password && (
+          <div className="text-red">{errors.password.message || ""}</div>
+        )}
+
         <input
           {...register("submitPassword", {
             required: "Поле «Подтверждение пароля» обязательно",
@@ -80,18 +92,16 @@ const Registartion: FC = () => {
           placeholder="Подтверждение пароля"
           type="password"
         />
+        {errors.submitPassword && (
+          <div className="text-red">{errors.submitPassword.message || ""}</div>
+        )}
+
         {pass !== subPass ? (
           <p className="text-red">Введенные пароли не совпадают</p>
         ) : (
           ""
         )}
-        <span className="hidden">
-          {errors.email && toast.error(errors.email?.message || "")}
-          {errors.password && toast.error(errors.password?.message || "")}
-          {errors.name && toast.error(errors.name?.message || "")}
-          {errors.submitPassword &&
-            toast.error(errors.submitPassword?.message || "")}
-        </span>
+
         <div className="flex flex-col gap-[30px] items-center">
           <input type="submit" value="Регистрация" className="btnGradient" />
           <p className="mx-auto">
