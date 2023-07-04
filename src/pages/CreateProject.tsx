@@ -1,11 +1,13 @@
 import Button from "../components/ui/Button";
 import Modal from "../components/ui/Modal";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast, Toaster } from "react-hot-toast";
-import { useAppDispatch } from "../store/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks/hooks";
 import { addProject } from "../store/projects/projectSlice";
 import { useNavigate } from "react-router";
+import axios from "axios";
+import { instance } from "../api/axios.api";
 
 type Form = {
   title: string;
@@ -20,14 +22,26 @@ const CreateProject: FC = () => {
     formState: { errors },
   } = useForm<Form>();
 
+  const user = useAppSelector(state => state.user.user)
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  // const url = "http://localhost:3005/"
+
+
 
   const onSubmit: SubmitHandler<Form> = (data) => {
-    dispatch(addProject(data));
+    const { title, description } = data
+    // dispatch(addProject(data));
     navigate("/profile");
     reset();
+    const response = instance.post("http://localhost:3005/projects", {
+      title: title,
+      description: description,
+      UserId: user?.id,
+    })
   };
+
 
   return (
     <Modal text="Создать проект">

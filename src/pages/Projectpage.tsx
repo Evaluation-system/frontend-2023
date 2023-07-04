@@ -1,28 +1,26 @@
 import { FC, useState, useEffect } from "react";
 import ProjectSection from "../components/layout/ProjectSection";
 import { useParams } from "react-router";
-import { useAppSelector } from "../store/hooks/hooks";
-import axios from "axios";
+import { instance } from "../api/axios.api";
 
 const Projectpage: FC = () => {
   const { id } = useParams();
   const [project, setProject] = useState([]);
 
-  const url = import.meta.env.VITE_URL;
+  // const url = import.meta.env.VITE_URL;
+
 
   useEffect(() => {
     const fetchProject = async () => {
-      const response = await axios.get(`${url}?id=${id}`);
-
+      const response = await instance.get(`http://localhost:3005/projects/${id}`);
       setProject(response.data);
     }
-
     fetchProject();
   }, []);
 
   return (
     <>
-      {project ? (
+      {project && (
         <section className="bg-primary p-5">
           <h2>{project.title}</h2>
           <section className="flex gap-28">
@@ -44,8 +42,6 @@ const Projectpage: FC = () => {
             <ProjectSection />
           </section>
         </section>
-      ) : (
-        <p>Нет проектов</p>
       )}
     </>
   );

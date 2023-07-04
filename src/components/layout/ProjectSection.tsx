@@ -6,6 +6,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 import { useAppDispatch } from "../../store/hooks/hooks";
 import { addTask } from "../../store/tasks/taskSlice";
+import { instance } from "../../api/axios.api";
+import axios from "axios";
 
 type Form = {
   title: string;
@@ -20,7 +22,13 @@ const ProjectSection: FC = () => {
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<Form> = (data) => {
-    dispatch(addTask(data));
+    const { title, value } = data
+    // dispatch(addTask(data));
+    // ПЕРЕПИСАТЬ СЕРВИСЫ 
+    const response = axios.post("http://localhost:3005/tasks", {
+      cost: title,
+      value: value
+    })
     reset();
     toast.success("Задача добавлена");
   };
