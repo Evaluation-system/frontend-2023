@@ -1,5 +1,4 @@
 import * as yup from "yup";
-import axios from "axios";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import Modal from "../components/ui/Modal";
@@ -10,7 +9,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppSelector } from "../store/hooks/hooks";
 import { useNavigate } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CreateProject } from "../types/types";
+import { ICreateProject } from "../types/types";
 
 type Form = {
   title: string;
@@ -40,7 +39,7 @@ const CreateProject: FC = () => {
     const { title, description } = data;
     navigate("/profile");
     reset();
-    const response = instance.post<CreateProject>(
+    const response = instance.post<ICreateProject>(
       "http://localhost:3005/projects",
       {
         title: title,

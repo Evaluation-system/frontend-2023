@@ -11,7 +11,7 @@ const TextArea: FC<Props> = ({ id, placeholder, errorMessage, register }) => {
   return (
     <>
       <textarea id={id} placeholder={placeholder} {...register} />
-      <p>{errorMessage}</p>
+      <p className="text-red">{errorMessage}</p>
     </>
   );
 };

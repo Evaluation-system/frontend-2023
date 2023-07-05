@@ -36,14 +36,14 @@ type employeePayments = {
   salary: number;
 };
 
-export interface CreateProject {
+export interface ICreateProject {
   title: string;
   description: string;
   UserId: number;
   pathImage: string;
 }
 
-export interface Project {
+export interface IProject {
   id: number;
   User?: IUser;
   UserID?: number;
