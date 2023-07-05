@@ -19,9 +19,9 @@ type Form = {
 
 const Login: FC = () => {
 
-    const schema = yup.object({
-        email:
-    })
+    // const schema = yup.object({
+    //     email:
+    // })
 
   const {
     register,
