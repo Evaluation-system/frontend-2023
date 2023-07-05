@@ -7,14 +7,15 @@ const Projectpage: FC = () => {
   const { id } = useParams();
   const [project, setProject] = useState([]);
 
-  // const url = import.meta.env.VITE_URL;
-
+  // const URL: string = import.meta.env.VITE_URL
 
   useEffect(() => {
     const fetchProject = async () => {
-      const response = await instance.get(`http://localhost:3005/projects/${id}`);
+      const response = await instance.get(
+        `http://localhost:3005/projects/${id}`
+      );
       setProject(response.data);
-    }
+    };
     fetchProject();
   }, []);
 
