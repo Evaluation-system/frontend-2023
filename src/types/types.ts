@@ -19,6 +19,10 @@ export interface IUser {
   id: number;
   email: string;
   token: string;
+
+  // name: string;
+  // phone: string;
+  // photo: string;
 }
 
 type Pricing = {
