@@ -10,6 +10,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppSelector } from "../store/hooks/hooks";
 import { useNavigate } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { CreateProject } from "../types/types";
 
 type Form = {
   title: string;
@@ -39,11 +40,14 @@ const CreateProject: FC = () => {
     const { title, description } = data;
     navigate("/profile");
     reset();
-    const response = instance.post("http://localhost:3005/projects", {
-      title: title,
-      description: description,
-      UserId: user?.id,
-    });
+    const response = instance.post<CreateProject>(
+      "http://localhost:3005/projects",
+      {
+        title: title,
+        description: description,
+        UserId: user?.id,
+      }
+    );
   };
 
   return (

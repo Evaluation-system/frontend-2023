@@ -58,7 +58,6 @@ const Login: FC = () => {
     <>
       {!isAuth ? (
         <Modal>
-          {/*<Toaster/>*/}
           <form
             className="flex flex-col gap-[50px]"
             onSubmit={handleSubmit(onSubmit)}
