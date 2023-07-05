@@ -1,12 +1,13 @@
 import Modal from "../components/ui/Modal";
 import { FC } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast, Toaster } from "react-hot-toast";
 import { AuthService } from "../services/auth.service";
 import Input from "../components/ui/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useAuth } from "../hooks/useAuth";
 
 type Form = {
   name: string;
@@ -64,52 +65,64 @@ const Registartion: FC = () => {
     }
   };
 
+  const isAuth = useAuth();
+
   return (
-    <Modal>
-      <Toaster />
-      <form
-        className="flex flex-col gap-[50px]"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Input
-          id="name"
-          placeholder="Имя"
-          type="text"
-          register={{ ...register("name") }}
-          errorMessage={errors.name?.message}
-        />
-        <Input
-          id="email"
-          placeholder="Почта"
-          type="text"
-          register={{ ...register("email") }}
-          errorMessage={errors.email?.message}
-        />
-        <Input
-          id="password"
-          placeholder="Пароль"
-          type="password"
-          register={{ ...register("password") }}
-          errorMessage={errors.password?.message}
-        />
-        <Input
-          id="submitPassword"
-          placeholder="Подтвердите пароль"
-          type="password"
-          register={{ ...register("submitPassword") }}
-          errorMessage={errors.submitPassword?.message}
-        />
-        <div className="flex flex-col gap-[30px] items-center">
-          <input type="submit" value="Регистрация" className="btnGradient" />
-          <p className="mx-auto">
-            Уже есть аккаунт ?{" "}
-            <Link to="/login" className="text-blue">
-              Войдите
-            </Link>
-          </p>
-        </div>
-      </form>
-    </Modal>
+    <>
+      {isAuth ? (
+        <Navigate to="/profile" replace={true} />
+      ) : (
+        <Modal>
+          <Toaster />
+          <form
+            className="flex flex-col gap-[50px]"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <Input
+              id="name"
+              placeholder="Имя"
+              type="text"
+              register={{ ...register("name") }}
+              errorMessage={errors.name?.message}
+            />
+            <Input
+              id="email"
+              placeholder="Почта"
+              type="text"
+              register={{ ...register("email") }}
+              errorMessage={errors.email?.message}
+            />
+            <Input
+              id="password"
+              placeholder="Пароль"
+              type="password"
+              register={{ ...register("password") }}
+              errorMessage={errors.password?.message}
+            />
+            <Input
+              id="submitPassword"
+              placeholder="Подтвердите пароль"
+              type="password"
+              register={{ ...register("submitPassword") }}
+              errorMessage={errors.submitPassword?.message}
+            />
+            <div className="flex flex-col gap-[30px] items-center">
+              <input
+                type="submit"
+                value="Регистрация"
+                className="btnGradient"
+              />
+              <p className="mx-auto">
+                Уже есть аккаунт ?{" "}
+                <Link to="/login" className="text-blue">
+                  Войдите
+                </Link>
+              </p>
+            </div>
+          </form>
+        </Modal>
+      )}
+    </>
   );
 };
 

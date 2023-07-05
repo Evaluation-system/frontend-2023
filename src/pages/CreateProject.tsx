@@ -3,15 +3,13 @@ import axios from "axios";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import Modal from "../components/ui/Modal";
-import { addProject } from "../store/projects/projectSlice";
-import { FC, useEffect } from "react";
+import TextArea from "../components/ui/TextArea";
+import { FC } from "react";
 import { instance } from "../api/axios.api";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { toast, Toaster } from "react-hot-toast";
-import { useAppDispatch, useAppSelector } from "../store/hooks/hooks";
+import { useAppSelector } from "../store/hooks/hooks";
 import { useNavigate } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
-import TextArea from "../components/ui/TextArea";
 
 type Form = {
   title: string;
@@ -50,7 +48,6 @@ const CreateProject: FC = () => {
 
   return (
     <Modal text="Создать проект">
-      <Toaster />
       <form
         className="flex flex-col gap-[50px]"
         onSubmit={handleSubmit(onSubmit)}
