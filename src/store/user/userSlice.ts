@@ -9,7 +9,7 @@ interface IUserState {
 }
 const initialState: IUserState = {
   user: null,
-  isAuth: true,
+  isAuth: false,
 };
 
 export const userSlice = createSlice({

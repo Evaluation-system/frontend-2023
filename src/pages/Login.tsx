@@ -33,6 +33,7 @@ const Login: FC = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    mode: "onChange",
   });
 
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ const Login: FC = () => {
       {!isAuth ? (
         <Modal>
           <form
-            className="flex flex-col gap-[50px]"
+            className="flex flex-col gap-10"
             onSubmit={handleSubmit(onSubmit)}
           >
             <Input
