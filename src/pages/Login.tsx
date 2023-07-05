@@ -18,23 +18,27 @@ type Form = {
 };
 
 const Login: FC = () => {
-
-    const schema = yup.object({
-        email:
-    })
+  const schema = yup.object({
+    email: yup
+      .string()
+      .required("Поле «Почта» обязательна")
+      .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, "Почта не валидна"),
+    password: yup.string().required("Поле «Пароль» обязательна"),
+  });
 
   const {
     register,
     reset,
     handleSubmit,
+    formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const onSubmit = async (data) => {
+  const onSubmit: SubmitHandler<Form> = async (data) => {
     const { email, password } = data;
     const response = await AuthService.login({ email, password });
     if (response) {
@@ -64,12 +68,14 @@ const Login: FC = () => {
               type="email"
               placeholder="Почта"
               register={{ ...register("email") }}
+              errorMessage={errors.email?.message}
             />
             <Input
               id="password"
               type="password"
               placeholder="Пароль"
               register={{ ...register("password") }}
+              errorMessage={errors.password?.message}
             />
             <div className="flex flex-col gap-[30px] items-center ">
               <input type="submit" value="Войти" className="btnGradient" />

@@ -4,6 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast, Toaster } from "react-hot-toast";
 import { AuthService } from "../services/auth.service";
+import Input from "../components/ui/Input";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 type Form = {
   name: string;
@@ -13,16 +16,38 @@ type Form = {
 };
 
 const Registartion: FC = () => {
+  //Валидация
+  const schema = yup.object({
+    name: yup
+      .string()
+      .required("Поле «Имя» обязательна")
+      .min(4, "Минимальная длина поле «Имя» 4 символа"),
+    email: yup
+      .string()
+      .required("Поле «Почта» обязательна")
+      .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, "Почта не валидна"),
+    password: yup
+      .string()
+      .required("Поле «Пароль» обязательна")
+      .min(8, "Минимальная длина поле «Пароль» 8 символов"),
+    submitPassword: yup
+      .string()
+      .required("Поле «Подтвердить пароль» обязательно")
+      .oneOf(
+        [yup.ref("password")],
+        "Поле «Пароль» и «Подтвердить пароль» не совпадают "
+      ),
+  });
+
   const {
     register,
     reset,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<Form>();
+  } = useForm({ resolver: yupResolver(schema) });
 
-  const pass: string = watch("password");
-  const subPass: string = watch("submitPassword");
+  // const pass: string = watch("password");
+  // const subPass: string = watch("submitPassword");
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Form> = async (data) => {
@@ -46,62 +71,34 @@ const Registartion: FC = () => {
         className="flex flex-col gap-[50px]"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <input
-          {...register("name", {
-            required: "Поле «Имя» обязательно",
-            minLength: {
-              value: 4,
-              message: "Минимальная длина Имя 4 символа",
-            },
-          })}
+        <Input
+          id="name"
           placeholder="Имя"
           type="text"
+          register={{ ...register("name") }}
+          errorMessage={errors.name?.message}
         />
-        {errors.name && (
-          <div className="text-red">{errors.name.message || ""}</div>
-        )}
-
-        <input
-          {...register("email", { required: "Поле «Почта» обязательно" })}
+        <Input
+          id="email"
           placeholder="Почта"
-          type="email"
+          type="text"
+          register={{ ...register("email") }}
+          errorMessage={errors.email?.message}
         />
-        {errors.email && (
-          <div className="text-red">{errors.email.message || ""}</div>
-        )}
-
-        <input
-          {...register("password", {
-            required: "Поле «Пароль» обязательно",
-            minLength: {
-              value: 8,
-              message: "Минимальная длина Пароля 8 символов",
-            },
-          })}
+        <Input
+          id="password"
           placeholder="Пароль"
           type="password"
+          register={{ ...register("password") }}
+          errorMessage={errors.password?.message}
         />
-        {errors.password && (
-          <div className="text-red">{errors.password.message || ""}</div>
-        )}
-
-        <input
-          {...register("submitPassword", {
-            required: "Поле «Подтверждение пароля» обязательно",
-          })}
-          placeholder="Подтверждение пароля"
+        <Input
+          id="submitPassword"
+          placeholder="Подтвердите пароль"
           type="password"
+          register={{ ...register("submitPassword") }}
+          errorMessage={errors.submitPassword?.message}
         />
-        {errors.submitPassword && (
-          <div className="text-red">{errors.submitPassword.message || ""}</div>
-        )}
-
-        {pass !== subPass ? (
-          <p className="text-red">Введенные пароли не совпадают</p>
-        ) : (
-          ""
-        )}
-
         <div className="flex flex-col gap-[30px] items-center">
           <input type="submit" value="Регистрация" className="btnGradient" />
           <p className="mx-auto">
