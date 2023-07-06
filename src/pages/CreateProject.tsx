@@ -10,6 +10,7 @@ import { useAppSelector } from "../store/hooks/hooks";
 import { useNavigate } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ICreateProject } from "../types/types";
+import { useCreateProjectMutation } from "../api/api";
 
 type Form = {
   title: string;
@@ -35,18 +36,34 @@ const CreateProject: FC = () => {
   const navigate = useNavigate();
   // const url = "http://localhost:3005/"
 
+  // Через новый АПИ
+  const [createProject] = useCreateProjectMutation();
+
   const onSubmit: SubmitHandler<Form> = (data) => {
     const { title, description } = data;
+
+    // Через старый АПИ
+    // const response = instance.post<ICreateProject>(
+    //   "http://localhost:3005/projects",
+    //   {
+    //     title: title,
+    //     description: description,
+    //     UserId: user?.id,
+    //   }
+    // );
+
+    // Через новый АПИ
+    const postData = {
+      title: title,
+      description: description,
+      UserId: user?.id,
+    };
+
+    createProject(postData);
+    console.log(postData);
+
     navigate("/profile");
     reset();
-    const response = instance.post<ICreateProject>(
-      "http://localhost:3005/projects",
-      {
-        title: title,
-        description: description,
-        UserId: user?.id,
-      }
-    );
   };
 
   return (
