@@ -1,19 +1,23 @@
 import Button from "../ui/Button";
 import { BiEdit, BiLogIn } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useAppDispatch } from "../../store/hooks/hooks";
 import { logout } from "../../store/user/userSlice";
 import { removeTokenFromLocalStorage } from "../../helpers/localstorage.helper";
 import { toast, Toaster } from "react-hot-toast";
+import CreateProject from "../../pages/CreateProject";
+import Login from "../../pages/Login";
 
 const Header: FC = () => {
   const isAuth = useAuth();
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const [openProject, setOpenProject] = useState(false);
 
   const exitAcc = () => {
     dispatch(logout());
@@ -36,17 +40,14 @@ const Header: FC = () => {
           <CgProfile />
         </span>
       ) : (
-        <Link to="login" className="flex gap-[10px] items-center pl-28">
+        <Link to="/login" className="flex gap-[10px] items-center pl-28">
           Войти
           <BiLogIn />
         </Link>
       )}
-      <Button
-        text="Создать проект"
-        style="hidden xl:btnGradient"
-        icon={<BiEdit />}
-        action="create"
-      />
+      <Link to="/create" className="btnGradient">
+        Создать проект
+      </Link>
     </header>
   );
 };

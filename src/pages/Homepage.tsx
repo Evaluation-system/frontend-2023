@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Button from "../components/ui/Button";
+import { Link } from "react-router-dom";
 
 const Homepage: FC = () => {
   return (
@@ -8,7 +8,9 @@ const Homepage: FC = () => {
         <h1>Знание рисков – ключ к проектному превосходству!</h1>
         <h4>создайте свой первый проект</h4>
       </div>
-      <Button text="Создать проект" style="btn" action="/create" />
+      <Link to="/create" className="btnGradient">
+        Создать проект
+      </Link>
     </main>
   );
 };

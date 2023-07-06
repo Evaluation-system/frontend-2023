@@ -1,4 +1,3 @@
-import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import Modal from "../components/ui/Modal";
 import ProjectSection from "../components/layout/ProjectSection";
@@ -8,10 +7,11 @@ import { FC, useEffect, useRef, useState } from "react";
 import { instance } from "../api/axios.api";
 import { IProject } from "../types/types";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
+import { TfiClose } from "react-icons/tfi";
 
 type TypeForm = {
   newTitle: string;
@@ -21,6 +21,7 @@ type TypeForm = {
 const Projectpage: FC = () => {
   const { id } = useParams();
   const [project, setProject] = useState<IProject | null>(null);
+  const navigate = useNavigate();
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const schema = yup.object({
@@ -44,7 +45,7 @@ const Projectpage: FC = () => {
     fetchProject();
   }, []);
 
-  const ref = useRef<HTMLInputElement | undefined>();
+  const ref = useRef<HTMLInputElement | null>(null);
 
   const handleAvatar = () => {
     ref.current?.click();
@@ -90,7 +91,10 @@ const Projectpage: FC = () => {
             <div className="flex flex-col gap-2 max-w-xl">
               <div className="flex gap-5 items-center">
                 <h2>Название проекта</h2>
-                <span className="pt-1" onClick={(): void => setOpenModal(true)}>
+                <span
+                  className="pt-1"
+                  onClick={(): void => setOpenModal(!openModal)}
+                >
                   <BiEdit />
                 </span>
               </div>
@@ -129,6 +133,9 @@ const Projectpage: FC = () => {
       </section>
       {openModal ? (
         <Modal text="Изменить проект">
+          <header className="flex justify-between items-center">
+            <h3>Изменить проект</h3>
+          </header>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-5"
