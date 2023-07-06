@@ -1,15 +1,16 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { instance } from "../api/axios.api";
+import { Toaster, toast } from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "../store/hooks/hooks";
+
+import { AiOutlineEdit } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { useGetProjectsQuery } from "../api/api";
-import { logout } from "../store/user/userSlice";
-import { Toaster, toast } from "react-hot-toast";
-import { removeTokenFromLocalStorage } from "../helpers/localstorage.helper";
 import { NavLink } from "react-router-dom";
-import { AiOutlineEdit } from "react-icons/ai";
+import { instance } from "../api/axios.api";
+import { logout } from "../store/user/userSlice";
+import { removeTokenFromLocalStorage } from "../helpers/localstorage.helper";
+import { useGetProjectsQuery } from "../api/api";
+import { useNavigate } from "react-router";
 
 const ProfilePage: FC = () => {
   //Для навигации
@@ -52,12 +53,6 @@ const ProfilePage: FC = () => {
     skip: !userId,
   });
 
-  // console.log("isLoading:");
-  // console.log(isLoading);
-
-  // console.log("project data:");
-  // console.log(data);
-
   //Выход из профиля
   const dispatch = useAppDispatch();
   const handleExitAccout = () => {
@@ -69,6 +64,7 @@ const ProfilePage: FC = () => {
 
   //Юзер, для прогрузки его почты, имени и телефона
   const UserData = useAppSelector((state) => state.user.user);
+
   return (
     <section className="flex flex-col gap-20 bg-primary px-32 py-12 ">
       <Toaster />

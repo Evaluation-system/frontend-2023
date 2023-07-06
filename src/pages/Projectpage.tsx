@@ -1,3 +1,5 @@
+import * as yup from "yup";
+import axios from "axios";
 import Input from "../components/ui/Input";
 import Modal from "../components/ui/Modal";
 import ProjectSection from "../components/layout/ProjectSection";
@@ -6,12 +8,9 @@ import { BiEdit } from "react-icons/bi";
 import { FC, useEffect, useRef, useState } from "react";
 import { instance } from "../api/axios.api";
 import { IProject } from "../types/types";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useParams, useNavigate } from "react-router";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import axios from "axios";
-import { TfiClose } from "react-icons/tfi";
 
 type TypeForm = {
   newTitle: string;
@@ -55,25 +54,27 @@ const Projectpage: FC = () => {
     reset();
   };
 
-  // Выбранный файл
-  const [selectedFile, setSelectedFile] = useState(null);
-  // Ответ сервера
-  const [uploaded, setUploaded] = useState();
+  const [selectedImage, setSelectedImage] = useState<string>("");
 
-  const handleChange = (e) => {
-    console.log(e.target.files);
-    setSelectedFile(e.target.files[0]);
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedImage(URL.createObjectURL(file));
   };
-  const handleUpload = async () => {
-    if (!selectedFile) {
-      alert("Выбери файл");
-      return;
-    }
-    const formData = new FormData();
-    formData.append("originalname", selectedFile);
 
-    const response = await axios.post(url, formData);
-    setUploaded(response.data);
+  const handleUpload = () => {
+    if (selectedImage) {
+      const formData = new FormData();
+      formData.append("file", selectedImage);
+
+      instance
+        .post(`/auth/upload-image/${project?.id}`, formData)
+        .then((response) => {
+          console.log("Image uploaded:", response.data.filePath);
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
+        });
+    }
   };
   return (
     <>
@@ -81,13 +82,11 @@ const Projectpage: FC = () => {
         <section className="p-5 container">
           <header className="flex justify-between gap-[100px] p-4">
             <div className="flex gap-5 items-center ">
-              {/* {uploaded && ( */}
               <img
-                src="../img/proj.jpg"
+                src={selectedImage}
                 className="w-36 h-36 rounded-full "
                 onClick={(): void => handleAvatar()}
               />
-              {/* )} */}
 
               <div className="flex flex-col gap-2 max-w-xl">
                 <div className="flex gap-5 items-center w-1/2">
@@ -102,13 +101,10 @@ const Projectpage: FC = () => {
                 <p className="text-gray">{project.description}</p>
                 <input
                   type="file"
-                  ref={ref}
-                  onChange={handleChange}
-                  accept=".png, .jpg"
+                  accept="image/*"
+                  onChange={handleImageChange}
                 />
-                <button className="bg-red" onClick={() => handleUpload()}>
-                  Грузи его мать твою
-                </button>
+                <button onClick={handleUpload}>Upload</button>
               </div>
             </div>
             <section className="flex gap-20">
