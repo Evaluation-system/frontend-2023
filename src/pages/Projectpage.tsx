@@ -79,7 +79,7 @@ const Projectpage: FC = () => {
     <>
       {project && (
         <section className="p-5 container">
-          <header className="flex justify-between gap-[100px] p-4">
+          <header className="flex flex-col justify-between gap-[100px] p-4">
             <div className="flex gap-5 items-center ">
               <img
                 src={selectedImage}
@@ -99,14 +99,17 @@ const Projectpage: FC = () => {
                 </div>
                 <p className="text-gray">{project.description}</p>
                 <input
+                  className="hidden xl:flex"
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
                 />
-                <button onClick={handleUpload}>Upload</button>
+                <button className="hidden xl:flex" onClick={handleUpload}>
+                  Upload
+                </button>
               </div>
             </div>
-            <section className="flex gap-20">
+            <section className="flex flex-col gap-3 xl:flex-row xl:gap-20">
               <div className="flex flex-col gap-[10px]">
                 <p className="text-gray">Стоимость: </p>
                 <p>190 000₽</p>
