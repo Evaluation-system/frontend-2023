@@ -34,7 +34,7 @@
   }
   .btnGradient {
     background: linear-gradient(90deg, #d2459d -13.66%, #4383ff 100%);
-    @apply text-lg text-secondary py-5 px-[45px] flex gap-[10px] items-center border-none cursor-pointer rounded-lg;
+    @apply relative  text-lg text-secondary py-5 px-[45px] flex gap-[10px] items-center border-none cursor-pointer rounded-lg;
   }
   .containerMain {
     @apply max-w-[1180px] mx-auto;
@@ -54,4 +54,56 @@ input::-webkit-inner-spin-button {
   /* display: none; <- Crashes Chrome on hover */
   -webkit-appearance: none;
   margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+.slug {
+  background: linear-gradient(
+    216.56deg,
+    #bdc3c7 0%,
+    #bdc3c7 25%,
+    #bdc3c7 45%,
+
+    #ecf0f1 50%,
+    #656869 55%,
+
+    #e6e6e6 75%,
+    #ffffff 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientAnimation 20s ease-in-out infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.btnGradient:before {
+  position: absolute;
+  z-index: -1;
+  top: 2px;
+  right: 2px;
+  bottom: 0;
+  left: 5px;
+  border-radius: 6px;
+  background: conic-gradient(
+    from 147.14deg at 50% 50%,
+    #0294fe -55.68deg,
+    #ff2136 113.23deg,
+    #9b4dff 195deg,
+    #0294fe 304.32deg,
+    #ff2136 473.23deg
+  );
+  content: "";
+  filter: blur(30px);
+  opacity: 0.6;
 }

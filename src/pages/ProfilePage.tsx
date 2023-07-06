@@ -1,7 +1,7 @@
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { instance } from "../api/axios.api";
 import { logout } from "../store/user/userSlice";
 import { NavLink } from "react-router-dom";
