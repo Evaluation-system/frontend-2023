@@ -28,7 +28,7 @@ const CreateProject: FC = () => {
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
   const user = useAppSelector((state) => state.user.user);
 
