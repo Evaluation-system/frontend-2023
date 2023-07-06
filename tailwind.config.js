@@ -24,5 +24,5 @@ export default {
       input: "22.55px",
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-counter")()],
 };

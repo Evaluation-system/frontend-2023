@@ -1933,6 +1933,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
+tailwindcss-counter@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/tailwindcss-counter/-/tailwindcss-counter-1.1.3.tgz#35e51ffdc0675036b9fad0b08668ed9584e67b54"
+  integrity sha512-8O7YXT43CL1V6HyA13O0jc0UD2mxK96kV2o3xcJssCIYiHwjbpQynynYBBLMSiDoe84c62hXk5pA7bZDrF+Tkw==
+
 tailwindcss@^3.3.2:
   version "3.3.2"
   resolved "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.3.2.tgz"

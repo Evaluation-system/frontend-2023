@@ -14,17 +14,8 @@ import Login from "../../pages/Login";
 const Header: FC = () => {
   const isAuth = useAuth();
 
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [openProject, setOpenProject] = useState(false);
-
-  const exitAcc = () => {
-    dispatch(logout());
-    removeTokenFromLocalStorage("token");
-    toast.success("Вы вышли из аккаунта");
-    navigate("/");
-  };
   return (
     <header className="py-5 px-8 flex justify-between items-center mb-6 xl:py-[27px] xl:px-0 ">
       <Toaster />
@@ -45,7 +36,6 @@ const Header: FC = () => {
           <BiLogIn />
         </Link>
       )}
-      <span onClick={() => exitAcc()}>Выйти</span>
       <Link to="/create" className="btnGradient">
         Создать проект
       </Link>
