@@ -65,22 +65,20 @@ const ProfilePage: FC = () => {
   const UserData = useAppSelector((state) => state.user.user);
 
   return (
-    <section className="flex flex-col gap-20 bg-primary px-32 py-12 ">
+    <section className="flex flex-col gap-20 bg-opacity-70 bg-primary px-0 py-7 xl:px-32 xl:py-12  ">
       <Toaster />
-      <section className="flex flex-nowrap gap-5 items-center">
-        <div>
-          {/* Пока нет бэка */}
-          <img
-            className="rounded-full w-[100px] h-[100px] object-cover"
-            src="https://multsforkids.ru/data/uploads/personaji/barash/barash-kartinki-2.jpg"
-          />
+      <section className="flex flex-col mx-auto text-center xl:mx-0 xl:text-start xl:flex-row flex-nowrap gap-5 items-center">
+        {/* Пока нет бэка */}
+        <img
+          className="rounded-full w-[100px] h-[100px] object-cover mx-auto xl:mx-0"
+          src="https://multsforkids.ru/data/uploads/personaji/barash/barash-kartinki-2.jpg"
+        />
 
-          {/* Когда будет бэк */}
-          {/* <img
+        {/* Когда будет бэк */}
+        {/* <img
               className="rounded-full max-w-[100px] m-8"
               src={user?.photo}
             /> */}
-        </div>
 
         <article className="mt-8">
           <div className="mb-3">
@@ -151,7 +149,7 @@ const ProfilePage: FC = () => {
         ) : data ? (
           <ol className="flex flex-col gap-3 font-light text-lg">
             {data.map((item) => (
-              <li className="flex justify-between border-gray border-b-2 pb-3">
+              <li className="flex justify-between border-gray border-b-2 pb-3 px-6">
                 <NavLink to={`/project/${item.id}`}>
                   {item.id}. {item.title}
                 </NavLink>

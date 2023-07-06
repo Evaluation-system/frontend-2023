@@ -12,12 +12,14 @@ const Header: FC = () => {
   return (
     <header className="py-5 px-8 flex justify-between items-center mb-6 xl:py-[27px] xl:px-0 ">
       <Link to="/" className="flex items-center gap-3">
-        <img src="./img/Vector.png" alt="Логотип" />
-        <p className="font-bold uppercase text-xl">Community</p>
+        <img src="./img/Vector.png" alt="Логотип" className="w-auto h-auto" />
+        <p className="hidden xl:flex font-bold uppercase text-xl">Community</p>
       </Link>
+
+      {/* Меняет положения кнопки и профиля, если авторизован */}
       {isAuth ? (
         <>
-          <Link to="/create" className="btnGradient">
+          <Link to="/create" className="hidden xl:btnGradient">
             Создать проект
           </Link>
           <Link to="/profile" className="flex gap-[10px] items-center">
@@ -25,8 +27,10 @@ const Header: FC = () => {
               src="../img/proj.jpg"
               className="w-10 h-10 rounded-full object-cover"
             />
-            {UserData?.email}
-            <BiLogIn />
+            <span className="hidden xl:flex">{UserData?.email}</span>
+            <span className="hidden xl:flex">
+              <BiLogIn />
+            </span>
           </Link>
         </>
       ) : (
@@ -35,7 +39,7 @@ const Header: FC = () => {
             Войти
             <BiLogIn />
           </Link>
-          <Link to="/create" className="btnGradient">
+          <Link to="/create" className="hidden xl:btnGradient">
             Создать проект
           </Link>
         </>
