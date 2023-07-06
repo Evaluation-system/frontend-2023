@@ -4,6 +4,7 @@
 
 @layer base {
   body {
+    font-family: "Inter", sans-serif;
     @apply bg-primary text-secondary;
   }
   h1 {
@@ -29,21 +30,21 @@
 
 @layer components {
   .btn {
-    @apply text-lg text-secondary border-solid border-[1px] py-5 px-[45px] flex gap-[10px] items-center cursor-pointer;
+    @apply text-lg text-secondary border-solid border-[1px] py-5 px-[45px] flex gap-[10px] items-center cursor-pointer rounded-lg;
   }
   .btnGradient {
     background: linear-gradient(90deg, #d2459d -13.66%, #4383ff 100%);
-    @apply text-lg text-secondary py-5 px-[45px] flex gap-[10px] items-center border-none cursor-pointer;
+    @apply text-lg text-secondary py-5 px-[45px] flex gap-[10px] items-center border-none cursor-pointer rounded-lg;
   }
   .containerMain {
     @apply max-w-[1180px] mx-auto;
   }
   .modal {
-    @apply flex items-center justify-center fixed w-full h-full top-0 bottom-0 left-0 right-0 bg-modal overflow-y-scroll;
+    @apply flex items-center justify-center fixed w-full h-full top-0 bottom-0 left-0 right-0 bg-modal  overflow-y-scroll;
   }
   .modal-content {
     box-shadow: 1px 1px 40px 1px #ffffff08;
-    @apply absolute top-0  bg-primary w-full h-full pt-[116px] px-[48px] flex flex-col gap-[66px] overflow-y-scroll;
+    @apply absolute top-0  bg-primary w-full h-full pt-[116px] px-[48px] flex flex-col gap-[66px] rounded-2xl overflow-y-scroll;
     @apply xl:top-[80px] xl:h-auto xl:max-w-[613px] xl:py-10 xl:overflow-clip;
   }
 }

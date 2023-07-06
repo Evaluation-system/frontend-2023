@@ -19,19 +19,20 @@ const Header: FC = () => {
   return (
     <header className="py-5 px-8 flex justify-between items-center mb-6 xl:py-[27px] xl:px-0 ">
       <Toaster />
-      <Link to="/">
-        <h3>Logo</h3>
+      <Link to="/" className="flex items-center gap-3">
+        <img src="./img/Vector.png" alt="Логотип" />
+        <p className="font-bold uppercase text-xl">Community</p>
       </Link>
       {isAuth ? (
         <span
-          className="flex gap-[10px] items-center pl-28 text-blue cursor-pointer"
+          className="flex gap-[10px] items-center text-blue cursor-pointer"
           onClick={() => navigate("/profile")}
         >
           Профиль
           <CgProfile />
         </span>
       ) : (
-        <Link to="/login" className="flex gap-[10px] items-center pl-28">
+        <Link to="/login" className="flex gap-[10px] items-center">
           Войти
           <BiLogIn />
         </Link>

@@ -1,14 +1,13 @@
-import { FC, useEffect, useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
-import { useAppDispatch, useAppSelector } from "../store/hooks/hooks";
-
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { FC, useEffect, useState } from "react";
 import { instance } from "../api/axios.api";
 import { logout } from "../store/user/userSlice";
+import { NavLink } from "react-router-dom";
 import { removeTokenFromLocalStorage } from "../helpers/localstorage.helper";
+import { toast, Toaster } from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "../store/hooks/hooks";
 import { useGetProjectsQuery } from "../api/api";
 import { useNavigate } from "react-router";
 

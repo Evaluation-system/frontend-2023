@@ -1,5 +1,4 @@
 import * as yup from "yup";
-import axios from "axios";
 import Input from "../components/ui/Input";
 import Modal from "../components/ui/Modal";
 import ProjectSection from "../components/layout/ProjectSection";
