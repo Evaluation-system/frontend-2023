@@ -29,11 +29,11 @@
 
 @layer components {
   .btn {
-    @apply text-lg text-secondary border-solid border-[1px] py-5 px-[45px] flex gap-[10px] items-center;
+    @apply text-lg text-secondary border-solid border-[1px] py-5 px-[45px] flex gap-[10px] items-center cursor-pointer;
   }
   .btnGradient {
     background: linear-gradient(90deg, #d2459d -13.66%, #4383ff 100%);
-    @apply text-lg text-secondary py-5 px-[45px] flex gap-[10px] items-center border-none;
+    @apply text-lg text-secondary py-5 px-[45px] flex gap-[10px] items-center border-none cursor-pointer;
   }
   .containerMain {
     @apply max-w-[1180px] mx-auto;

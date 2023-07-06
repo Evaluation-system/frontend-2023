@@ -10,6 +10,7 @@ import { useAppSelector } from "../store/hooks/hooks";
 import { useNavigate } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ICreateProject } from "../types/types";
+import { TfiClose } from "react-icons/tfi";
 
 type Form = {
   title: string;
@@ -28,7 +29,7 @@ const CreateProject: FC = () => {
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
   const user = useAppSelector((state) => state.user.user);
 
@@ -51,6 +52,12 @@ const CreateProject: FC = () => {
 
   return (
     <Modal text="Создать проект">
+      <header className="flex justify-between items-center">
+        <h3>Добро пожаловать</h3>
+        <button onClick={() => navigate(-1)}>
+          <TfiClose />
+        </button>
+      </header>
       <form
         className="flex flex-col gap-[50px]"
         onSubmit={handleSubmit(onSubmit)}
@@ -69,7 +76,7 @@ const CreateProject: FC = () => {
           errorMessage={errors.description?.message}
         />
         <div className="flex gap-5 justify-center xl:gap-[33px] xl:justify-end">
-          <Button text="Назад" style="hidden xl:btn" action="/" />
+          {/* <Button text="Назад" style="hidden xl:btn" action="/" /> */}
           <button type="submit" className="btnGradient">
             Создать
           </button>

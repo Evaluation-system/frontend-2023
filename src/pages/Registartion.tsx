@@ -45,7 +45,7 @@ const Registartion: FC = () => {
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
   // const pass: string = watch("password");
   // const subPass: string = watch("submitPassword");

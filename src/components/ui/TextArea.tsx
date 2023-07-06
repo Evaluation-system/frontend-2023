@@ -9,10 +9,10 @@ type Props = {
 
 const TextArea: FC<Props> = ({ id, placeholder, errorMessage, register }) => {
   return (
-    <>
+    <div className="flex flex-col gap-1">
       <textarea id={id} placeholder={placeholder} {...register} />
       <p className="text-red">{errorMessage}</p>
-    </>
+    </div>
   );
 };
 

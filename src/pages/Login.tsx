@@ -11,6 +11,7 @@ import { useAuth } from "../hooks/useAuth";
 import Input from "../components/ui/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { TfiClose } from "react-icons/tfi";
 
 type Form = {
   email: string;
@@ -59,6 +60,12 @@ const Login: FC = () => {
     <>
       {!isAuth ? (
         <Modal>
+          <header className="flex justify-between items-center">
+            <h3>Добро пожаловать</h3>
+            <button onClick={() => navigate(-1)}>
+              <TfiClose />
+            </button>
+          </header>
           <form
             className="flex flex-col gap-10"
             onSubmit={handleSubmit(onSubmit)}

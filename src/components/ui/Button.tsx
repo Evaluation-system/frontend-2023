@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 
 type Props = {
   text: string;
@@ -10,16 +10,8 @@ type Props = {
 };
 
 const Button: FC<Props> = ({ text, style, icon, action, paddingX }) => {
-  return (
-    <NavLink
-      to={`${action}`}
-      className={style}
-      style={{ paddingLeft: paddingX, paddingRight: paddingX }}
-    >
-      {icon}
-      {text}
-    </NavLink>
-  );
+  const navigate = useNavigate();
+  return <span>fdsf</span>;
 };
 
 export default Button;
