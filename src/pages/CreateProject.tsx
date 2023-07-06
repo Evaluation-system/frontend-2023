@@ -11,6 +11,7 @@ import { useNavigate } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ICreateProject } from "../types/types";
 import { useCreateProjectMutation } from "../api/api";
+import { TfiClose } from "react-icons/tfi";
 
 type Form = {
   title: string;

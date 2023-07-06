@@ -37,10 +37,10 @@ const Projectpage: FC = () => {
 
   useEffect(() => {
     const fetchProject = async () => {
-      const response = await instance.get<IProject[]>(
+      const response = await instance.get(
         `http://localhost:3005/projects/${id}`
       );
-      setProject(response.data[0]);
+      setProject(response.data);
     };
     fetchProject();
   }, []);
@@ -77,60 +77,57 @@ const Projectpage: FC = () => {
   };
   return (
     <>
-      <section className="p-5 container">
-        <header className="flex justify-between gap-[100px] p-4">
-          <div className="flex gap-5 items-center ">
-            {uploaded && (
+      {project && (
+        <section className="p-5 container">
+          <header className="flex justify-between gap-[100px] p-4">
+            <div className="flex gap-5 items-center ">
+              {/* {uploaded && ( */}
               <img
-                src={uploaded.filePath}
-                className="w-36 h-36 rounded-full"
+                src="../img/proj.jpg"
+                className="w-36 h-36 rounded-full "
                 onClick={(): void => handleAvatar()}
               />
-            )}
+              {/* )} */}
 
-            <div className="flex flex-col gap-2 max-w-xl">
-              <div className="flex gap-5 items-center">
-                <h2>Название проекта</h2>
-                <span
-                  className="pt-1"
-                  onClick={(): void => setOpenModal(!openModal)}
-                >
-                  <BiEdit />
-                </span>
+              <div className="flex flex-col gap-2 max-w-xl">
+                <div className="flex gap-5 items-center w-1/2">
+                  <h2>{project.title}</h2>
+                  <span
+                    className="pt-1"
+                    onClick={(): void => setOpenModal(!openModal)}
+                  >
+                    <BiEdit />
+                  </span>
+                </div>
+                <p className="text-gray">{project.description}</p>
+                <input
+                  type="file"
+                  ref={ref}
+                  onChange={handleChange}
+                  accept=".png, .jpg"
+                />
+                <button className="bg-red" onClick={() => handleUpload()}>
+                  Грузи его мать твою
+                </button>
               </div>
-              <p className="text-gray">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum
-                excepturi dolore doloribus! Corrupti debitis quidem expedita ea
-                accusantium excepturi dolore exercitationem dignissimos fugit
-                quibusdam quos deleniti sapiente, quaerat deserunt modi!
-              </p>
-              <input
-                type="file"
-                ref={ref}
-                onChange={handleChange}
-                accept=".png, .jpg"
-              />
-              <button className="bg-red" onClick={() => handleUpload()}>
-                Грузи его мать твою
-              </button>
             </div>
-          </div>
-          <section className="flex gap-20">
-            <div className="flex flex-col gap-[10px]">
-              <p className="text-gray">Стоимость: </p>
-              <p>190 000₽</p>
-            </div>
-            <div className="flex flex-col gap-[10px] w-full">
-              <p className="text-gray">Сроки:</p>
-              <p>26 рабочих дней (~36 календарных дней)</p>
-            </div>
-          </section>
-        </header>
+            <section className="flex gap-20">
+              <div className="flex flex-col gap-[10px]">
+                <p className="text-gray">Стоимость: </p>
+                <p>190 000₽</p>
+              </div>
+              <div className="flex flex-col gap-[10px] w-full">
+                <p className="text-gray">Сроки:</p>
+                <p>26 рабочих дней (~36 календарных дней)</p>
+              </div>
+            </section>
+          </header>
 
-        <section>
-          <ProjectSection />
+          <section>
+            <ProjectSection />
+          </section>
         </section>
-      </section>
+      )}
       {openModal ? (
         <Modal text="Изменить проект">
           <header className="flex justify-between items-center">

@@ -45,6 +45,7 @@ const Header: FC = () => {
           <BiLogIn />
         </Link>
       )}
+      <span onClick={() => exitAcc()}>Выйти</span>
       <Link to="/create" className="btnGradient">
         Создать проект
       </Link>
