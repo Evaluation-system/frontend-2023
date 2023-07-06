@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { instance } from "../api/axios.api";
 import { useAppSelector } from "../store/hooks/hooks";
 import { BsDot } from "react-icons/bs";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const ProfilePage: FC = () => {
   //Для навигации
@@ -13,9 +14,10 @@ const ProfilePage: FC = () => {
 
   //Удаление проекта
   const deleteProject = async (id) => {
-    const response = await instance.delete(
+    const result = await instance.delete(
       `http://localhost:3005/projects/${id}`
     );
+    console.log(result);
   };
   //Рендер проектов
   useEffect(() => {
@@ -24,7 +26,7 @@ const ProfilePage: FC = () => {
       setProjects(response.data);
     };
     fetchData();
-  }, [deleteProject]);
+  }, []);
 
   //Сюда соем пользователя
   const user = useAppSelector((state) => state.user.user);
@@ -97,19 +99,21 @@ const ProfilePage: FC = () => {
           {projects.length > 0 ? (
             <div>
               {projects.map((item) => (
-                <div>
+                <div className=" flex flex-nowrap items-center ml-8 mb-5 border-b-2">
                   <p
-                    className="border-b-2"
+                    className="text-[#FFFFFF] opacity-50 cursor-pointer w-full"
                     onClick={() => navigate(`/project/${item.id}`)}
                   >
-                    {item.title}
+                    {item.id < 10
+                      ? `0${item.id} ${item.title}`
+                      : `${item.id} ${item.title}`}
                   </p>
 
                   <p
-                    className="text-red"
+                    className="text-red cursor-pointer"
                     onClick={() => deleteProject(item.id)}
                   >
-                    Удалить проект
+                    <FaRegTrashAlt />
                   </p>
                 </div>
               ))}
