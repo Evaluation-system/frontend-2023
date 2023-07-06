@@ -107,3 +107,23 @@ input::-webkit-inner-spin-button {
   filter: blur(30px);
   opacity: 0.6;
 }
+.btn:before {
+  position: absolute;
+  z-index: -1;
+  top: 2px;
+  right: 2px;
+  bottom: 0;
+  left: 5px;
+  border-radius: 6px;
+  background: conic-gradient(
+    from 147.14deg at 50% 50%,
+    #0294fe -55.68deg,
+    #ff2136 113.23deg,
+    #9b4dff 195deg,
+    #0294fe 304.32deg,
+    #ff2136 473.23deg
+  );
+  content: "";
+  filter: blur(30px);
+  opacity: 0.6;
+}

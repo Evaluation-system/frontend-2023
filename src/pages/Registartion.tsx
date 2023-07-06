@@ -8,6 +8,7 @@ import Input from "../components/ui/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useAuth } from "../hooks/useAuth";
+import { TfiClose } from "react-icons/tfi";
 
 type Form = {
   name: string;
@@ -74,6 +75,12 @@ const Registartion: FC = () => {
       ) : (
         <Modal>
           <Toaster />
+          <header className="flex justify-between items-center">
+            <h3>Добро пожаловать</h3>
+            <button onClick={() => navigate(-2)}>
+              <TfiClose />
+            </button>
+          </header>
           <form
             className="flex flex-col gap-[50px]"
             onSubmit={handleSubmit(onSubmit)}

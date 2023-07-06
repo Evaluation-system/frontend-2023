@@ -39,9 +39,11 @@ const Header: FC = () => {
             Войти
             <BiLogIn />
           </Link>
-          <Link to="/create" className="hidden xl:btnGradient">
-            Создать проект
-          </Link>
+          <button className="hidden xl:flex">
+            <Link to="/create" className="btnGradient">
+              Создать проект
+            </Link>
+          </button>
         </>
       )}
     </header>
