@@ -24,7 +24,7 @@ const Header: FC = () => {
           </Link>
           <Link to="/profile" className="flex gap-[10px] items-center">
             <img
-              src="../img/proj.jpg"
+              src="../../img/proj.jpg"
               className="w-10 h-10 rounded-full object-cover"
             />
             <span className="hidden xl:flex">{UserData?.email}</span>

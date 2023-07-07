@@ -10,6 +10,7 @@ import { IProject } from "../types/types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 
 type TypeForm = {
   newTitle: string;
@@ -53,39 +54,69 @@ const Projectpage: FC = () => {
     reset();
   };
 
-  const [selectedImage, setSelectedImage] = useState<string>("");
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedImage(URL.createObjectURL(file));
+  //Сюда вставляется фото
+  const [selectImage, setSelectImage] = useState(null);
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    setSelectImage(file);
+    console.log(selectImage);
   };
 
-  const handleUpload = () => {
-    if (selectedImage) {
-      const formData = new FormData();
-      formData.append("file", selectedImage);
+  //Сохраняем фото в состояние
+  const [uploaded, setUploaded] = useState();
 
-      instance
-        .post(`/auth/upload-image/${project?.id}`, formData)
-        .then((response) => {
-          console.log("Image uploaded:", response.data.filePath);
-        })
-        .catch((error) => {
-          console.error("Error uploading image:", error);
-        });
+  //Функция загрузки файла на сервер
+  const handleUploadImage = async () => {
+    //Проверяем наличие файла
+    if (!selectImage) {
+      alert("Выберите фотографию");
+      return;
     }
+
+    const formData = new FormData();
+    formData.append("file", selectImage);
+
+    //Выполняем запрос
+    const response = await instance.post(
+      `projects/upload-image/${project?.id}`,
+      formData
+    );
+
+    //Путь до изображения
+    const uploadedFilePath = response.data.filePath;
+    //Название изображения
+    const uploadedFilename = uploadedFilePath.substring(
+      uploadedFilePath.lastIndexOf("/") + 1
+    );
+    setUploaded(uploadedFilename);
+    console.log(uploadedFilename);
   };
+
+  //Сюда вставляем фото полученное с сервера
+  const [photo, setPhoto] = useState("");
+
+  //Получаем фото с сервера
+  useEffect(() => {
+    const fetchPhoto = async () => {
+      const response = await instance.get(`image/${uploaded}`);
+      setPhoto(response.data);
+    };
+    fetchPhoto();
+  }, [uploaded]);
+
   return (
     <>
       {project && (
         <section className="p-5 container">
           <header className="flex flex-col justify-between gap-[100px] p-4">
             <div className="flex gap-5 items-center ">
-              <img
-                src={selectedImage}
-                className="w-36 h-36 rounded-full "
-                onClick={(): void => handleAvatar()}
-              />
+              {uploaded && (
+                <img
+                  src={photo}
+                  className="w-36 h-36 rounded-full "
+                  onClick={(): void => handleAvatar()}
+                />
+              )}
 
               <div className="flex flex-col gap-2 max-w-xl">
                 <div className="flex gap-5 items-center w-1/2">
@@ -102,9 +133,12 @@ const Projectpage: FC = () => {
                   className="hidden xl:flex"
                   type="file"
                   accept="image/*"
-                  onChange={handleImageChange}
+                  onChange={handleImage}
                 />
-                <button className="hidden xl:flex" onClick={handleUpload}>
+                <button
+                  className="hidden xl:flex"
+                  onClick={() => handleUploadImage()}
+                >
                   Upload
                 </button>
               </div>
