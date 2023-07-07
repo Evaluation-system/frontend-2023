@@ -150,7 +150,7 @@ const Projectpage: FC = () => {
               </div>
               <div className="flex flex-col gap-[10px] w-full">
                 <p className="text-gray">Сроки:</p>
-                <p>26 рабочих дней (~36 календарных дней)</p>
+                <p>22 рабочих дней (~36 календарных дней)</p>
               </div>
             </section>
           </header>
