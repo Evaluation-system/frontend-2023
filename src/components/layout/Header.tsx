@@ -12,16 +12,18 @@ const Header: FC = () => {
   return (
     <header className="py-5 px-8 flex justify-between items-center mb-6 xl:py-[27px] xl:px-0 ">
       <Link to="/" className="flex items-center gap-3">
-        <img src="./img/Vector.png" alt="Логотип" className="w-auto h-auto" />
+        <img src="../img/Vector.png" alt="Логотип" className="w-auto h-auto" />
         <p className="hidden xl:flex font-bold uppercase text-xl">Community</p>
       </Link>
 
       {/* Меняет положения кнопки и профиля, если авторизован */}
       {isAuth ? (
         <>
-          <Link to="/create" className="hidden xl:btnGradient">
-            Создать проект
-          </Link>
+          <button className="hidden xl:flex">
+            <Link to="/create" className="btnGradient">
+              Создать проект
+            </Link>
+          </button>
           <Link to="/profile" className="flex gap-[10px] items-center">
             <img
               src="../../img/proj.jpg"

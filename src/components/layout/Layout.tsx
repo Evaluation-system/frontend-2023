@@ -1,6 +1,7 @@
 import Header from "./Header";
 import { FC } from "react";
 import { Outlet } from "react-router-dom";
+import Footer from "./Footer";
 const Layout: FC = () => {
   return (
     <>
@@ -24,6 +25,7 @@ const Layout: FC = () => {
         src="../img/bg/bgHome.jpg"
         className="flex fixed top-0 bottom-0 right-0 left-0 h-full w-full z-[-2] object-cover opacity-50"
       />
+      {/* <Footer /> */}
     </>
   );
 };

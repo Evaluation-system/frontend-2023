@@ -4,13 +4,13 @@ import Modal from "../components/ui/Modal";
 import ProjectSection from "../components/layout/ProjectSection";
 import TextArea from "../components/ui/TextArea";
 import { BiEdit } from "react-icons/bi";
-import { FC, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { instance } from "../api/axios.api";
 import { IProject } from "../types/types";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
+import { MdMonochromePhotos } from "react-icons/md";
 
 type TypeForm = {
   newTitle: string;
@@ -20,7 +20,6 @@ type TypeForm = {
 const Projectpage: FC = () => {
   const { id } = useParams();
   const [project, setProject] = useState<IProject | null>(null);
-  const navigate = useNavigate();
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const schema = yup.object({
@@ -34,20 +33,18 @@ const Projectpage: FC = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
+  const fetchProject = async () => {
+    const response = await instance.get(`projects/${id}`);
+    setProject(response.data);
+  };
   useEffect(() => {
-    const fetchProject = async () => {
-      const response = await instance.get(
-        `http://localhost:3005/projects/${id}`
-      );
-      setProject(response.data);
-    };
     fetchProject();
   }, []);
 
-  const ref = useRef<HTMLInputElement | null>(null);
+  const avatarRef = useRef<HTMLInputElement | null>(null);
 
   const handleAvatar = () => {
-    ref.current?.click();
+    avatarRef.current?.click();
   };
   const onSubmit: SubmitHandler<TypeForm> = (data) => {
     alert(data);
@@ -55,15 +52,12 @@ const Projectpage: FC = () => {
   };
 
   //Сюда вставляется фото
-  const [selectImage, setSelectImage] = useState(null);
-  const handleImage = (e) => {
-    const file = e.target.files[0];
-    setSelectImage(file);
-    console.log(selectImage);
-  };
+  const [selectImage, setSelectImage] = useState<File | undefined>();
 
-  //Сохраняем фото в состояние
-  const [uploaded, setUploaded] = useState();
+  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setSelectImage(file);
+  };
 
   //Функция загрузки файла на сервер
   const handleUploadImage = async () => {
@@ -77,32 +71,30 @@ const Projectpage: FC = () => {
     formData.append("file", selectImage);
 
     //Выполняем запрос
-    const response = await instance.post(
-      `projects/upload-image/${project?.id}`,
-      formData
-    );
+    await instance.post(`projects/upload-image/${project?.id}`, formData);
 
-    //Путь до изображения
-    const uploadedFilePath = response.data.filePath;
-    //Название изображения
-    const uploadedFilename = uploadedFilePath.substring(
-      uploadedFilePath.lastIndexOf("/") + 1
-    );
-    setUploaded(uploadedFilename);
-    console.log(uploadedFilename);
+    fetchProject();
   };
 
   //Сюда вставляем фото полученное с сервера
-  const [photo, setPhoto] = useState("");
-
+  const [photo, setPhoto] = useState<string | undefined>("");
   //Получаем фото с сервера
   useEffect(() => {
     const fetchPhoto = async () => {
-      const response = await instance.get(`image/${uploaded}`);
-      setPhoto(response.data);
+      const uploadedFilename = project?.pathImage.substring(
+        project?.pathImage.lastIndexOf("/") + 1
+      );
+      if (project) {
+        console.log(uploadedFilename, project?.pathImage);
+        const response = await instance.get(
+          `projects/image/${uploadedFilename}`
+        );
+        const { baseURL, url } = response.config;
+        setPhoto(baseURL! + url!);
+      }
     };
     fetchPhoto();
-  }, [uploaded]);
+  }, [project]);
 
   return (
     <>
@@ -110,11 +102,22 @@ const Projectpage: FC = () => {
         <section className="p-5 container">
           <header className="flex flex-col justify-between gap-[100px] p-4">
             <div className="flex gap-5 items-center ">
-              {uploaded && (
-                <img
-                  src={photo}
-                  className="w-36 h-36 rounded-full "
+              {project.pathImage ? (
+                <div
+                  className="relative w-36 h-36 rounded-full overflow-hidden"
                   onClick={(): void => handleAvatar()}
+                >
+                  <div className="absolute flex w-full h-full bg-primary z-10 top-28 opacity-80">
+                    <div className="mx-auto pt-2">
+                      <MdMonochromePhotos />
+                    </div>
+                  </div>
+                  <img src={photo} className="absolute rounded-full z-0" />
+                </div>
+              ) : (
+                <img
+                  src="../img/proj.jpg"
+                  className="w-36 h-36 rounded-full "
                 />
               )}
 
@@ -130,16 +133,17 @@ const Projectpage: FC = () => {
                 </div>
                 <p className="text-gray">{project.description}</p>
                 <input
-                  className="hidden xl:flex"
+                  className="hidden"
                   type="file"
                   accept="image/*"
                   onChange={handleImage}
+                  ref={avatarRef}
                 />
                 <button
-                  className="hidden xl:flex"
-                  onClick={() => handleUploadImage()}
+                  className="flex"
+                  onClick={(): Promise<any> => handleUploadImage()}
                 >
-                  Upload
+                  Загрузить фото
                 </button>
               </div>
             </div>
