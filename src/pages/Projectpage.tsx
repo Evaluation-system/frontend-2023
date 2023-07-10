@@ -98,7 +98,9 @@ const Projectpage: FC = () => {
 
   return (
     <>
-      {project && (
+      {isLoading ? (
+        <div>Загрузка...</div>
+      ) : data ? (
         <section className="p-5 container">
           <header className="flex flex-col justify-between gap-[100px] p-4">
             <div className="flex gap-5 items-center ">
@@ -123,7 +125,7 @@ const Projectpage: FC = () => {
 
               <div className="flex flex-col gap-2 max-w-xl">
                 <div className="flex gap-5 items-center w-1/2">
-                  <h2>{project.title}</h2>
+                  <h2>{data.title}</h2>
                   <span
                     className="pt-1"
                     onClick={(): void => setOpenModal(!openModal)}
@@ -131,7 +133,7 @@ const Projectpage: FC = () => {
                     <BiEdit />
                   </span>
                 </div>
-                <p className="text-gray">{project.description}</p>
+                <p className="text-gray">{data.description}</p>
                 <input
                   className="hidden"
                   type="file"
@@ -163,6 +165,8 @@ const Projectpage: FC = () => {
             <ProjectSection />
           </section>
         </section>
+      ) : (
+        <div>Произошла ошабка :(</div>
       )}
       {openModal ? (
         <Modal text="Изменить проект">
