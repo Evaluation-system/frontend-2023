@@ -19,7 +19,7 @@ type TypeForm = {
 
 const Projectpage: FC = () => {
   const { id } = useParams();
-  const [project, setProject] = useState<IProject | null | any>();
+  const [project, setProject] = useState<IProject | null>(null);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const schema = yup.object({
@@ -33,32 +33,22 @@ const Projectpage: FC = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
+  const fetchProject = async () => {
+    const response = await instance.get(`projects/${id}`);
+    setProject(response.data);
+  };
   useEffect(() => {
-    const fetchProject = async () => {
-      const response = await instance.get<IProject | null>(`projects/${id}`);
-      setProject(response.data);
-    };
     fetchProject();
-  }, [setProject]);
+  }, []);
 
   const avatarRef = useRef<HTMLInputElement | null>(null);
 
   const handleAvatar = () => {
     avatarRef.current?.click();
   };
-  const onSubmit: SubmitHandler<TypeForm> = async (data) => {
-    const { newTitle, newDescription } = data;
-    await instance.patch(`projects/${id}`, {
-      title: newTitle,
-      description: newDescription,
-    });
-    setProject({
-      ...project,
-      title: newTitle,
-      description: newDescription,
-    });
+  const onSubmit: SubmitHandler<TypeForm> = (data) => {
+    alert(data);
     reset();
-    setOpenModal(false);
   };
 
   //Сюда вставляется фото
@@ -82,6 +72,8 @@ const Projectpage: FC = () => {
 
     //Выполняем запрос
     await instance.post(`projects/upload-image/${project?.id}`, formData);
+
+    fetchProject();
   };
 
   //Сюда вставляем фото полученное с сервера
@@ -89,11 +81,11 @@ const Projectpage: FC = () => {
   //Получаем фото с сервера
   useEffect(() => {
     const fetchPhoto = async () => {
-      const uploadedFilename: string | null = project?.pathImage.substring(
+      const uploadedFilename = project?.pathImage.substring(
         project?.pathImage.lastIndexOf("/") + 1
       );
       if (project) {
-        console.log("123");
+        console.log(uploadedFilename, project?.pathImage);
         const response = await instance.get(
           `projects/image/${uploadedFilename}`
         );
@@ -108,9 +100,9 @@ const Projectpage: FC = () => {
     <>
       {project && (
         <section className="p-5 container">
-          <header className="flex flex-col justify-between gap-[100px] p-4">
+          <header className="flex flex-col justify-between gap-10 p-4">
             <div className="flex gap-5 items-center ">
-              {project?.pathImage ? (
+              {project.pathImage ? (
                 <div
                   className="relative w-36 h-36 rounded-full overflow-hidden"
                   onClick={(): void => handleAvatar()}
@@ -123,15 +115,27 @@ const Projectpage: FC = () => {
                   <img src={photo} className="absolute rounded-full z-0" />
                 </div>
               ) : (
-                <img
-                  src="../img/proj.jpg"
-                  className="w-36 h-36 rounded-full "
-                />
+                <div
+                  className="relative w-36 h-36 rounded-full overflow-hidden"
+                  onClick={(): void => handleAvatar()}
+                >
+                  <div className="absolute flex w-full h-full bg-primary z-10 top-28 opacity-80">
+                    <div className="mx-auto pt-2">
+                      <MdMonochromePhotos />
+                    </div>
+                  </div>
+                  <img
+                    src="../img/proj.jpg"
+                    className="absolute rounded-full z-0"
+                  />
+                </div>
               )}
 
               <div className="flex flex-col gap-2 max-w-xl">
-                <div className="flex gap-5 items-center w-1/2">
-                  <h2>{project.title}</h2>
+                <div className="flex gap-5 items-center">
+                  <h2 className="overflow-hidden whitespace-nowrap text-ellipsis">
+                    {project.title}
+                  </h2>
                   <span
                     className="pt-1"
                     onClick={(): void => setOpenModal(!openModal)}
@@ -139,7 +143,9 @@ const Projectpage: FC = () => {
                     <BiEdit />
                   </span>
                 </div>
-                <p className="text-gray">{project.description}</p>
+                <p className="text-gray overflow-hidden text-ellipsis line-clamp-4">
+                  {project.description}
+                </p>
                 <input
                   className="hidden"
                   type="file"
@@ -166,6 +172,7 @@ const Projectpage: FC = () => {
               </div>
             </section>
           </header>
+
           <section>
             <ProjectSection />
           </section>

@@ -3,14 +3,14 @@ import Input from "../components/ui/Input";
 import Modal from "../components/ui/Modal";
 import TextArea from "../components/ui/TextArea";
 import { FC, useRef } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useAppSelector } from "../store/hooks/hooks";
-import { useNavigate } from "react-router";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useUpdateRoleMutation } from "../api/api";
-import { useCreateProjectMutation } from "../api/project.api";
-import { TfiClose } from "react-icons/tfi";
 import { RiImageEditFill } from "react-icons/ri";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { TfiClose } from "react-icons/tfi";
+import { useAppSelector } from "../store/hooks/hooks";
+import { useCreateProjectMutation } from "../api/project.api";
+import { useNavigate } from "react-router";
+import { useUpdateRoleMutation } from "../api/api";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 type Form = {
   imageProject: any;
