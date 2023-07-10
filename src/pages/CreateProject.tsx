@@ -10,8 +10,7 @@ import { useAppSelector } from "../store/hooks/hooks";
 import { useNavigate } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ICreateProject } from "../types/types";
-import { useUpdateRoleMutation } from "../api/api";
-import { useCreateProjectMutation } from "../api/project.api";
+import { useCreateProjectMutation } from "../api/api";
 import { TfiClose } from "react-icons/tfi";
 
 type Form = {
@@ -40,7 +39,6 @@ const CreateProject: FC = () => {
 
   // Через новый АПИ
   const [createProject] = useCreateProjectMutation();
-  const [updateRole] = useUpdateRoleMutation();
 
   const onSubmit: SubmitHandler<Form> = (data) => {
     const { title, description } = data;
@@ -62,14 +60,7 @@ const CreateProject: FC = () => {
       UserId: user?.id,
     };
 
-    const rolePatch = {
-      id: user?.id,
-      patch: { role: "admin" },
-    };
-
     createProject(postData);
-    updateRole(rolePatch);
-
     console.log(postData);
 
     navigate("/profile");

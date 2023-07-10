@@ -21,11 +21,20 @@ export const api = createApi({
   }),
 
   endpoints: (builder) => ({
-    updateRole: builder.mutation({
-      query: ({ id, patch }) => ({
-        body: patch,
-        url: `/user/${id}`,
-        method: "PATCH",
+    getProjects: builder.query({
+      query: () => "/projects",
+      providesTags: () => [
+        {
+          type: "Projects",
+        },
+      ],
+    }),
+
+    createProject: builder.mutation({
+      query: (data) => ({
+        body: data,
+        url: "/projects",
+        method: "POST",
       }),
       invalidatesTags: () => [
         {
@@ -33,7 +42,11 @@ export const api = createApi({
         },
       ],
     }),
+
+    // deleteProject: builder.mutation({
+
+    // }),
   }),
 });
 
-export const { useUpdateRoleMutation } = api;
+export const { useGetProjectsQuery, useCreateProjectMutation } = api;
