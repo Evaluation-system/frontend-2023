@@ -85,7 +85,7 @@ const Projectpage: FC = () => {
         project?.pathImage.lastIndexOf("/") + 1
       );
       if (project) {
-        console.log(uploadedFilename, project?.pathImage);
+        console.log("123");
         const response = await instance.get(
           `projects/image/${uploadedFilename}`
         );
