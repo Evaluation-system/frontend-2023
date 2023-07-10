@@ -2,48 +2,20 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FC, useState } from "react";
-import { instance } from "../api/axios.api";
 import { logout } from "../store/user/userSlice";
 import { NavLink } from "react-router-dom";
 import { removeTokenFromLocalStorage } from "../helpers/localstorage.helper";
 import { toast, Toaster } from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "../store/hooks/hooks";
-import { useGetProjectsQuery } from "../api/api";
+import {
+  useGetProjectsQuery,
+  useDeleteProjectMutation,
+} from "../api/project.api";
 import { useNavigate } from "react-router";
 
 const ProfilePage: FC = () => {
   //Для навигации
   const navigate = useNavigate();
-
-  //Сюда соем проекты
-  const [projects, setProjects] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-
-  //Удаление проекта
-  const deleteProject = async (id) => {
-    const result = await instance.delete(
-      `http://localhost:3005/projects/${id}`
-    );
-    console.log(result);
-  };
-  //Рендер проектов (старое)
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await instance.get("http://localhost:3005/projects");
-  //     setProjects(response.data);
-  //   };
-  //   fetchData();
-  // }, []);
-
-  //Рендер проектов через другой апи (RTK Query)
-  // useEffect(() => {
-  //   const { isLoading, data, error } = useGetProjectsQuery();
-  //   setProjects(data);
-  //   setIsLoading(isLoading);
-
-  //   console.log("project data:");
-  //   console.log(data);
-  // }, []);
 
   //Сюда соем пользователя
   const user = useAppSelector((state) => state.user.user);
@@ -51,6 +23,7 @@ const ProfilePage: FC = () => {
   const { isLoading, data, error } = useGetProjectsQuery(undefined, {
     skip: !userId,
   });
+  const [deleteProject, response] = useDeleteProjectMutation();
 
   //Выход из профиля
   const dispatch = useAppDispatch();
@@ -111,51 +84,27 @@ const ProfilePage: FC = () => {
           </button>
         </article>
       </section>
-      {/* Проекты через старый АПИ */}
-      {/* <article>
-        {projects.length > 0 ? (
-          <div>
-            {projects.map((item) => (
-              <div className=" flex flex-nowrap items-center ml-8 mb-5 border-b-2">
-                <p
-                  className="text-[#FFFFFF] opacity-50 cursor-pointer w-full"
-                  onClick={() => navigate(`/project/${item.id}`)}
-                >
-                  {item.id < 10
-                    ? `0${item.id} ${item.title}`
-                    : `${item.id} ${item.title}`}
-                </p>
 
-                <p
-                  className="text-red cursor-pointer"
-                  onClick={() => deleteProject(item.id)}
-                >
-                  <FaRegTrashAlt />
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-center text-[#FFFFFF] opacity-50 m-60">
-            Нет созданных проектов :(
-          </p>
-        )}
-      </article> */}
-
-      {/* Проекты через новый АПИ (RTK Query) */}
       <section>
         {isLoading ? (
           <p>Идёт загрузка проектов...</p>
         ) : data ? (
           <ol className="flex flex-col gap-3 font-light text-lg">
             {data.map((item) => (
-              <li className="flex justify-between border-gray border-b-2 pb-3 px-6">
+              <li
+                key={item.id}
+                className="flex justify-between border-gray border-b-2 pb-3 px-6"
+              >
                 <NavLink to={`/project/${item.id}`}>
                   {item.id}. {item.title}
                 </NavLink>
                 <button
                   className="text-red cursor-pointer"
-                  onClick={() => deleteProject(item.id)}
+                  onClick={() => {
+                    deleteProject(item.id).then(() => {
+                      console.log(response);
+                    });
+                  }}
                 >
                   <FaRegTrashAlt />
                 </button>
