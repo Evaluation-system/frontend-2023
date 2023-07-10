@@ -33,6 +33,8 @@ const Projectpage: FC = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
+  const { isLoading, data } = useGetProjectQuery(id);
+
   const fetchProject = async () => {
     const response = await instance.get<IProject>(`projects/${id}`);
     setProject(response.data);
@@ -47,8 +49,13 @@ const Projectpage: FC = () => {
     avatarRef.current?.click();
   };
   const onSubmit: SubmitHandler<TypeForm> = (data) => {
-    alert(data);
+    const { newTitle, newDescription } = data;
+    instance.patch(`projects/${id}`, {
+      title: newTitle,
+      description: newDescription,
+    });
     reset();
+    setOpenModal(false);
   };
 
   //Сюда вставляется фото
@@ -72,8 +79,6 @@ const Projectpage: FC = () => {
 
     //Выполняем запрос
     await instance.post(`projects/upload-image/${project?.id}`, formData);
-
-    await fetchProject();
   };
 
   //Сюда вставляем фото полученное с сервера
@@ -123,7 +128,7 @@ const Projectpage: FC = () => {
 
               <div className="flex flex-col gap-2 max-w-xl">
                 <div className="flex gap-5 items-center w-1/2">
-                  <h2>{project.title}</h2>
+                  <h2>{data.title}</h2>
                   <span
                     className="pt-1"
                     onClick={(): void => setOpenModal(!openModal)}
@@ -131,7 +136,7 @@ const Projectpage: FC = () => {
                     <BiEdit />
                   </span>
                 </div>
-                <p className="text-gray">{project.description}</p>
+                <p className="text-gray">{data.description}</p>
                 <input
                   className="hidden"
                   type="file"

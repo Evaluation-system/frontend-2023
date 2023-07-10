@@ -95,14 +95,17 @@ const ProfilePage: FC = () => {
                 key={item.id}
                 className="flex justify-between border-gray border-b-2 pb-3 px-6"
               >
-                <NavLink to={`/project/${item.id}`}>
-                  {item.id}. {item.title}
+                <NavLink
+                  to={`/project/${item.id}`}
+                  className="max-w-[500px] overflow-hidden whitespace-nowrap text-ellipsis"
+                >
+                  {item.id}. <span className="">{item.title}</span>
                 </NavLink>
                 <button
                   className="text-red cursor-pointer"
-                  onClick={() => {
-                    deleteProject(item.id).then(() => {
-                      console.log(response);
+                  onClick={async () => {
+                    const test = await deleteProject(item.id).then((respon) => {
+                      console.log(respon);
                     });
                   }}
                 >

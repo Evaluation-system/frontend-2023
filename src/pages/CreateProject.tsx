@@ -45,16 +45,6 @@ const CreateProject: FC = () => {
   const onSubmit: SubmitHandler<Form> = (data) => {
     const { title, description } = data;
 
-    // Через старый АПИ
-    // const response = instance.post<ICreateProject>(
-    //   "http://localhost:3005/projects",
-    //   {
-    //     title: title,
-    //     description: description,
-    //     UserId: user?.id,
-    //   }
-    // );
-
     // Через новый АПИ
     const postData = {
       title: title,
