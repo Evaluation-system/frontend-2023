@@ -34,7 +34,7 @@ const Projectpage: FC = () => {
   } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
   const fetchProject = async () => {
-    const response = await instance.get(`projects/${id}`);
+    const response = await instance.get<IProject>(`projects/${id}`);
     setProject(response.data);
   };
   useEffect(() => {
@@ -73,7 +73,7 @@ const Projectpage: FC = () => {
     //Выполняем запрос
     await instance.post(`projects/upload-image/${project?.id}`, formData);
 
-    fetchProject();
+    await fetchProject();
   };
 
   //Сюда вставляем фото полученное с сервера
@@ -102,7 +102,7 @@ const Projectpage: FC = () => {
         <section className="p-5 container">
           <header className="flex flex-col justify-between gap-[100px] p-4">
             <div className="flex gap-5 items-center ">
-              {project.pathImage ? (
+              {project?.pathImage ? (
                 <div
                   className="relative w-36 h-36 rounded-full overflow-hidden"
                   onClick={(): void => handleAvatar()}
