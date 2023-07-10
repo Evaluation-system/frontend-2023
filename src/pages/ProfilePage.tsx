@@ -55,25 +55,17 @@ const ProfilePage: FC = () => {
 
         <article className="mt-8">
           <div className="mb-3">
-            {/* Пока нет бэка */}
             <h3>Имя Имевское</h3>
-
-            {/* Когда будет бэк */}
-            {/* <h3>{user?.name}</h3> */}
           </div>
 
           <div className="text-[#FFFFFF] opacity-50 flex flex-nowrap mb-3 gap-[5px] items-center">
             <p>{UserData?.email}</p>
             <BsDot />
-            {/* Пока нет бэка */}
             <div>+79996669669</div>
-
-            {/* Когда будет бэк */}
-            {/* <div>{user?.phone}</div> */}
           </div>
 
           <span
-            className="flex gap-[10px] items-center text-blue cursor-pointer mb-3"
+            className="flex gap-[10px] justify-center items-center text-blue cursor-pointer mb-3 xl:justify-start"
             onClick={() => navigate("/profile")}
           >
             Редактировать профиль

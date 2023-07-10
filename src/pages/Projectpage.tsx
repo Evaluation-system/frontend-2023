@@ -19,7 +19,7 @@ type TypeForm = {
 
 const Projectpage: FC = () => {
   const { id } = useParams();
-  const [project, setProject] = useState<IProject | null>(null);
+  const [project, setProject] = useState<IProject | null | any>();
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const schema = yup.object({
@@ -33,24 +33,27 @@ const Projectpage: FC = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
-  const { isLoading, data } = useGetProjectQuery(id);
-
-  const fetchProject = async () => {
-    const response = await instance.get<IProject>(`projects/${id}`);
-    setProject(response.data);
-  };
   useEffect(() => {
+    const fetchProject = async () => {
+      const response = await instance.get<IProject | null>(`projects/${id}`);
+      setProject(response.data);
+    };
     fetchProject();
-  }, []);
+  }, [setProject]);
 
   const avatarRef = useRef<HTMLInputElement | null>(null);
 
   const handleAvatar = () => {
     avatarRef.current?.click();
   };
-  const onSubmit: SubmitHandler<TypeForm> = (data) => {
+  const onSubmit: SubmitHandler<TypeForm> = async (data) => {
     const { newTitle, newDescription } = data;
-    instance.patch(`projects/${id}`, {
+    await instance.patch(`projects/${id}`, {
+      title: newTitle,
+      description: newDescription,
+    });
+    setProject({
+      ...project,
       title: newTitle,
       description: newDescription,
     });
@@ -86,7 +89,7 @@ const Projectpage: FC = () => {
   //Получаем фото с сервера
   useEffect(() => {
     const fetchPhoto = async () => {
-      const uploadedFilename = project?.pathImage.substring(
+      const uploadedFilename: string | null = project?.pathImage.substring(
         project?.pathImage.lastIndexOf("/") + 1
       );
       if (project) {
@@ -128,7 +131,7 @@ const Projectpage: FC = () => {
 
               <div className="flex flex-col gap-2 max-w-xl">
                 <div className="flex gap-5 items-center w-1/2">
-                  <h2>{data.title}</h2>
+                  <h2>{project.title}</h2>
                   <span
                     className="pt-1"
                     onClick={(): void => setOpenModal(!openModal)}
@@ -136,7 +139,7 @@ const Projectpage: FC = () => {
                     <BiEdit />
                   </span>
                 </div>
-                <p className="text-gray">{data.description}</p>
+                <p className="text-gray">{project.description}</p>
                 <input
                   className="hidden"
                   type="file"
