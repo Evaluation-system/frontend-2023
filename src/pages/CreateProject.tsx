@@ -23,6 +23,7 @@ const CreateProject: FC = () => {
   const schema = yup.object({
     title: yup.string().required("Поле «Название» обязательно"),
     description: yup.string().required("Поле «Описание» обязательно"),
+    imageProject: yup.object(),
   });
   //React-hook-form
   const {

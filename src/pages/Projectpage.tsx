@@ -98,9 +98,7 @@ const Projectpage: FC = () => {
       );
       if (project) {
         console.log(uploadedFilename, project?.pathImage);
-        const response = await instance.get(
-          `projects/image/${uploadedFilename}`
-        );
+        const response = await instance.get(`projects/image/${project.id}`);
         const { baseURL, url } = response.config;
         setPhoto(baseURL! + url!);
       }

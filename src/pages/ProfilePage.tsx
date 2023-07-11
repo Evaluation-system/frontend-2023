@@ -117,7 +117,6 @@ const ProfilePage: FC = () => {
             Нет созданных проектов :(
           </p>
         )}
-        dd
       </section>
     </section>
   );
