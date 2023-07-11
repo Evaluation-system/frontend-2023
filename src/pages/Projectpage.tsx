@@ -11,6 +11,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { MdMonochromePhotos } from "react-icons/md";
+import { toast, Toaster } from "react-hot-toast";
 
 type TypeForm = {
   newTitle: string;
@@ -46,9 +47,20 @@ const Projectpage: FC = () => {
   const handleAvatar = () => {
     avatarRef.current?.click();
   };
-  const onSubmit: SubmitHandler<TypeForm> = (data) => {
-    alert(data);
+  const onSubmit: SubmitHandler<TypeForm> = async (data) => {
+    const { newTitle, newDescription } = data;
+    await instance.patch(`projects/${id}`, {
+      title: newTitle,
+      description: newDescription,
+    });
+    setProject({
+      ...project,
+      title: newTitle,
+      description: newDescription,
+    });
     reset();
+    setOpenModal(!openModal);
+    toast.success("Проект отредактирован");
   };
 
   //Сюда вставляется фото
@@ -100,6 +112,7 @@ const Projectpage: FC = () => {
     <>
       {project && (
         <section className="p-5 container">
+          <Toaster />
           <header className="flex flex-col justify-between gap-10 p-4">
             <div className="flex gap-5 items-center ">
               {project.pathImage ? (
