@@ -12,6 +12,7 @@ import {
   useDeleteProjectMutation,
 } from "../api/project.api";
 import { useNavigate } from "react-router";
+import Avatar from "../components/ui/Avatar";
 
 const ProfilePage: FC = () => {
   //Для навигации
@@ -45,10 +46,7 @@ const ProfilePage: FC = () => {
       <Toaster />
       <section className="flex flex-col mx-auto text-center xl:mx-0 xl:text-start xl:flex-row flex-nowrap gap-5 items-center">
         {/* Пока нет бэка */}
-        <img
-          className="rounded-full w-[100px] h-[100px] object-cover mx-auto xl:mx-0"
-          src="https://multsforkids.ru/data/uploads/personaji/barash/barash-kartinki-2.jpg"
-        />
+        <Avatar handleAvatar={(): void => alert("123")} />
 
         {/* Когда будет бэк */}
         {/* <img

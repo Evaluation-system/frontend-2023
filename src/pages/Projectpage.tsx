@@ -12,6 +12,8 @@ import { useParams } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { MdMonochromePhotos } from "react-icons/md";
 import { toast, Toaster } from "react-hot-toast";
+import Avatar from "../components/ui/Avatar";
+import EditProject from "../components/ui/EditProject";
 
 type TypeForm = {
   newTitle: string;
@@ -114,32 +116,9 @@ const Projectpage: FC = () => {
           <header className="flex flex-col justify-between gap-10 p-4">
             <div className="flex gap-5 items-center ">
               {project.pathImage ? (
-                <div
-                  className="relative w-36 h-36 rounded-full overflow-hidden"
-                  onClick={(): void => handleAvatar()}
-                >
-                  <div className="absolute flex w-full h-full bg-primary z-10 top-28 opacity-80">
-                    <div className="mx-auto pt-2">
-                      <MdMonochromePhotos />
-                    </div>
-                  </div>
-                  <img src={photo} className="absolute rounded-full z-0" />
-                </div>
+                <Avatar photo={photo} handleAvatar={handleAvatar} />
               ) : (
-                <div
-                  className="relative w-36 h-36 rounded-full overflow-hidden"
-                  onClick={(): void => handleAvatar()}
-                >
-                  <div className="absolute flex w-full h-full bg-primary z-10 top-28 opacity-80">
-                    <div className="mx-auto pt-2">
-                      <MdMonochromePhotos />
-                    </div>
-                  </div>
-                  <img
-                    src="../img/proj.jpg"
-                    className="absolute rounded-full z-0"
-                  />
-                </div>
+                <Avatar handleAvatar={handleAvatar} />
               )}
 
               <div className="flex flex-col gap-2 max-w-xl">
@@ -190,39 +169,15 @@ const Projectpage: FC = () => {
         </section>
       )}
       {openModal ? (
-        <Modal text="Изменить проект">
-          <header className="flex justify-between items-center">
-            <h3>Изменить проект</h3>
-          </header>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-5"
-          >
-            <Input
-              placeholder="Новое название"
-              id="newTitle"
-              type="text"
-              register={{ ...register("newTitle") }}
-              errorMessage={errors.newTitle?.message}
-            />
-            <TextArea
-              placeholder="Новое описание"
-              id="newDescription"
-              register={{ ...register("newDescription") }}
-              errorMessage={errors.newDescription?.message}
-            />
-            <div className="flex gap-5 justify-center">
-              <button className="btn" onClick={(): void => setOpenModal(false)}>
-                Закрыть
-              </button>
-              <input
-                type="submit"
-                className="btnGradient"
-                value="Подтвердить"
-              />
-            </div>
-          </form>
-        </Modal>
+        <EditProject
+          registerInput={{ ...register("newTitle") }}
+          registerTextArea={{ ...register("newDescription") }}
+          errorMessageTextArea={errors.newDescription?.message}
+          errorMessageInput={errors.newTitle?.message}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+          setOpenModal={setOpenModal}
+        />
       ) : (
         ""
       )}
