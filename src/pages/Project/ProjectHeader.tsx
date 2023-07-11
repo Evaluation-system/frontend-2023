@@ -27,7 +27,7 @@ const ProjectHeader: FC<Props> = ({
   };
 
   return (
-    <header className="flex flex-col justify-between gap-10 p-4">
+    <header className="flex flex-col justify-between gap-10 p-4 mb-12">
       <div className="flex gap-5 items-center ">
         {project.pathImage ? (
           <Avatar photo={photo} handleAvatar={handleAvatar} />

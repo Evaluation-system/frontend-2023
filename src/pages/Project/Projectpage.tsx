@@ -1,6 +1,5 @@
 import * as yup from "yup";
-import ProjectSection from "../../components/layout/ProjectSection";
-import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { instance } from "../../api/axios.api";
 import { IProject } from "../../types/types";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -9,6 +8,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast, Toaster } from "react-hot-toast";
 import EditProject from "../../components/ui/EditProject";
 import ProjectHeader from "./ProjectHeader";
+import ProjectSection from "./Project-Section/ProjectSection";
+import ProjectSectionPricing from "./Project-Section/ProjectSectionPricing";
+import ProjectSectionTasks from "./Project-Section/ProjectSectionTasks";
+import ProjectSectionEmployee from "./Project-Section/ProjectSectionEmployee";
 
 type TypeForm = {
   newTitle: string;
@@ -111,8 +114,10 @@ const Projectpage: FC = () => {
             handleUploadImage={handleUploadImage}
             handleImage={handleImage}
           />
-          <section>
-            <ProjectSection />
+          <section className="flex flex-col gap-10">
+            <ProjectSectionPricing />
+            <ProjectSectionTasks />
+            <ProjectSectionEmployee />
           </section>
         </section>
       )}
