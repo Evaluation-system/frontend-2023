@@ -8,7 +8,7 @@ import { removeTokenFromLocalStorage } from "../helpers/localstorage.helper";
 import { toast, Toaster } from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "../store/hooks/hooks";
 import {
-  useGetProjectsQuery,
+  useGetUserProjectsQuery,
   useDeleteProjectMutation,
 } from "../api/project.api";
 import { useNavigate } from "react-router";
@@ -20,10 +20,13 @@ const ProfilePage: FC = () => {
   //Сюда соем пользователя
   const user = useAppSelector((state) => state.user.user);
   const userId = user?.id;
-  const { isLoading, data, error } = useGetProjectsQuery(undefined, {
+  const { isLoading, data, error } = useGetUserProjectsQuery(userId, {
     skip: !userId,
   });
   const [deleteProject, response] = useDeleteProjectMutation();
+
+  console.log(userId);
+  console.log(data);
 
   //Выход из профиля
   const dispatch = useAppDispatch();
@@ -80,7 +83,7 @@ const ProfilePage: FC = () => {
       <section>
         {isLoading ? (
           <p>Идёт загрузка проектов...</p>
-        ) : data ? (
+        ) : data?.length > 0 ? (
           <ol className="flex flex-col gap-3 font-light text-lg">
             {data.map((item, index) => (
               <li
@@ -107,8 +110,10 @@ const ProfilePage: FC = () => {
               </li>
             ))}
           </ol>
+        ) : error ? (
+          <div>Error</div>
         ) : (
-          <p className="text-center text-secondary opacity-50 m-60">
+          <p className="text-center text-secondary opacity-50 m-40">
             Нет созданных проектов :(
           </p>
         )}
