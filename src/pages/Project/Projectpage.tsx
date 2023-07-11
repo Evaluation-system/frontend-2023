@@ -1,19 +1,14 @@
 import * as yup from "yup";
-import Input from "../components/ui/Input";
-import Modal from "../components/ui/Modal";
-import ProjectSection from "../components/layout/ProjectSection";
-import TextArea from "../components/ui/TextArea";
-import { BiEdit } from "react-icons/bi";
+import ProjectSection from "../../components/layout/ProjectSection";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
-import { instance } from "../api/axios.api";
-import { IProject } from "../types/types";
+import { instance } from "../../api/axios.api";
+import { IProject } from "../../types/types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { MdMonochromePhotos } from "react-icons/md";
 import { toast, Toaster } from "react-hot-toast";
-import Avatar from "../components/ui/Avatar";
-import EditProject from "../components/ui/EditProject";
+import EditProject from "../../components/ui/EditProject";
+import ProjectHeader from "./ProjectHeader";
 
 type TypeForm = {
   newTitle: string;
@@ -38,17 +33,13 @@ const Projectpage: FC = () => {
 
   const fetchProject = async () => {
     const response = await instance.get(`projects/${id}`);
+    console.log(response.data, "😊");
     setProject(response.data);
   };
   useEffect(() => {
     fetchProject();
   }, []);
 
-  const avatarRef = useRef<HTMLInputElement | null>(null);
-
-  const handleAvatar = () => {
-    avatarRef.current?.click();
-  };
   const onSubmit: SubmitHandler<TypeForm> = async (data) => {
     const { newTitle, newDescription } = data;
     await instance.patch(`projects/${id}`, {
@@ -80,14 +71,16 @@ const Projectpage: FC = () => {
       alert("Выберите фотографию");
       return;
     }
+    try {
+      const formData = new FormData();
+      formData.append("file", selectImage);
 
-    const formData = new FormData();
-    formData.append("file", selectImage);
-
-    //Выполняем запрос
-    await instance.post(`projects/upload-image/${project?.id}`, formData);
-
-    fetchProject();
+      //Выполняем запрос
+      await instance.post(`projects/upload-image/${project?.id}`, formData);
+      await fetchProject();
+    } catch (error) {
+      console.log("Ошибка" + error);
+    }
   };
 
   //Сюда вставляем фото полученное с сервера
@@ -95,11 +88,8 @@ const Projectpage: FC = () => {
   //Получаем фото с сервера
   useEffect(() => {
     const fetchPhoto = async () => {
-      const uploadedFilename = project?.pathImage.substring(
-        project?.pathImage.lastIndexOf("/") + 1
-      );
+      console.log("photo", project);
       if (project) {
-        console.log(uploadedFilename, project?.pathImage);
         const response = await instance.get(`projects/image/${project.id}`);
         const { baseURL, url } = response.config;
         setPhoto(baseURL! + url!);
@@ -113,56 +103,14 @@ const Projectpage: FC = () => {
       {project && (
         <section className="p-5 container">
           <Toaster />
-          <header className="flex flex-col justify-between gap-10 p-4">
-            <div className="flex gap-5 items-center ">
-              {project.pathImage ? (
-                <Avatar photo={photo} handleAvatar={handleAvatar} />
-              ) : (
-                <Avatar handleAvatar={handleAvatar} />
-              )}
-
-              <div className="flex flex-col gap-2 max-w-xl">
-                <div className="flex gap-5 items-center">
-                  <h2 className="overflow-hidden whitespace-nowrap text-ellipsis">
-                    {project.title}
-                  </h2>
-                  <span
-                    className="pt-1"
-                    onClick={(): void => setOpenModal(!openModal)}
-                  >
-                    <BiEdit />
-                  </span>
-                </div>
-                <p className="text-gray overflow-hidden text-ellipsis line-clamp-4">
-                  {project.description}
-                </p>
-                <input
-                  className="hidden"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImage}
-                  ref={avatarRef}
-                />
-                <button
-                  className="flex"
-                  onClick={(): Promise<any> => handleUploadImage()}
-                >
-                  Загрузить фото
-                </button>
-              </div>
-            </div>
-            <section className="flex flex-col gap-3 xl:flex-row xl:gap-20">
-              <div className="flex flex-col gap-[10px]">
-                <p className="text-gray">Стоимость: </p>
-                <p>190 000₽</p>
-              </div>
-              <div className="flex flex-col gap-[10px] w-full">
-                <p className="text-gray">Сроки:</p>
-                <p>22 рабочих дней (~36 календарных дней)</p>
-              </div>
-            </section>
-          </header>
-
+          <ProjectHeader
+            project={project}
+            photo={photo}
+            setOpenModal={setOpenModal}
+            openModal={openModal}
+            handleUploadImage={handleUploadImage}
+            handleImage={handleImage}
+          />
           <section>
             <ProjectSection />
           </section>

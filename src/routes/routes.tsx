@@ -5,7 +5,7 @@ import Homepage from "../pages/Homepage";
 import Layout from "../components/layout/Layout";
 import Login from "../pages/Login";
 import ProfilePage from "../pages/ProfilePage";
-import Projectpage from "../pages/Projectpage";
+import Projectpage from "../pages/Project/Projectpage";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Registartion from "../pages/Registartion";
 import TestProfile from "../pages/TestProfile";
