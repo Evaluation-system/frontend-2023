@@ -4,6 +4,7 @@ export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getUserProjects: builder.query({
       query: (id) => ({ url: `/projects/user/${id}` }),
+
       providesTags: () => [
         {
           type: "Projects",
@@ -12,7 +13,42 @@ export const projectApi = api.injectEndpoints({
     }),
 
     getProject: builder.query({
-      query: (id) => `/projects/${id}`,
+      query: (id) => ({ url: `/projects/${id}` }),
+
+      providesTags: () => [
+        {
+          type: "Project",
+        },
+      ],
+    }),
+
+    editProject: builder.mutation({
+      query: ({ id, patch }) => ({
+        body: patch,
+        url: `/projects/${id}`,
+        method: "PATCH",
+      }),
+
+      invalidatesTags: () => [
+        {
+          type: "Project",
+        },
+      ],
+    }),
+
+    addProjectImage: builder.mutation({
+      query: ({ projectId, data }) => ({
+        body: data,
+        url: `/projects/upload-image/${projectId}`,
+        method: "POST",
+        credentials: "include",
+      }),
+
+      invalidatesTags: () => [
+        {
+          type: "ProjectImage",
+        },
+      ],
     }),
 
     createProject: builder.mutation({
@@ -30,16 +66,12 @@ export const projectApi = api.injectEndpoints({
       ],
     }),
 
-    addProjectImage: builder.mutation({
-      query: ({ projectId, data }) => ({
-        body: data,
-        url: `projects/upload-image/${projectId}`,
-        method: "POST",
-        credentials: "include",
-      }),
-      invalidatesTags: () => [
+    getProjectImage: builder.query({
+      query: (id) => ({ url: `/projects/image/${id}` }),
+
+      providesTags: () => [
         {
-          type: "Projects",
+          type: "ProjectImage",
         },
       ],
     }),
@@ -66,4 +98,6 @@ export const {
   useCreateProjectMutation,
   useDeleteProjectMutation,
   useAddProjectImageMutation,
+  useEditProjectMutation,
+  useGetProjectImageQuery,
 } = projectApi;

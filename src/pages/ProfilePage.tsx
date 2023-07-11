@@ -80,7 +80,7 @@ const ProfilePage: FC = () => {
 
       <section>
         {isLoading ? (
-          <p>Идёт загрузка проектов...</p>
+          <p>Идёт загрузка данных...</p>
         ) : data?.length > 0 ? (
           <ol className="flex flex-col gap-3 font-light text-lg">
             {data.map((item, index) => (
@@ -109,7 +109,7 @@ const ProfilePage: FC = () => {
             ))}
           </ol>
         ) : error ? (
-          <div>Error</div>
+          <div>Произошла ошибка</div>
         ) : (
           <p className="text-center text-secondary opacity-50 m-40">
             Нет созданных проектов :(
