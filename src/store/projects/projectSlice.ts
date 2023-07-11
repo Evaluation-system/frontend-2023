@@ -1,15 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-export interface CounterState {
-  title: string;
-  description: string;
+//Таблица "Выплаты сотрудникам"
+export interface IEmployee {
+  employee: string;
+  salary: number;
+}
+//Таблица "Ценообразование"
+export interface IPricing {
+  cost: string;
+  value: number;
 }
 
-const initialState: any = {
+//Таблица "Временные затраты"
+export interface ITasks {
+  task: string;
+  time: number;
+}
+//Общая типизация для начального стейта
+export interface stateInterface {
+  pricing: IPricing[];
+  tasks: ITasks[];
+  employee: IEmployee[];
+}
+//Начальное состояние
+const initialState: stateInterface = {
   pricing: [],
   tasks: [],
-  employee: [],
+  employee: [] as Array<IEmployee>,
 };
 
 export const projectSlice = createSlice({
@@ -19,18 +37,13 @@ export const projectSlice = createSlice({
     addPricing: (state, action) => {
       state.pricing.push(action.payload);
     },
-    addTasks: (state, action) => {},
     addEmployee: (state, action) => {
       state.employee.push(action.payload);
-    },
-    deleteProject: (state, action) => {
-      const removeItem = action.payload;
-      state.items = state.items.filter((item) => item.title !== removeItem);
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addPricing, addEmployee, deleteProject } = projectSlice.actions;
+export const { addPricing, addEmployee } = projectSlice.actions;
 
 export default projectSlice.reducer;
