@@ -30,6 +30,20 @@ export const projectApi = api.injectEndpoints({
       ],
     }),
 
+    addProjectImage: builder.mutation({
+      query: ({ projectId, data }) => ({
+        body: data,
+        url: `projects/upload-image/${projectId}`,
+        method: "POST",
+        credentials: "include",
+      }),
+      invalidatesTags: () => [
+        {
+          type: "Projects",
+        },
+      ],
+    }),
+
     deleteProject: builder.mutation({
       query: (id) => ({
         url: `/projects/${id}`,
@@ -51,4 +65,5 @@ export const {
   useGetProjectQuery,
   useCreateProjectMutation,
   useDeleteProjectMutation,
+  useAddProjectImageMutation,
 } = projectApi;

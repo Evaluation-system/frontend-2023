@@ -26,8 +26,8 @@ const ProfilePage: FC = () => {
   });
   const [deleteProject, response] = useDeleteProjectMutation();
 
-  console.log(userId);
-  console.log(data);
+  // console.log(userId);
+  // console.log(data);
 
   //Выход из профиля
   const dispatch = useAppDispatch();
