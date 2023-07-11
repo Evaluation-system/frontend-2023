@@ -7,15 +7,21 @@ export interface CounterState {
 }
 
 const initialState: any = {
-  items: [],
+  pricing: [],
+  tasks: [],
+  employee: [],
 };
 
 export const projectSlice = createSlice({
   name: "project",
   initialState,
   reducers: {
-    addProject: (state, action) => {
-      state.items.push(action.payload);
+    addPricing: (state, action) => {
+      state.pricing.push(action.payload);
+    },
+    addTasks: (state, action) => {},
+    addEmployee: (state, action) => {
+      state.employee.push(action.payload);
     },
     deleteProject: (state, action) => {
       const removeItem = action.payload;
@@ -25,6 +31,6 @@ export const projectSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addProject, deleteProject } = projectSlice.actions;
+export const { addPricing, addEmployee, deleteProject } = projectSlice.actions;
 
 export default projectSlice.reducer;
