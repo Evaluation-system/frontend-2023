@@ -82,7 +82,7 @@ const ProfilePage: FC = () => {
           <p>Идёт загрузка проектов...</p>
         ) : data ? (
           <ol className="flex flex-col gap-3 font-light text-lg">
-            {data.map((item) => (
+            {data.map((item, index) => (
               <li
                 key={item.id}
                 className="flex justify-between border-gray border-b-2 pb-3 px-6"
@@ -91,7 +91,8 @@ const ProfilePage: FC = () => {
                   to={`/project/${item.id}`}
                   className="max-w-[500px] overflow-hidden whitespace-nowrap text-ellipsis"
                 >
-                  {item.id}. <span className="">{item.title}</span>
+                  <span>{index + 1}. </span>
+                  <span className="">{item.title}</span>
                 </NavLink>
                 <button
                   className="text-red cursor-pointer"

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, useCycle } from "framer-motion";
 
 const Homepage: FC = () => {
-  const [text, cycleText] = useCycle("превосходству", "успеху", "успеваемости");
+  const [text, cycleText] = useCycle("превосходству", "успеху", "достижению");
 
   useEffect(() => {
     const interval = setInterval(() => {
