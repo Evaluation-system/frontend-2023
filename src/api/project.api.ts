@@ -2,8 +2,8 @@ import { api } from "./api";
 
 export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getProjects: builder.query({
-      query: () => "/projects",
+    getUserProjects: builder.query({
+      query: (id) => ({ url: `/projects/user/${id}` }),
       providesTags: () => [
         {
           type: "Projects",
@@ -47,7 +47,7 @@ export const projectApi = api.injectEndpoints({
 });
 
 export const {
-  useGetProjectsQuery,
+  useGetUserProjectsQuery,
   useGetProjectQuery,
   useCreateProjectMutation,
   useDeleteProjectMutation,
