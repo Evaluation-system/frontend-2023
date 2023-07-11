@@ -2,12 +2,15 @@ import * as yup from "yup";
 import Input from "../components/ui/Input";
 import Modal from "../components/ui/Modal";
 import TextArea from "../components/ui/TextArea";
-import { FC, useRef } from "react";
+import { FC, useRef, useState, ChangeEvent } from "react";
 import { RiImageEditFill } from "react-icons/ri";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { TfiClose } from "react-icons/tfi";
 import { useAppSelector } from "../store/hooks/hooks";
-import { useCreateProjectMutation } from "../api/project.api";
+import {
+  useCreateProjectMutation,
+  useAddProjectImageMutation,
+} from "../api/project.api";
 import { useNavigate } from "react-router";
 import { useUpdateRoleMutation } from "../api/api";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -40,35 +43,71 @@ const CreateProject: FC = () => {
   // Через новый АПИ
   const [createProject] = useCreateProjectMutation();
   const [updateRole] = useUpdateRoleMutation();
+  const [addProjectImage] = useAddProjectImageMutation();
 
-  const onSubmit: SubmitHandler<Form> = (data) => {
+  // --- ДЛЯ КАРТИНКИ ---
+  //Сюда вставляется фото
+  const [selectImage, setSelectImage] = useState<File | undefined>();
+
+  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setSelectImage(file);
+  };
+  // --- ДЛЯ КАРТИНКИ ---
+
+  const onSubmit: SubmitHandler<Form> = async (data) => {
     const { title, description } = data;
 
-    // Через новый АПИ
     const postData = {
       title: title,
       description: description,
       UserId: user?.id,
     };
 
-    const rolePatch = {
-      id: user?.id,
-      patch: { role: "admin" },
-    };
+    return createProject(postData)
+      .then((response) => {
+        console.log("response");
+        console.log(response);
 
-    createProject(postData);
-    updateRole(rolePatch);
+        const projectId = response?.data?.id;
 
-    console.log(postData);
+        console.log("projectId");
+        console.log(projectId);
 
-    navigate("/profile");
-    reset();
+        const formData = new FormData();
+
+        if (selectImage) {
+          formData.append("file", selectImage);
+        }
+
+        const addProjectImageData = {
+          projectId: projectId,
+          data: formData,
+        };
+
+        console.log("formData");
+        console.log(formData);
+        console.log("addProjectImageData.data");
+        console.log(addProjectImageData.data);
+
+        // ВЫДАЧА РОЛИ АДМИНА (временно)
+        // const rolePatch = {
+        //   id: user?.id,
+        //   patch: { role: "admin" },
+        // };
+        // updateRole(rolePatch);
+
+        addProjectImage(addProjectImageData);
+      })
+      .then(() => navigate("/profile"))
+      .then(() => reset());
   };
 
   //Реф на кнопку загрузки проекта
   const refIconProject = useRef<HTMLInputElement | null>(null);
   //Функция клика по другому компоненту рефа
   const handleIconProject = () => refIconProject?.current?.click();
+
   return (
     <Modal text="Создать проект">
       <header className="flex justify-between items-center">
@@ -80,6 +119,11 @@ const CreateProject: FC = () => {
       <form
         className="flex flex-col gap-[50px]"
         onSubmit={handleSubmit(onSubmit)}
+        // fetcher={async (action) => {
+        //   const response = await fetch(action);
+        //   console.log("response:");
+        //   console.log(response);
+        // }}
       >
         <div className="flex flex-col gap-2">
           <p className="text-gray">Иконка проекта: </p>
@@ -94,6 +138,7 @@ const CreateProject: FC = () => {
             {...register("imageProject")}
             type="file"
             className="hidden"
+            onChange={handleImage}
             ref={refIconProject}
           />
         </div>
