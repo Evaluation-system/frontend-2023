@@ -18,6 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 type Form = {
   imageProject: any;
   title: string;
+  client: string;
   description: string;
 };
 
@@ -25,6 +26,7 @@ const CreateProject: FC = () => {
   //Валидация
   const schema = yup.object({
     title: yup.string().required("Поле «Название» обязательно"),
+    client: yup.string().required("Поле «Клиент» обязательно"),
     description: yup.string().required("Поле «Описание» обязательно"),
     imageProject: yup.object(),
   });
@@ -56,16 +58,20 @@ const CreateProject: FC = () => {
   // --- ДЛЯ КАРТИНКИ ---
 
   const onSubmit: SubmitHandler<Form> = async (data) => {
-    const { title, description } = data;
+    const { title, client, description } = data;
 
     const postData = {
       title: title,
+      client: client,
       description: description,
       UserId: user?.id,
     };
 
     return createProject(postData)
       .then((response) => {
+        console.log("postData");
+        console.log(postData);
+
         console.log("response");
         console.log(response);
 
@@ -96,6 +102,9 @@ const CreateProject: FC = () => {
         //   patch: { role: "admin" },
         // };
         // updateRole(rolePatch);
+
+        console.log("addProjectImageData");
+        console.log(addProjectImageData);
 
         addProjectImage(addProjectImageData);
       })
@@ -148,6 +157,13 @@ const CreateProject: FC = () => {
           type="text"
           register={{ ...register("title") }}
           errorMessage={errors.title?.message}
+        />
+        <Input
+          id="client"
+          placeholder="Клиент"
+          type="text"
+          register={{ ...register("client") }}
+          errorMessage={errors.client?.message}
         />
         <TextArea
           id="description"

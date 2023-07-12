@@ -42,6 +42,7 @@ type employeePayments = {
 
 export interface ICreateProject {
   title: string;
+  client: string;
   description: string;
   UserId: number;
   pathImage: string;
@@ -52,6 +53,7 @@ export interface IProject {
   User?: IUser;
   UserID?: number;
   title: string;
+  client: string;
   description: string;
   procing: Pricing[];
   tasks: Tasks[];

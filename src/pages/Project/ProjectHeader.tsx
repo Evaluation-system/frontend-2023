@@ -47,6 +47,9 @@ const ProjectHeader: FC<Props> = ({
               <BiEdit />
             </span>
           </div>
+          <p className="overflow-hidden text-ellipsis line-clamp-4">
+            Клиент: {project.client}
+          </p>
           <p className="text-gray overflow-hidden text-ellipsis line-clamp-4">
             {project.description}
           </p>
