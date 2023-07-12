@@ -15,11 +15,7 @@ export const projectApi = api.injectEndpoints({
     getProject: builder.query({
       query: (id) => ({ url: `/projects/${id}` }),
 
-      providesTags: () => [
-        {
-          type: "Project",
-        },
-      ],
+      providesTags: ["Project"],
     }),
 
     editProject: builder.mutation({
@@ -44,11 +40,7 @@ export const projectApi = api.injectEndpoints({
         credentials: "include",
       }),
 
-      invalidatesTags: () => [
-        {
-          type: "ProjectImage",
-        },
-      ],
+      invalidatesTags: ["ProjectImage", "Project"],
     }),
 
     createProject: builder.mutation({
