@@ -2,10 +2,10 @@ import { FC } from "react";
 import { NavLink } from "react-router-dom";
 import { FaRegTrashAlt } from "react-icons/fa";
 import {
-  useDeleteProjectMutation,
   useGetUserProjectsQuery,
-} from "../../api/project.api";
-import { useAppSelector } from "../../store/hooks/hooks";
+  useDeleteProjectMutation,
+} from "api/project.api";
+import { useAppSelector } from "store/hooks/hooks";
 
 const ProfileProjectList: FC = () => {
   const user = useAppSelector((state) => state.user.user);

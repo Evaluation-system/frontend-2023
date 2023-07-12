@@ -1,6 +1,6 @@
-import { instance } from "../api/axios.api";
-import { IResponseUserData } from "../types/types";
-import { IUser, IUserData } from "../types/types";
+import { instance } from "api/axios.api";
+import { IResponseUserData } from "types/types";
+import { IUser, IUserData } from "types/types";
 
 export const AuthService = {
   async registartion(

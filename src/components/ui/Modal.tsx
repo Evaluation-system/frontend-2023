@@ -1,6 +1,5 @@
 import { FC, ReactNode, useState } from "react";
-import { TfiClose } from "react-icons/tfi";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   text?: string;

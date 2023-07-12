@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getTokenFromLocalStorage } from "../helpers/localstorage.helper";
+import { getTokenFromLocalStorage } from "helpers/localstorage.helper";
 
 const baseURLS = "http://localhost:3005/";
 

@@ -1,7 +1,7 @@
-import Avatar from "../../components/ui/Avatar";
+import Avatar from "components/ui/Avatar";
 import { BiEdit } from "react-icons/bi";
-import { Dispatch, FC, SetStateAction, useRef, useState } from "react";
-import { IProject } from "../../types/types";
+import { Dispatch, FC, SetStateAction, useRef } from "react";
+import { IProject } from "types/types";
 import ProjectEditField from "./ProjectEditField";
 
 type Props = {

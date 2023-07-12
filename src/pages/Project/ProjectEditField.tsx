@@ -7,7 +7,7 @@ import { IoLogoUsd, IoMdCheckmark } from "react-icons/io";
 import { IProject } from "../../types/types";
 import { MdOutlinePerson } from "react-icons/md";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useEditProjectMutation } from "../../api/project.api";
+import { useEditProjectMutation } from "api/project.api";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 type Form = {

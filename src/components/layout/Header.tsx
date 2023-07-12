@@ -1,9 +1,9 @@
 import { BiLogIn } from "react-icons/bi";
-import { FC, useState, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../store/hooks/hooks";
-import { useAuth } from "../../hooks/useAuth";
 import { motion } from "framer-motion";
+import { useAppSelector } from "store/hooks/hooks";
+import { useAuth } from "hooks/useAuth";
 
 const Header: FC = () => {
   const isAuth = useAuth();

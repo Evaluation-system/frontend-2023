@@ -1,16 +1,16 @@
 import * as yup from "yup";
-import Input from "../components/ui/Input";
-import Modal from "../components/ui/Modal";
-import { AuthService } from "../services/auth.service";
+import Input from "components/ui/Input";
+import Modal from "components/ui/Modal";
+import { AuthService } from "services/auth.service";
 import { FC } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { login } from "../store/user/userSlice";
-import { setTokenToLocalStorage } from "../helpers/localstorage.helper";
+import { login } from "store/user/userSlice";
+import { setTokenToLocalStorage } from "helpers/localstorage.helper";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { TfiClose } from "react-icons/tfi";
 import { toast } from "react-hot-toast";
-import { useAppDispatch } from "../store/hooks/hooks";
-import { useAuth } from "../hooks/useAuth";
+import { useAppDispatch } from "store/hooks/hooks";
+import { useAuth } from "hooks/useAuth";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 type Form = {

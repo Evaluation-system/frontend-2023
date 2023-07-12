@@ -1,14 +1,14 @@
-import Input from "../../../components/ui/Input";
+import Input from "components/ui/Input";
 import ProjectSectionHeader from "./ProjectSectionHeader";
-import { addEmployee } from "../../../store/projects/projectSlice";
+import { addEmployee } from "store/projects/projectSlice";
 import { FC, useState, Fragment } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "store/hooks/hooks";
 import { useForm, SubmitHandler } from "react-hook-form";
 //React-Chart-Js
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { instance } from "../../../api/axios.api";
+import { instance } from "api/axios.api";
 
 type Form = {
   task: string;

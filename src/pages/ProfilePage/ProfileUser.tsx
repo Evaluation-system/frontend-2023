@@ -1,11 +1,11 @@
-import Avatar from "../../components/ui/Avatar";
+import Avatar from "components/ui/Avatar";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { FC } from "react";
-import { logout } from "../../store/user/userSlice";
-import { removeTokenFromLocalStorage } from "../../helpers/localstorage.helper";
+import { logout } from "store/user/userSlice";
+import { removeTokenFromLocalStorage } from "helpers/localstorage.helper";
 import { toast } from "react-hot-toast";
-import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "store/hooks/hooks";
 import { useNavigate } from "react-router-dom";
 
 const ProfileUser: FC = () => {

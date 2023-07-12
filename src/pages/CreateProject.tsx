@@ -1,7 +1,7 @@
 import * as yup from "yup";
-import Input from "../components/ui/Input";
-import Modal from "../components/ui/Modal";
-import TextArea from "../components/ui/TextArea";
+import Input from "components/ui/Input";
+import Modal from "components/ui/Modal";
+import TextArea from "components/ui/TextArea";
 import { ChangeEvent, FC, useRef, useState } from "react";
 import { RiImageEditFill } from "react-icons/ri";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -9,10 +9,10 @@ import { TfiClose } from "react-icons/tfi";
 import {
   useAddProjectImageMutation,
   useCreateProjectMutation,
-} from "../api/project.api";
-import { useAppSelector } from "../store/hooks/hooks";
+} from "api/project.api";
+import { useAppSelector } from "store/hooks/hooks";
 import { useNavigate } from "react-router";
-import { useUpdateRoleMutation } from "../api/api";
+import { useUpdateRoleMutation } from "api/api";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 type Form = {

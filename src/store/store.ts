@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./user/userSlice";
 import taskReducer from "./tasks/taskSlice";
 import projectReducer from "./projects/projectSlice";
-import { api } from "../api/api";
+import { api } from "api/api";
 import { createLogger } from "redux-logger";
 
 const logger = createLogger({

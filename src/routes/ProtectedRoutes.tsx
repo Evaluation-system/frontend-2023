@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { useAuth } from "../hooks/useAuth";
-import Login from "../pages/Login";
+import { useAuth } from "hooks/useAuth";
 import { Navigate } from "react-router-dom";
 
 type Props = {

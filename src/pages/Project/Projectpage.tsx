@@ -1,11 +1,10 @@
 import * as yup from "yup";
 import { ChangeEvent, FC, useState } from "react";
-
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast, Toaster } from "react-hot-toast";
-import EditProject from "../../components/ui/EditProject";
+import EditProject from "components/ui/EditProject";
 import ProjectHeader from "./ProjectHeader";
 import ProjectSectionEmployee from "./Project-Section/ProjectSectionEmployee";
 import {
@@ -13,7 +12,7 @@ import {
   useEditProjectMutation,
   useAddProjectImageMutation,
   useGetProjectImageQuery,
-} from "../../api/project.api";
+} from "api/project.api";
 
 type TypeForm = {
   newTitle: string;
