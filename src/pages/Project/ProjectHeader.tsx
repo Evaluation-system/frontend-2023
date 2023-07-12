@@ -8,7 +8,6 @@ type Props = {
   project: IProject;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
   openModal: boolean;
-  handleUploadImage: any;
   handleImage: any;
 };
 
@@ -17,7 +16,6 @@ const ProjectHeader: FC<Props> = ({
   photo,
   setOpenModal,
   openModal,
-  handleUploadImage,
   handleImage,
 }) => {
   const avatarRef = useRef<HTMLInputElement | null>(null);
@@ -60,12 +58,6 @@ const ProjectHeader: FC<Props> = ({
             onChange={handleImage}
             ref={avatarRef}
           />
-          <button
-            className="flex"
-            onClick={(): Promise<any> => handleUploadImage()}
-          >
-            Загрузить фото
-          </button>
         </div>
       </div>
       <section className="flex flex-col gap-3 xl:flex-row xl:gap-20">

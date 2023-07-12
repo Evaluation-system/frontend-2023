@@ -26,7 +26,6 @@ type TypeForm = {
 
 const Projectpage: FC = () => {
   const { id } = useParams();
-  const [project, setProject] = useState<IProject | null>(null);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const schema = yup.object({
@@ -40,15 +39,6 @@ const Projectpage: FC = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
-  // const fetchProject = async () => {
-  //   const response = await instance.get(`projects/${id}`);
-  //   console.log(response.data, "😊");
-  //   setProject(response.data);
-  // };
-  // useEffect(() => {
-  //   fetchProject();
-  // }, []);
-
   //RTK
   const {
     isLoading: isLoadingProject,
@@ -57,34 +47,24 @@ const Projectpage: FC = () => {
   } = useGetProjectQuery(id);
   const [editProject] = useEditProjectMutation();
   const [addProjectImage] = useAddProjectImageMutation();
-  const {
-    isLoading: isLoadingImage,
-    data: dataImage,
-    error: errorImage,
-  } = useGetProjectImageQuery(id);
 
-  console.log("dataImage");
-  console.log(dataImage);
+  // const {
+  //   isLoading: isLoadingImage,
+  //   data: dataImage,
+  //   error: errorImage,
+  // } = useGetProjectImageQuery(id);
 
-  console.log("id");
-  console.log(id);
+  // console.log("dataImage");
+  // console.log(dataImage);
 
-  console.log("dataProject");
-  console.log(dataProject);
+  // console.log("id");
+  // console.log(id);
+
+  // console.log("dataProject");
+  // console.log(dataProject);
 
   const onSubmit: SubmitHandler<TypeForm> = async (data) => {
     const { newTitle, newDescription } = data;
-
-    // await instance.patch(`projects/${id}`, {
-    //   title: newTitle,
-    //   description: newDescription,
-    // });
-
-    // setProject({
-    //   ...project,
-    //   title: newTitle,
-    //   description: newDescription,
-    // });
 
     const editProjectPatch = {
       id: id,
@@ -100,61 +80,20 @@ const Projectpage: FC = () => {
     toast.success("Проект отредактирован");
   };
 
-  //Сюда вставляется фото
-  const [selectImage, setSelectImage] = useState<File | undefined>();
-
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    setSelectImage(file);
-  };
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
 
-  //Функция загрузки файла на сервер
-  const handleUploadImage = async () => {
-    //Проверяем наличие файла
-    if (!selectImage) {
-      alert("Выберите фотографию");
-      return;
+      const addProjectImageData = {
+        projectId: id,
+        data: formData,
+      };
+
+      addProjectImage(addProjectImageData);
     }
-
-    const formData = new FormData();
-    formData.append("file", selectImage);
-
-    const addProjectImageData = {
-      projectId: id,
-      data: formData,
-    };
-
-    addProjectImage(addProjectImageData);
-
-    // try {
-    //   const formData = new FormData();
-    //   formData.append("file", selectImage);
-
-    //   //Выполняем запрос
-    //   await instance.post(`projects/upload-image/${project?.id}`, formData);
-    //   await fetchProject();
-    // } catch (error) {
-    //   console.log("Ошибка" + error);
-    // }
   };
-
-  // //Сюда вставляем фото полученное с сервера
-  // const [photo, setPhoto] = useState<string | undefined>("");
-  // //Получаем фото с сервера
-  // useEffect(() => {
-  //   const fetchPhoto = async () => {
-  //     console.log("photo", project);
-  //     if (project) {
-  //       const response = await instance.get(`projects/image/${project.id}`);
-  //       const { baseURL, url } = response.config;
-  //       setPhoto(baseURL! + url!);
-  //     }
-  //   };
-  //   fetchPhoto();
-  // }, [project]);
-
-  // console.log("photo");
-  // console.log(photo);
 
   return (
     <>
@@ -165,10 +104,9 @@ const Projectpage: FC = () => {
           <Toaster />
           <ProjectHeader
             project={dataProject}
-            photo={dataImage}
+            photo={`http://localhost:3005/projects/image/${id}`}
             setOpenModal={setOpenModal}
             openModal={openModal}
-            handleUploadImage={handleUploadImage}
             handleImage={handleImage}
           />
           <section className="flex flex-col gap-10">
@@ -182,25 +120,6 @@ const Projectpage: FC = () => {
       ) : (
         <p className="text-center text-secondary opacity-50 m-40">Ничего нет</p>
       )}
-
-      {/* {project && (
-        <section className="p-5 container">
-          <Toaster />
-          <ProjectHeader
-            project={project}
-            photo={photo}
-            setOpenModal={setOpenModal}
-            openModal={openModal}
-            handleUploadImage={handleUploadImage}
-            handleImage={handleImage}
-          />
-          <section className="flex flex-col gap-10">
-            <ProjectSectionPricing />
-            <ProjectSectionTasks />
-            <ProjectSectionEmployee />
-          </section>
-        </section>
-      )} */}
 
       {openModal ? (
         <EditProject
