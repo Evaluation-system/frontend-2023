@@ -1,10 +1,10 @@
 import * as yup from "yup";
-import Input from "../../components/ui/Input";
+import Input from "../ui/Input";
 import { AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
 import { BsCalendarDate } from "react-icons/bs";
 import { FC, useState } from "react";
 import { IoLogoUsd, IoMdCheckmark } from "react-icons/io";
-import { IProject } from "../../types/types";
+import { IProject } from "types/types";
 import { MdOutlinePerson } from "react-icons/md";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useEditProjectMutation } from "api/project.api";
@@ -16,7 +16,11 @@ type Form = {
   client: string;
 };
 
-const ProjectEditField: FC<IProject> = ({ project }) => {
+type Props = {
+  project: IProject;
+};
+
+const ProjectEditField: FC<Props> = ({ project }) => {
   const schema = yup.object({
     price: yup
       .string()

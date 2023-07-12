@@ -2,7 +2,7 @@ import Avatar from "components/ui/Avatar";
 import { BiEdit } from "react-icons/bi";
 import { Dispatch, FC, SetStateAction, useRef } from "react";
 import { IProject } from "types/types";
-import ProjectEditField from "./ProjectEditField";
+import ProjectEditField from "components/Forms/ProjectEditField";
 
 type Props = {
   photo: string | undefined;

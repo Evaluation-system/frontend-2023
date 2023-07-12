@@ -4,7 +4,7 @@ type Props = {
   numberPhase: number;
 };
 
-const ProjectSectionHeader: FC<Props> = ({ numberPhase }) => {
+const ProjectPhaseHeader: FC<Props> = ({ numberPhase }) => {
   return (
     <header className="grid grid-cols-5 items-center">
       <h4 className="grid col-span-2">Фаза №{numberPhase}</h4>
@@ -15,4 +15,4 @@ const ProjectSectionHeader: FC<Props> = ({ numberPhase }) => {
   );
 };
 
-export default ProjectSectionHeader;
+export default ProjectPhaseHeader;

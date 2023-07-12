@@ -6,20 +6,20 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast, Toaster } from "react-hot-toast";
 import EditProject from "components/ui/EditProject";
 import ProjectHeader from "./ProjectHeader";
-import ProjectSectionEmployee from "./Project-Section/ProjectSectionEmployee";
 import {
   useGetProjectQuery,
   useEditProjectMutation,
   useAddProjectImageMutation,
   useGetProjectImageQuery,
 } from "api/project.api";
+import ProjectPhaseMain from "./ProjectPhase/ProjectPhaseMain";
 
 type TypeForm = {
   newTitle: string;
   newDescription: string;
 };
 
-const Projectpage: FC = () => {
+const ProjectPage: FC = () => {
   const { id } = useParams();
 
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -119,9 +119,7 @@ const Projectpage: FC = () => {
           </button>
           <section className="flex flex-col gap-10">
             {addSection.map((it, index) => {
-              return (
-                <ProjectSectionEmployee key={it + 9090} numberPhase={it} />
-              );
+              return <ProjectPhaseMain key={it + 9090} numberPhase={it} />;
             })}
           </section>
         </section>
@@ -148,4 +146,4 @@ const Projectpage: FC = () => {
   );
 };
 
-export default Projectpage;
+export default ProjectPage;

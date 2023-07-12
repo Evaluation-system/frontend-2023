@@ -1,39 +1,19 @@
-import Input from "components/ui/Input";
-import ProjectSectionHeader from "./ProjectSectionHeader";
-import { addEmployee } from "store/projects/projectSlice";
+import ProjectPhaseHeader from "./ProjectPhaseHeader";
 import { FC, useState, Fragment } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { useAppDispatch, useAppSelector } from "store/hooks/hooks";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useAppSelector } from "store/hooks/hooks";
 //React-Chart-Js
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { instance } from "api/axios.api";
+import ProjectPhaseForm from "components/Forms/ProjectPhaseForm";
 
-type Form = {
-  task: string;
-  time: number;
-  price: number;
-};
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const ProjectSectionEmployee: FC = ({ numberPhase }) => {
-  const { register, handleSubmit, reset } = useForm<Form>();
+type Props = {
+  numberPhase: number;
+};
 
-  //Пока суем в редакс, потом перевести на CRUD.
-  const dispatch = useAppDispatch();
-
-  //Фукнция отправки данных на сервер
-  const onSubmit: SubmitHandler<Form> = (data) => {
-    //Диспатчит в редакс пока что
-    dispatch(addEmployee(data));
-    //Закрывает и очищает форму
-
-    instance.post("employee-payments", { data });
-    setOpenForm(!openForm);
-    reset();
-  };
-
+const ProjectPhaseMain: FC<Props> = ({ numberPhase }) => {
   const employeeSectionList = useAppSelector((state) => state.project.employee);
   //Получение поля "Задачи"
   const taskField = employeeSectionList.map((item) => item.task);
@@ -71,7 +51,7 @@ const ProjectSectionEmployee: FC = ({ numberPhase }) => {
   const [openForm, setOpenForm] = useState(false);
   return (
     <section className="flex flex-col gap-5">
-      <ProjectSectionHeader numberPhase={numberPhase} />
+      <ProjectPhaseHeader numberPhase={numberPhase} />
       <div className="w-full h-[1px] bg-gray" />
       <section className="grid grid-cols-5">
         {/* График */}
@@ -81,8 +61,8 @@ const ProjectSectionEmployee: FC = ({ numberPhase }) => {
         <section className="col-span-3">
           <ul className="flex flex-col gap-3">
             {/* //
-            Выводим список из редакса
-            // */}
+          Выводим список из редакса
+          // */}
             {employeeSectionList.map((item, index) => (
               <Fragment key={index}>
                 <li className="grid grid-cols-6 justify-center items-center">
@@ -106,37 +86,11 @@ const ProjectSectionEmployee: FC = ({ numberPhase }) => {
               Добавить задачу
             </button>
           </ul>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className={openForm ? "flex flex-col gap-5" : "hidden"}
-          >
-            <Input
-              bg="inherit"
-              placeholder="Сотрудник"
-              id="employee"
-              type="text"
-              register={{ ...register("task") }}
-            />
-            <Input
-              bg="inherit"
-              placeholder="Размер выплаты"
-              id="salary"
-              type="number"
-              register={{ ...register("time") }}
-            />
-            <Input
-              bg="inherit"
-              placeholder="Размер выплаты"
-              id="salary"
-              type="number"
-              register={{ ...register("price") }}
-            />
-            <button type="submit">Добавить</button>
-          </form>
+          <ProjectPhaseForm openForm={openForm} setOpenForm={setOpenForm} />
         </section>
       </section>
     </section>
   );
 };
 
-export default ProjectSectionEmployee;
+export default ProjectPhaseMain;

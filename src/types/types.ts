@@ -57,8 +57,8 @@ export interface IProject {
   description: string;
   procing: Pricing[];
   tasks: Tasks[];
-  terms: number;
-  price: number;
+  terms: string;
+  price: string;
   employeePayments: employeePayments[];
   pathImage: string;
 }
