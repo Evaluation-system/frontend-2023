@@ -6,9 +6,12 @@ import { BsCalendarDate } from "react-icons/bs";
 import { Dispatch, FC, SetStateAction, useRef, useState } from "react";
 import { instance } from "../../api/axios.api";
 import { IoLogoUsd, IoMdCheckmark } from "react-icons/io";
+import { AiOutlineClose } from "react-icons/ai";
 import { IProject } from "../../types/types";
 import { MdOutlinePerson } from "react-icons/md";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useEditProjectMutation } from "../../api/project.api";
+import { toast, Toaster } from "react-hot-toast";
 
 type Props = {
   photo: string | undefined;
@@ -21,7 +24,7 @@ type Props = {
 type Form = {
   price: number;
   date: string;
-  person: string;
+  client: string;
 };
 
 const ProjectHeader: FC<Props> = ({
@@ -31,6 +34,8 @@ const ProjectHeader: FC<Props> = ({
   openModal,
   handleImage,
 }) => {
+  const [editProject] = useEditProjectMutation();
+
   const avatarRef = useRef<HTMLInputElement | null>(null);
 
   const handleAvatar = () => {
@@ -38,22 +43,29 @@ const ProjectHeader: FC<Props> = ({
   };
 
   //Форма
-  const { register, watch, reset, handleSubmit } = useForm<Form>();
+  const { register, watch, reset, handleSubmit } = useForm<Form>({
+    defaultValues: {
+      price: project.price,
+      date: project.terms,
+      client: project.client,
+    },
+  });
 
+  //-------------------------------------------------------------------------
   //Отслеживает все что вводят в инпут стоимости
   const watchPrice = watch("price");
   //Отслеживает все что вводят в инпут сроков
   const watchDate = watch("date");
   //Отслеживает все что вводят в инпут клиента
-  const watchPerson = watch("person");
+  const watchClient = watch("client");
   //Открывают и закрывают соответствующую форму
   const [openPrice, setOpenPrice] = useState(false);
   const [openDate, setOpenDate] = useState(false);
-  const [openPerson, setOpenPerson] = useState(false);
+  const [openClient, setOpenClient] = useState(false);
 
   //Функция отправки запроса на сервер
   const onSubmit: SubmitHandler<Form> = (data) => {
-    const { price, date, person } = data;
+    const { price, date, client } = data;
 
     //ТУТ СДЕЛАТЬ ПРОВЕРКУ НА НАЛИЧИЕ УЖЕ ТЕКУЩИХ ВВЕДЕННЫХ ДАННЫХ
     if (price !== project.price) {
@@ -82,9 +94,11 @@ const ProjectHeader: FC<Props> = ({
               <BiEdit />
             </span>
           </div>
+
           <p className="text-gray overflow-hidden text-ellipsis line-clamp-4">
             {project.description}
           </p>
+
           <input
             className="hidden"
             type="file"
@@ -100,23 +114,52 @@ const ProjectHeader: FC<Props> = ({
             <label className="flex gap-2 items-center">
               <IoLogoUsd /> Стоимость:
             </label>
+
             {openPrice ? (
               <div className="flex gap-2 items-center">
                 <Input
                   register={{ ...register("price") }}
                   id="price"
-                  placeholder="Введите стоимость"
+                  placeholder={project?.price || "Введите стоимость"}
                   type="text"
                   bg="inherit"
                 />
-                <button onClick={(): void => setOpenPrice(false)}>
+                <button
+                  onClick={(): void => {
+                    const numberPrice = Number(watchPrice);
+
+                    if (!watchPrice) {
+                      toast.success("Заполните поле");
+                    } else if (!numberPrice) {
+                      toast.success("Введено не число");
+                    } else {
+                      const editProjectPatch = {
+                        id: project?.id,
+                        patch: {
+                          price: Number(watchPrice),
+                        },
+                      };
+
+                      console.log("editProjectPatch price");
+                      console.log(editProjectPatch);
+
+                      editProject(editProjectPatch);
+
+                      setOpenPrice(false);
+                    }
+                  }}
+                >
                   <IoMdCheckmark />
+                </button>
+
+                <button onClick={(): void => setOpenPrice(false)}>
+                  <AiOutlineClose />
                 </button>
               </div>
             ) : (
               <div className="flex gap-2 items-center">
-                <span>{watchPrice}</span>
-                {watchPrice ? (
+                <span>{project?.price}</span>
+                {project?.price ? (
                   <button
                     className="flex gap-2 items-center text-gray"
                     onClick={(): void => setOpenPrice(true)}
@@ -140,23 +183,48 @@ const ProjectHeader: FC<Props> = ({
               <BsCalendarDate />
               Сроки:
             </label>
+
             {openDate ? (
               <div className="flex gap-2 items-center">
                 <Input
                   register={{ ...register("date") }}
                   id="date"
-                  placeholder="Введите сроки проекта"
+                  placeholder={project?.terms || "Введите сроки"}
                   type="text"
                   bg="inherit"
                 />
-                <button onClick={(): void => setOpenDate(false)}>
+                <button
+                  onClick={(): void => {
+                    if (!watchDate) {
+                      toast.success("Заполните поле");
+                    } else {
+                      const editProjectPatch = {
+                        id: project?.id,
+                        patch: {
+                          terms: watchDate,
+                        },
+                      };
+
+                      console.log("editProjectPatch terms");
+                      console.log(editProjectPatch);
+
+                      editProject(editProjectPatch);
+
+                      setOpenDate(false);
+                    }
+                  }}
+                >
                   <IoMdCheckmark />
+                </button>
+
+                <button onClick={(): void => setOpenDate(false)}>
+                  <AiOutlineClose />
                 </button>
               </div>
             ) : (
               <div className="flex gap-2 items-center">
-                <span>{watchDate}</span>
-                {watchDate ? (
+                <span>{project?.terms}</span>
+                {project?.terms ? (
                   <button
                     className="flex gap-2 items-center text-gray"
                     onClick={(): void => setOpenDate(true)}
@@ -174,22 +242,47 @@ const ProjectHeader: FC<Props> = ({
               </div>
             )}
           </div>
+
           <div className="flex gap-5 items-center">
             <label className="flex gap-2 items-center">
               <MdOutlinePerson />
               Клиент:
             </label>
-            {openPerson ? (
+
+            {openClient ? (
               <div className="flex gap-2 items-center">
                 <Input
-                  register={{ ...register("person") }}
-                  id="person"
-                  placeholder="Введите клиента"
+                  register={{ ...register("client") }}
+                  id="client"
+                  placeholder={project?.client || "Введите клиента"}
                   type="text"
                   bg="inherit"
                 />
-                <button onClick={(): void => setOpenPerson(false)}>
+                <button
+                  onClick={(): void => {
+                    if (!watchClient) {
+                      toast.success("Заполните поле");
+                    } else {
+                      const editProjectPatch = {
+                        id: project?.id,
+                        patch: {
+                          client: watchClient,
+                        },
+                      };
+
+                      console.log("editProjectPatch client");
+                      console.log(editProjectPatch);
+
+                      editProject(editProjectPatch);
+
+                      setOpenClient(false);
+                    }
+                  }}
+                >
                   <IoMdCheckmark />
+                </button>
+                <button onClick={(): void => setOpenClient(false)}>
+                  <AiOutlineClose />
                 </button>
               </div>
             ) : (
@@ -198,7 +291,7 @@ const ProjectHeader: FC<Props> = ({
                 {project.client ? (
                   <button
                     className="flex gap-2 items-center text-gray"
-                    onClick={(): void => setOpenPerson(true)}
+                    onClick={(): void => setOpenClient(true)}
                     type="submit"
                   >
                     <AiOutlineEdit />
@@ -206,7 +299,7 @@ const ProjectHeader: FC<Props> = ({
                 ) : (
                   <button
                     className="flex gap-2 items-center text-gray"
-                    onClick={(): void => setOpenPerson(true)}
+                    onClick={(): void => setOpenClient(true)}
                   >
                     Редактировать <AiOutlineEdit />
                   </button>
