@@ -1,5 +1,4 @@
 import CreateProject from "../pages/CreateProject";
-import EditProfiel from "../pages/EditProfiel";
 import ErrorPage from "../pages/ErrorPage";
 import Homepage from "../pages/Homepage";
 import Layout from "../components/layout/Layout";
@@ -58,9 +57,5 @@ export const router = createBrowserRouter([
         ),
       },
     ],
-  },
-  {
-    path: "edit",
-    element: <EditProfiel />,
   },
 ]);

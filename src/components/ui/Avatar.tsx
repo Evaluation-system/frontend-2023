@@ -2,11 +2,15 @@ import { FC } from "react";
 import { MdMonochromePhotos } from "react-icons/md";
 
 type Props = {
-  handleAvatar: () => void;
   photo?: string | undefined;
+  avatarRef: HTMLInputElement | null;
 };
 
-const Avatar: FC<Props> = ({ photo = "../img/proj.jpg", handleAvatar }) => {
+const Avatar: FC<Props> = ({ photo = "../img/proj.jpg", avatarRef }) => {
+  const handleAvatar = () => {
+    avatarRef?.click();
+  };
+
   return (
     <div
       className="relative w-36 h-36 rounded-full overflow-hidden"

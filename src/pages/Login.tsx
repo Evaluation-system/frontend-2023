@@ -3,7 +3,7 @@ import Input from "../components/ui/Input";
 import Modal from "../components/ui/Modal";
 import { AuthService } from "../services/auth.service";
 import { FC } from "react";
-import { Link, Navigate, useNavigate, useHistory } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { login } from "../store/user/userSlice";
 import { setTokenToLocalStorage } from "../helpers/localstorage.helper";
 import { SubmitHandler, useForm } from "react-hook-form";
