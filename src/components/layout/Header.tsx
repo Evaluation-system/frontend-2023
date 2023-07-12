@@ -31,7 +31,10 @@ const Header: FC = () => {
         isScrolled ? "bg-primary" : "bg-transparent"
       }`}
       initial={{ backgroundColor: "transparent" }}
-      animate={{ backgroundColor: isScrolled ? "#1B1B23" : "transparent" }}
+      animate={{
+        backgroundColor: isScrolled ? "#1B1B23" : "transparent",
+        opacity: isScrolled ? "90%" : "100%",
+      }}
       transition={{ duration: 0.3 }}
     >
       <Link to="/" className="flex items-center gap-3">
