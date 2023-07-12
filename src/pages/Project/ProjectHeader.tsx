@@ -23,7 +23,7 @@ type Props = {
 
 type Form = {
   price: number;
-  date: string;
+  date: string | number;
   client: string;
 };
 
@@ -73,6 +73,71 @@ const ProjectHeader: FC<Props> = ({
     reset();
   };
 
+  const handleValidatePrice = (): void => {
+    const numberPrice = Number(watchPrice);
+
+    if (!watchPrice) {
+      toast.success("Заполните поле");
+    } else if (!numberPrice) {
+      toast.success("Введено не число");
+    } else {
+      const editProjectPatch = {
+        id: project?.id,
+        patch: {
+          price: Number(watchPrice),
+        },
+      };
+
+      console.log("editProjectPatch price");
+      console.log(editProjectPatch);
+
+      editProject(editProjectPatch);
+
+      setOpenPrice(false);
+    }
+  };
+  const handleValidateDate = () => {
+    {
+      if (!watchDate) {
+        toast.success("Заполните поле");
+      } else {
+        const editProjectPatch = {
+          id: project?.id,
+          patch: {
+            terms: watchDate,
+          },
+        };
+
+        console.log("editProjectPatch terms");
+        console.log(editProjectPatch);
+
+        editProject(editProjectPatch);
+
+        setOpenDate(false);
+      }
+    }
+  };
+  const handleValidateClient = () => {
+    {
+      if (!watchClient) {
+        toast.success("Заполните поле");
+      } else {
+        const editProjectPatch = {
+          id: project?.id,
+          patch: {
+            client: watchClient,
+          },
+        };
+
+        console.log("editProjectPatch client");
+        console.log(editProjectPatch);
+
+        editProject(editProjectPatch);
+
+        setOpenClient(false);
+      }
+    }
+  };
   return (
     <header className="flex flex-col justify-between gap-10 p-4 mb-12">
       <div className="flex gap-5 items-center ">
@@ -126,27 +191,7 @@ const ProjectHeader: FC<Props> = ({
                 />
                 <button
                   onClick={(): void => {
-                    const numberPrice = Number(watchPrice);
-
-                    if (!watchPrice) {
-                      toast.success("Заполните поле");
-                    } else if (!numberPrice) {
-                      toast.success("Введено не число");
-                    } else {
-                      const editProjectPatch = {
-                        id: project?.id,
-                        patch: {
-                          price: Number(watchPrice),
-                        },
-                      };
-
-                      console.log("editProjectPatch price");
-                      console.log(editProjectPatch);
-
-                      editProject(editProjectPatch);
-
-                      setOpenPrice(false);
-                    }
+                    handleValidatePrice();
                   }}
                 >
                   <IoMdCheckmark />
@@ -193,27 +238,7 @@ const ProjectHeader: FC<Props> = ({
                   type="text"
                   bg="inherit"
                 />
-                <button
-                  onClick={(): void => {
-                    if (!watchDate) {
-                      toast.success("Заполните поле");
-                    } else {
-                      const editProjectPatch = {
-                        id: project?.id,
-                        patch: {
-                          terms: watchDate,
-                        },
-                      };
-
-                      console.log("editProjectPatch terms");
-                      console.log(editProjectPatch);
-
-                      editProject(editProjectPatch);
-
-                      setOpenDate(false);
-                    }
-                  }}
-                >
+                <button onClick={(): void => handleValidateDate()}>
                   <IoMdCheckmark />
                 </button>
 
@@ -258,27 +283,7 @@ const ProjectHeader: FC<Props> = ({
                   type="text"
                   bg="inherit"
                 />
-                <button
-                  onClick={(): void => {
-                    if (!watchClient) {
-                      toast.success("Заполните поле");
-                    } else {
-                      const editProjectPatch = {
-                        id: project?.id,
-                        patch: {
-                          client: watchClient,
-                        },
-                      };
-
-                      console.log("editProjectPatch client");
-                      console.log(editProjectPatch);
-
-                      editProject(editProjectPatch);
-
-                      setOpenClient(false);
-                    }
-                  }}
-                >
+                <button onClick={(): void => handleValidateClient()}>
                   <IoMdCheckmark />
                 </button>
                 <button onClick={(): void => setOpenClient(false)}>

@@ -2,7 +2,7 @@ import { FC } from "react";
 
 type Props = {
   id: string;
-  placeholder: string;
+  placeholder: string | number;
   type: string;
   register: any;
   errorMessage: any;
