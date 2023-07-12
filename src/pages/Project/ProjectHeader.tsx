@@ -1,14 +1,14 @@
-import { Dispatch, FC, useRef, SetStateAction, useState } from "react";
 import Avatar from "../../components/ui/Avatar";
-import { BiEdit } from "react-icons/bi";
-import { IProject } from "../../types/types";
 import Input from "../../components/ui/Input";
-import { BsCalendarDate } from "react-icons/bs";
-import { IoLogoUsd, IoMdCheckmark } from "react-icons/io";
 import { AiOutlineEdit } from "react-icons/ai";
-import { ImCancelCircle } from "react-icons/im";
+import { BiEdit } from "react-icons/bi";
+import { BsCalendarDate } from "react-icons/bs";
+import { Dispatch, FC, SetStateAction, useRef, useState } from "react";
+import { instance } from "../../api/axios.api";
+import { IoLogoUsd, IoMdCheckmark } from "react-icons/io";
+import { IProject } from "../../types/types";
 import { MdOutlinePerson } from "react-icons/md";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
   photo: string | undefined;
@@ -16,6 +16,12 @@ type Props = {
   setOpenModal: Dispatch<SetStateAction<boolean>>;
   openModal: boolean;
   handleImage: any;
+};
+
+type Form = {
+  price: number;
+  date: string;
+  person: string;
 };
 
 const ProjectHeader: FC<Props> = ({
@@ -32,16 +38,28 @@ const ProjectHeader: FC<Props> = ({
   };
 
   //Форма
-  const { register, watch, reset, handleSubmit } = useForm();
+  const { register, watch, reset, handleSubmit } = useForm<Form>();
 
+  //Отслеживает все что вводят в инпут стоимости
   const watchPrice = watch("price");
+  //Отслеживает все что вводят в инпут сроков
   const watchDate = watch("date");
+  //Отслеживает все что вводят в инпут клиента
   const watchPerson = watch("person");
+  //Открывают и закрывают соответствующую форму
   const [openPrice, setOpenPrice] = useState(false);
   const [openDate, setOpenDate] = useState(false);
   const [openPerson, setOpenPerson] = useState(false);
 
-  const onSubmit = () => {};
+  //Функция отправки запроса на сервер
+  const onSubmit: SubmitHandler<Form> = (data) => {
+    const { price, date, person } = data;
+
+    //ТУТ СДЕЛАТЬ ПРОВЕРКУ НА НАЛИЧИЕ УЖЕ ТЕКУЩИХ ВВЕДЕННЫХ ДАННЫХ
+    if (price !== project.price) {
+    }
+    reset();
+  };
 
   return (
     <header className="flex flex-col justify-between gap-10 p-4 mb-12">
@@ -64,9 +82,6 @@ const ProjectHeader: FC<Props> = ({
               <BiEdit />
             </span>
           </div>
-          <p className="overflow-hidden text-ellipsis line-clamp-4">
-            Клиент: {project.client}
-          </p>
           <p className="text-gray overflow-hidden text-ellipsis line-clamp-4">
             {project.description}
           </p>
@@ -80,10 +95,7 @@ const ProjectHeader: FC<Props> = ({
         </div>
       </div>
       <section className="flex flex-col gap-3 xl:flex-row xl:gap-20">
-        <form
-          className="flex flex-col gap-7"
-          onSubmit={handleSubmit(onSubmit())}
-        >
+        <form className="flex flex-col gap-7" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex gap-5 items-center">
             <label className="flex gap-2 items-center">
               <IoLogoUsd /> Стоимость:
@@ -122,6 +134,7 @@ const ProjectHeader: FC<Props> = ({
               </div>
             )}
           </div>
+
           <div className="flex gap-5 items-center">
             <label className="flex gap-2 items-center">
               <BsCalendarDate />
@@ -181,11 +194,12 @@ const ProjectHeader: FC<Props> = ({
               </div>
             ) : (
               <div className="flex gap-2 items-center">
-                <span>{watchPerson}</span>
-                {watchPerson ? (
+                <span>{project.client}</span>
+                {project.client ? (
                   <button
                     className="flex gap-2 items-center text-gray"
                     onClick={(): void => setOpenPerson(true)}
+                    type="submit"
                   >
                     <AiOutlineEdit />
                   </button>
