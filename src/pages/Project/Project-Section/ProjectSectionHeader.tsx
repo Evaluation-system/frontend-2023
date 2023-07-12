@@ -1,17 +1,16 @@
 import { FC } from "react";
 
 type Props = {
-  first: string;
-  second: string;
-  third: string;
+  numberPhase: number;
 };
 
-const ProjectSectionHeader: FC<Props> = ({ first, second, third }) => {
+const ProjectSectionHeader: FC<Props> = ({ numberPhase }) => {
   return (
-    <header className="grid grid-cols-4 items-center">
-      <h4 className="grid col-span-2">{first}</h4>
-      <p className="text-gray text-lg">{second}</p>
-      <p className="text-gray text-lg">{third}</p>
+    <header className="grid grid-cols-5 items-center">
+      <h4 className="grid col-span-2">Фаза №{numberPhase}</h4>
+      <p className="text-gray text-lg">Задача</p>
+      <p className="text-gray text-lg">Длительность</p>
+      <p className="text-gray text-lg">Стоимость</p>
     </header>
   );
 };

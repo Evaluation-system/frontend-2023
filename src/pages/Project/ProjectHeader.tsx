@@ -54,11 +54,6 @@ const ProjectHeader: FC<Props> = ({
   //Функция отправки запроса на сервер
   const onSubmit: SubmitHandler<Form> = (data) => {
     const { price, date, person } = data;
-
-    //ТУТ СДЕЛАТЬ ПРОВЕРКУ НА НАЛИЧИЕ УЖЕ ТЕКУЩИХ ВВЕДЕННЫХ ДАННЫХ
-    if (price !== project.price) {
-    }
-    reset();
   };
 
   return (

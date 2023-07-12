@@ -3,8 +3,9 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 //Таблица "Выплаты сотрудникам"
 export interface IEmployee {
-  employee: string;
-  salary: number;
+  task: string;
+  time: number;
+  price: number;
 }
 //Таблица "Ценообразование"
 export interface IPricing {

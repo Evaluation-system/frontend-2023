@@ -1,16 +1,39 @@
 import { BiLogIn } from "react-icons/bi";
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks/hooks";
 import { useAuth } from "../../hooks/useAuth";
+import { motion } from "framer-motion";
 
 const Header: FC = () => {
   const isAuth = useAuth();
 
   // const navigate = useNavigate();
   const UserData = useAppSelector((state) => state.user.user);
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="py-5 px-8 flex justify-between items-center mb-6 xl:py-[27px] xl:px-0 ">
+    <motion.header
+      className={`fixed top-0 left-0 right-0 py-5 px-8 flex justify-between items-center xl:py-[27px] xl:px-40  z-50 ${
+        isScrolled ? "bg-primary" : "bg-transparent"
+      }`}
+      initial={{ backgroundColor: "transparent" }}
+      animate={{ backgroundColor: isScrolled ? "#1B1B23" : "transparent" }}
+      transition={{ duration: 0.3 }}
+    >
       <Link to="/" className="flex items-center gap-3">
         <img src="../img/Vector.png" alt="Логотип" className="w-auto h-auto" />
         <p className="hidden xl:flex font-bold uppercase text-xl">Community</p>
@@ -48,7 +71,7 @@ const Header: FC = () => {
           </button>
         </>
       )}
-    </header>
+    </motion.header>
   );
 };
 

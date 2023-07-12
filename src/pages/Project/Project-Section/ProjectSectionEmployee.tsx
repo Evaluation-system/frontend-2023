@@ -1,7 +1,7 @@
 import Input from "../../../components/ui/Input";
 import ProjectSectionHeader from "./ProjectSectionHeader";
 import { addEmployee } from "../../../store/projects/projectSlice";
-import { FC, useState } from "react";
+import { FC, useState, Fragment } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -11,12 +11,13 @@ import { Pie } from "react-chartjs-2";
 import { instance } from "../../../api/axios.api";
 
 type Form = {
-  employee: string;
-  salary: number;
+  task: string;
+  time: number;
+  price: number;
 };
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const ProjectSectionEmployee: FC = () => {
+const ProjectSectionEmployee: FC = ({ numberPhase }) => {
   const { register, handleSubmit, reset } = useForm<Form>();
 
   //Пока суем в редакс, потом перевести на CRUD.
@@ -34,17 +35,18 @@ const ProjectSectionEmployee: FC = () => {
   };
 
   const employeeSectionList = useAppSelector((state) => state.project.employee);
-  //Получение поля "Размер выплаты"
-  const salaries = employeeSectionList.map((item) => item.salary);
-  //Получение поля "Сотрудник"
-  const employeeName = employeeSectionList.map((item) => item.employee);
-
+  //Получение поля "Задачи"
+  const taskField = employeeSectionList.map((item) => item.task);
+  //Получение поля "Длительность"
+  const timeField = employeeSectionList.map((item) => item.time);
+  //Получение поля Стоимости
+  const priceField = employeeSectionList.map((item) => item.price);
   const data = {
-    labels: employeeName,
+    labels: taskField,
     datasets: [
       {
         label: "Размер",
-        data: salaries,
+        data: priceField,
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
@@ -69,35 +71,32 @@ const ProjectSectionEmployee: FC = () => {
   const [openForm, setOpenForm] = useState(false);
   return (
     <section className="flex flex-col gap-5">
-      <ProjectSectionHeader
-        first="Выплаты сотрудникам"
-        second="Исполнитель"
-        third="Размер выплаты"
-      />
+      <ProjectSectionHeader numberPhase={numberPhase} />
       <div className="w-full h-[1px] bg-gray" />
-      <section className="grid grid-cols-2">
+      <section className="grid grid-cols-5">
         {/* График */}
-        <div className="w-64 h-64">
+        <div className="w-64 h-64 col-span-2">
           <Pie data={data} />
         </div>
-        <section className="flex flex-col gap-10">
+        <section className="col-span-3">
           <ul className="flex flex-col gap-3">
             {/* //
             Выводим список из редакса
             // */}
-            {employeeSectionList.map((item) => (
-              <>
-                <li className="grid grid-cols-2 justify-between items-center">
-                  <p>{item.employee}</p>
-                  <div className="flex justify-between">
-                    <p>{item.salary} &#8381;</p>
+            {employeeSectionList.map((item, index) => (
+              <Fragment key={index}>
+                <li className="grid grid-cols-6 justify-center items-center">
+                  <p className="flex col-span-2">{item.task}</p>
+                  <p className="col-span-2">{item.time}</p>
+                  <div className="flex justify-between col-span-2">
+                    <p>{item.price} &#8381;</p>
                     <span>
                       <RiDeleteBinLine />
                     </span>
                   </div>
                 </li>
                 <div className="w-full h-[1px] bg-gray" />
-              </>
+              </Fragment>
             ))}
             {/* //Открывает форму */}
             <button
@@ -116,14 +115,21 @@ const ProjectSectionEmployee: FC = () => {
               placeholder="Сотрудник"
               id="employee"
               type="text"
-              register={{ ...register("employee") }}
+              register={{ ...register("task") }}
             />
             <Input
               bg="inherit"
               placeholder="Размер выплаты"
               id="salary"
               type="number"
-              register={{ ...register("salary") }}
+              register={{ ...register("time") }}
+            />
+            <Input
+              bg="inherit"
+              placeholder="Размер выплаты"
+              id="salary"
+              type="number"
+              register={{ ...register("price") }}
             />
             <button type="submit">Добавить</button>
           </form>

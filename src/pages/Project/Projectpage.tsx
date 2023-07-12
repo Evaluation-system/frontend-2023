@@ -1,16 +1,12 @@
 import * as yup from "yup";
-import { ChangeEvent, FC, useEffect, useState } from "react";
-import { instance } from "../../api/axios.api";
-import { IProject } from "../../types/types";
+import { ChangeEvent, FC, useState } from "react";
+
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast, Toaster } from "react-hot-toast";
 import EditProject from "../../components/ui/EditProject";
 import ProjectHeader from "./ProjectHeader";
-import ProjectSection from "./Project-Section/ProjectSection";
-import ProjectSectionPricing from "./Project-Section/ProjectSectionPricing";
-import ProjectSectionTasks from "./Project-Section/ProjectSectionTasks";
 import ProjectSectionEmployee from "./Project-Section/ProjectSectionEmployee";
 import {
   useGetProjectQuery,
@@ -95,6 +91,13 @@ const Projectpage: FC = () => {
     }
   };
 
+  //Состояние для добавления компонента
+  const [addSection, setAddSection] = useState([1]);
+
+  //Функция для добавления компонента
+  const handleAddSection = (): void => {
+    setAddSection(addSection.concat([addSection[addSection.length - 1] + 1]));
+  };
   return (
     <>
       {isLoadingProject ? (
@@ -109,10 +112,18 @@ const Projectpage: FC = () => {
             openModal={openModal}
             handleImage={handleImage}
           />
+          <button
+            className="pb-10 text-blue"
+            onClick={(): void => handleAddSection()}
+          >
+            Добавить фазу
+          </button>
           <section className="flex flex-col gap-10">
-            <ProjectSectionPricing />
-            <ProjectSectionTasks />
-            <ProjectSectionEmployee />
+            {addSection.map((it, index) => {
+              return (
+                <ProjectSectionEmployee key={it + 9090} numberPhase={it} />
+              );
+            })}
           </section>
         </section>
       ) : errorProject ? (
