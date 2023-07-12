@@ -1,13 +1,14 @@
 import Header from "./Header";
 import { FC } from "react";
 import { Outlet } from "react-router-dom";
-import Footer from "./Footer";
 const Layout: FC = () => {
   return (
     <>
       <section className="containerMain">
         <Header />
-        <Outlet />
+        <section className="mt-40">
+          <Outlet />
+        </section>
       </section>
       <img
         src="../img/bg/left.png"
