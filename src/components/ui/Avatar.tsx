@@ -3,7 +3,8 @@ import { MdMonochromePhotos } from "react-icons/md";
 
 type Props = {
   photo?: string | undefined;
-  avatarRef: HTMLInputElement | null;
+  //Сделать обязательным позже
+  avatarRef?: HTMLInputElement | null;
 };
 
 const Avatar: FC<Props> = ({ photo = "../img/proj.jpg", avatarRef }) => {
