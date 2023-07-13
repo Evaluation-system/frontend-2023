@@ -77,7 +77,7 @@ const ProjectEditField: FC<Props> = ({ project }) => {
     const editProjectPatch = {
       id: project?.id,
       patch: {
-        terms: watchDate,
+        terms: Number(watchDate),
       },
     };
     editProject(editProjectPatch);
@@ -97,7 +97,7 @@ const ProjectEditField: FC<Props> = ({ project }) => {
   };
 
   const onSubmit: SubmitHandler<Form> = (data) => {
-    console.log(data);
+    // console.log(data);
   };
   return (
     <form className="flex flex-col gap-7" onSubmit={handleSubmit(onSubmit)}>

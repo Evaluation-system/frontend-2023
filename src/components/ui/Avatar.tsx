@@ -4,17 +4,17 @@ import { MdMonochromePhotos } from "react-icons/md";
 type Props = {
   photo?: string | undefined;
   //Сделать обязательным позже
-  avatarRef?: HTMLInputElement | null;
+  avatarRef?: React.MutableRefObject<HTMLInputElement | null>;
 };
 
 const Avatar: FC<Props> = ({ photo = "../img/proj.jpg", avatarRef }) => {
   const handleAvatar = () => {
-    avatarRef?.click();
+    avatarRef?.current?.click();
   };
 
   return (
     <div
-      className="relative w-36 h-36 rounded-full overflow-hidden"
+      className="relative w-36 h-36 rounded-full overflow-hidden cursor-pointer"
       onClick={(): void => handleAvatar()}
     >
       <div className="absolute flex w-full h-full bg-primary z-10 top-28 opacity-80">

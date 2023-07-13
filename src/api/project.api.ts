@@ -59,7 +59,11 @@ export const projectApi = api.injectEndpoints({
     }),
 
     getProjectImage: builder.query({
-      query: (id) => ({ url: `/projects/image/${id}` }),
+      query: (id) => ({
+        url: `/projects/image/${id}`,
+        responseHandler: async (response) =>
+          URL.createObjectURL(await response.blob()),
+      }),
 
       providesTags: () => [
         {

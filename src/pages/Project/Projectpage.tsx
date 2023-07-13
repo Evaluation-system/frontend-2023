@@ -1,5 +1,12 @@
 import * as yup from "yup";
-import { ChangeEvent, FC, useState } from "react";
+import {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -43,20 +50,14 @@ const ProjectPage: FC = () => {
   const [editProject] = useEditProjectMutation();
   const [addProjectImage] = useAddProjectImageMutation();
 
-  // const {
-  //   isLoading: isLoadingImage,
-  //   data: dataImage,
-  //   error: errorImage,
-  // } = useGetProjectImageQuery(id);
+  const {
+    isLoading: isLoadingImage,
+    data: dataImage,
+    error: errorImage,
+  } = useGetProjectImageQuery(id);
 
-  // console.log("dataImage");
-  // console.log(dataImage);
-
-  // console.log("id");
-  // console.log(id);
-
-  // console.log("dataProject");
-  // console.log(dataProject);
+  console.log("dataImage");
+  console.log(dataImage);
 
   const onSubmit: SubmitHandler<TypeForm> = async (data) => {
     const { newTitle, newDescription } = data;
@@ -106,7 +107,7 @@ const ProjectPage: FC = () => {
           <Toaster />
           <ProjectHeader
             project={dataProject}
-            photo={`http://localhost:3005/projects/image/${id}`}
+            photo={dataImage}
             setOpenModal={setOpenModal}
             openModal={openModal}
             handleImage={handleImage}
