@@ -61,4 +61,17 @@ export interface IProject {
   price: string;
   employeePayments: employeePayments[];
   pathImage: string;
+  phases: IPhases[];
+}
+
+export interface IPhases {
+  id: number;
+  ProjectId: number;
+}
+
+export interface IPhaseTask {
+  id: number;
+  task: string;
+  duration: number;
+  price: number;
 }

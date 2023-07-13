@@ -1,7 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { IPhaseTask } from "types/types";
 
-const initialState: any = {
+export interface InterfacePhaseTask {
+  tasks: IPhaseTask[];
+}
+
+const initialState: InterfacePhaseTask = {
   tasks: [],
 };
 

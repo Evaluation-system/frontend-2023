@@ -5,22 +5,24 @@ import { useAppDispatch } from "store/hooks/hooks";
 import { addEmployee } from "store/projects/projectSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { instance } from "api/axios.api";
 
 type Props = {
+  id: number;
   openForm: boolean;
   setOpenForm: Dispatch<SetStateAction<boolean>>;
 };
 
 type Form = {
   task: string;
-  time: number;
+  duration: number;
   price: number;
 };
 
-const ProjectPhaseForm: FC<Props> = ({ openForm, setOpenForm }) => {
+const ProjectPhaseForm: FC<Props> = ({ openForm, setOpenForm, id }) => {
   const schema = yup.object({
     task: yup.string().required("Поле «Задача» обязательно"),
-    time: yup
+    duration: yup
       .number()
       .required("Поле «Длительность» обязательно")
       .typeError("Поле «Длительность» обязательно"),
@@ -40,8 +42,22 @@ const ProjectPhaseForm: FC<Props> = ({ openForm, setOpenForm }) => {
   //Добавляет в стору
   const dispatch = useAppDispatch();
 
-  const onSubmit: SubmitHandler<Form> = (data) => {
+  const phaseId = Number(id);
+
+  const onSubmit: SubmitHandler<Form> = async (data) => {
+    const { task, duration, price } = data;
+
+    const taskPhase = {
+      phaseId: phaseId,
+      task: task,
+      duration: duration,
+      price: price,
+    };
+
     dispatch(addEmployee(data));
+
+    await instance.post("/phase-tasks", taskPhase);
+
     setOpenForm(!openForm);
     reset();
   };
@@ -64,8 +80,8 @@ const ProjectPhaseForm: FC<Props> = ({ openForm, setOpenForm }) => {
         placeholder="Длительность"
         id="salary"
         type="number"
-        register={{ ...register("time") }}
-        errorMessage={errors.time?.message}
+        register={{ ...register("duration") }}
+        errorMessage={errors.duration?.message}
       />
       <Input
         bg="inherit"

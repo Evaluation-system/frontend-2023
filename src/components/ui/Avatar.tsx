@@ -9,7 +9,7 @@ type Props = {
 
 const Avatar: FC<Props> = ({ photo = "../img/proj.jpg", avatarRef }) => {
   const handleAvatar = () => {
-    avatarRef?.click();
+    avatarRef?.current?.click();
   };
 
   return (

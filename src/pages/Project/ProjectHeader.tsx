@@ -25,9 +25,9 @@ const ProjectHeader: FC<Props> = ({
     <header className="flex flex-col justify-between gap-10 p-4 mb-12">
       <div className="flex gap-5 items-center ">
         {project.pathImage ? (
-          <Avatar photo={photo} avatarRef={avatarRef.current} />
+          <Avatar photo={photo} avatarRef={avatarRef} />
         ) : (
-          <Avatar avatarRef={avatarRef.current} />
+          <Avatar avatarRef={avatarRef} />
         )}
 
         <div className="flex flex-col gap-2 max-w-xl">
