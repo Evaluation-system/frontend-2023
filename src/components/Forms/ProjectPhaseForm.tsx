@@ -5,7 +5,7 @@ import { useAppDispatch } from "store/hooks/hooks";
 import { addEmployee } from "store/projects/projectSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { instance } from "api/axios.api";
+import { useCreatePhaseTaskMutation } from "api/phase.api";
 
 type Props = {
   id: number;
@@ -42,6 +42,8 @@ const ProjectPhaseForm: FC<Props> = ({ openForm, setOpenForm, id }) => {
   //Добавляет в стору
   const dispatch = useAppDispatch();
 
+  const [createPhaseTask] = useCreatePhaseTaskMutation();
+
   const phaseId = Number(id);
 
   const onSubmit: SubmitHandler<Form> = async (data) => {
@@ -56,7 +58,7 @@ const ProjectPhaseForm: FC<Props> = ({ openForm, setOpenForm, id }) => {
 
     dispatch(addEmployee(data));
 
-    await instance.post("/phase-tasks", taskPhase);
+    createPhaseTask(taskPhase);
 
     setOpenForm(!openForm);
     reset();

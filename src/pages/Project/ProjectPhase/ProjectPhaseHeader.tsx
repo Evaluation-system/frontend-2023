@@ -1,4 +1,4 @@
-import { instance } from "api/axios.api";
+import { useDeletePhaseMutation } from "api/phase.api";
 import { FC } from "react";
 import { toast } from "react-hot-toast";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -9,8 +9,10 @@ type Props = {
 };
 
 const ProjectPhaseHeader: FC<Props> = ({ numberPhase, id }) => {
-  const deletePhase = async () => {
-    await instance.delete(`phase/${id}`);
+  const [deletePhase, response] = useDeletePhaseMutation();
+
+  const deletePhaseHandler = (id) => {
+    deletePhase(id);
     toast.success("Фаза удалена");
   };
 
@@ -18,7 +20,10 @@ const ProjectPhaseHeader: FC<Props> = ({ numberPhase, id }) => {
     <header className="grid grid-cols-5 items-center">
       <h4 className="flex items-center gap-3 col-span-2">
         Фаза №{numberPhase}{" "}
-        <span className="text-red cursor-pointer" onClick={() => deletePhase()}>
+        <span
+          className="text-red cursor-pointer"
+          onClick={() => deletePhaseHandler(id)}
+        >
           <RiDeleteBinLine />
         </span>
       </h4>

@@ -13,8 +13,11 @@ import {
   useGetProjectImageQuery,
 } from "api/project.api";
 import ProjectPhaseMain from "./ProjectPhase/ProjectPhaseMain";
-import { instance } from "api/axios.api";
 import { IPhases } from "types/types";
+import {
+  useCreatePhaseMutation,
+  useGetProjectPhasesQuery,
+} from "api/phase.api";
 
 type TypeForm = {
   newTitle: string;
@@ -42,8 +45,26 @@ const ProjectPage: FC = () => {
     data: dataProject,
     error: errorProject,
   } = useGetProjectQuery(id);
+
   const [editProject] = useEditProjectMutation();
+
+  const {
+    isLoading: isLoadingImage,
+    data: dataImage,
+    error: errorImage,
+  } = useGetProjectImageQuery(id);
+
   const [addProjectImage] = useAddProjectImageMutation();
+
+  const NumberID = Number(id);
+
+  const {
+    isLoading: isLoadingPhases,
+    data: dataPhases,
+    error: errorPhases,
+  } = useGetProjectPhasesQuery(NumberID);
+
+  const [createPhase] = useCreatePhaseMutation();
 
   const onSubmit: SubmitHandler<TypeForm> = async (data) => {
     const { newTitle, newDescription } = data;
@@ -78,29 +99,13 @@ const ProjectPage: FC = () => {
   };
 
   const handleAddPhase = async () => {
-    try {
-      await instance.post("/phase", {
-        ProjectId: Number(id),
-      });
-      toast.success("Новая фаза добавлена");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const [wait, setWait] = useState<IPhases[] | null>(null);
-
-  const NumberID = Number(id);
-
-  useEffect(() => {
-    const fetchPhases = async () => {
-      const response = await instance.get<IPhases[] | null>(
-        `phase/project/${NumberID}`
-      );
-      setWait(response.data);
+    const createProjectData = {
+      ProjectId: Number(id),
     };
-    fetchPhases();
-  }, [dataProject]);
+
+    createPhase(createProjectData);
+    toast.success("Новая фаза добавлена");
+  };
 
   return (
     <>
@@ -120,11 +125,12 @@ const ProjectPage: FC = () => {
             Добавить фазу
           </button>
           <section className="flex flex-col gap-10">
-            {wait?.map((item, index) => (
+            {dataPhases?.map((item, index) => (
               <ProjectPhaseMain
                 numberPhase={index + 1}
                 key={item.id}
                 id={item.id}
+                projectId={dataProject?.id}
               />
             ))}
           </section>

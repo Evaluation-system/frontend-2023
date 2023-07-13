@@ -6,18 +6,23 @@ import { useAppDispatch, useAppSelector } from "store/hooks/hooks";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import ProjectPhaseForm from "components/Forms/ProjectPhaseForm";
-import { instance } from "api/axios.api";
 import { IPhaseTask } from "types/types";
 import { addTask } from "store/tasks/taskSlice";
+import {
+  useDeletePhaseTaskMutation,
+  useGetPhaseTasksQuery,
+} from "api/phase.api";
+import { useGetProjectQuery } from "api/project.api";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type Props = {
   id: number;
   numberPhase: number;
+  projectId: number;
 };
 
-const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
+const ProjectPhaseMain: FC<Props> = ({ numberPhase, id, projectId }) => {
   const employeeSectionList = useAppSelector((state) => state.project.employee);
   //Получение поля "Задачи"
 
@@ -28,28 +33,32 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
 
   const phaseId = Number(id);
 
-  const [phaseTaskList, setPhaseTaskList] = useState<IPhaseTask[] | null>(null);
-  useEffect(() => {
-    const fetchTaskList = async () => {
-      const response = await instance.get<IPhaseTask[] | null>(
-        `phase-tasks/project/${phaseId}`
-      );
-      setPhaseTaskList(response.data);
-      dispatch(addTask(response.data));
-    };
-    fetchTaskList();
-  }, [phaseId]);
+  const [deletePhaseTask, response] = useDeletePhaseTaskMutation();
+
+  // -----------------------------------------------------
+
+  const {
+    isLoading: isLoadingTasks,
+    data: dataTasks,
+    error: errorTasks,
+  } = useGetPhaseTasksQuery(phaseId);
 
   const taskListRedux = useAppSelector((state) => state.tasker.tasks);
 
   const priceListRedux = taskListRedux.map((item) => item.price);
 
+  const {
+    isLoading: isLoadingProject,
+    data: dataProject,
+    error: errorProject,
+  } = useGetProjectQuery(projectId);
+
   const data = {
-    labels: phaseTaskList?.task,
+    labels: dataTasks?.task,
     datasets: [
       {
         label: "Размер",
-        data: priceListRedux,
+        data: dataProject?.price,
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
@@ -82,16 +91,14 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
         </div>
         <section className="col-span-3">
           <ul className="flex flex-col gap-3">
-            {phaseTaskList?.map((item, index) => (
+            {dataTasks?.map((item, index) => (
               <Fragment key={index}>
                 <li className="grid grid-cols-6 justify-center items-center">
                   <p className="flex col-span-2">{item.task}</p>
                   <p className="col-span-2">{item.duration}</p>
                   <div className="flex justify-between col-span-2">
                     <p>{item.price} &#8381;</p>
-                    <span
-                      onClick={() => instance.delete(`phase-tasks/${item.id}`)}
-                    >
+                    <span onClick={() => deletePhaseTask(item.id)}>
                       <RiDeleteBinLine />
                     </span>
                   </div>
