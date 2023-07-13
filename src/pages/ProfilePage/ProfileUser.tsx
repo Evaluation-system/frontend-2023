@@ -7,6 +7,7 @@ import { removeTokenFromLocalStorage } from "helpers/localstorage.helper";
 import { toast } from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "store/hooks/hooks";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ProfileUser: FC = () => {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ const ProfileUser: FC = () => {
           <BsDot />
           <div>+79996669669</div>
         </div>
+        <Link to="/admin">Перейти в админ-панель</Link>
         <span
           className="flex gap-[10px] justify-center items-center text-blue cursor-pointer mb-3 xl:justify-start"
           onClick={() => navigate("/profile")}

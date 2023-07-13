@@ -9,6 +9,8 @@ import { MdOutlinePerson } from "react-icons/md";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useEditProjectMutation } from "api/project.api";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { RiAdminFill } from "react-icons/ri";
+import { useAppSelector } from "store/hooks/hooks";
 
 type Form = {
   price: string;
@@ -54,6 +56,8 @@ const ProjectEditField: FC<Props> = ({ project }) => {
     resolver: yupResolver(schema),
     mode: "onChange",
   });
+
+  const adminPerson = useAppSelector((state) => state.user.user);
 
   //Отслеживают введенное в инпуты
   const watchPrice = watch("price");
@@ -195,7 +199,13 @@ const ProjectEditField: FC<Props> = ({ project }) => {
           </div>
         )}
       </div>
-
+      <div className="flex gap-2 items-center">
+        <span className="flex text-secondary">
+          <RiAdminFill />
+        </span>
+        Создатель проекта:
+        <span>{adminPerson?.email}</span>
+      </div>
       <div className="flex gap-5 items-center">
         <label className="flex gap-2 items-center">
           <MdOutlinePerson />

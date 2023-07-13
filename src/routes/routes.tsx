@@ -9,6 +9,7 @@ import Registartion from "pages/Registartion";
 import TestProfile from "pages/TestProfile";
 import { createBrowserRouter } from "react-router-dom";
 import CreateProject from "pages/CreateProject";
+import AdminPanel from "pages/AdminPanel";
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +54,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoutes>
             <ProfilePage />
+          </ProtectedRoutes>
+        ),
+      },
+      {
+        path: "admin",
+        element: (
+          <ProtectedRoutes>
+            <AdminPanel />
           </ProtectedRoutes>
         ),
       },

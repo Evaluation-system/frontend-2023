@@ -1,32 +1,55 @@
 import ProjectPhaseHeader from "./ProjectPhaseHeader";
-import { FC, useState, Fragment } from "react";
+import { FC, useState, Fragment, useEffect } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { useAppSelector } from "store/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "store/hooks/hooks";
 //React-Chart-Js
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import ProjectPhaseForm from "components/Forms/ProjectPhaseForm";
+import { instance } from "api/axios.api";
+import { IPhaseTask } from "types/types";
+import { addTask } from "store/tasks/taskSlice";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type Props = {
+  id: number;
   numberPhase: number;
 };
 
-const ProjectPhaseMain: FC<Props> = ({ numberPhase }) => {
+const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
   const employeeSectionList = useAppSelector((state) => state.project.employee);
   //Получение поля "Задачи"
-  const taskField = employeeSectionList.map((item) => item.task);
-  //Получение поля "Длительность"
-  const timeField = employeeSectionList.map((item) => item.time);
-  //Получение поля Стоимости
-  const priceField = employeeSectionList.map((item) => item.price);
+
+  const dispatch = useAppDispatch();
+
+  //Для показа формы при нажатии на кнопку "Добавить задачу"
+  const [openForm, setOpenForm] = useState(false);
+
+  const phaseId = Number(id);
+
+  const [phaseTaskList, setPhaseTaskList] = useState<IPhaseTask[] | null>(null);
+  useEffect(() => {
+    const fetchTaskList = async () => {
+      const response = await instance.get<IPhaseTask[] | null>(
+        `phase-tasks/project/${phaseId}`
+      );
+      setPhaseTaskList(response.data);
+      dispatch(addTask(response.data));
+    };
+    fetchTaskList();
+  }, [phaseId]);
+
+  const taskListRedux = useAppSelector((state) => state.tasker.tasks);
+
+  const priceListRedux = taskListRedux.map((item) => item.price);
+
   const data = {
-    labels: taskField,
+    labels: phaseTaskList?.task,
     datasets: [
       {
         label: "Размер",
-        data: priceField,
+        data: priceListRedux,
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
@@ -47,11 +70,10 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase }) => {
       },
     ],
   };
-  //Для показа формы при нажатии на кнопку "Добавить задачу"
-  const [openForm, setOpenForm] = useState(false);
+
   return (
     <section className="flex flex-col gap-5">
-      <ProjectPhaseHeader numberPhase={numberPhase} />
+      <ProjectPhaseHeader numberPhase={numberPhase} id={id} />
       <div className="w-full h-[1px] bg-gray" />
       <section className="grid grid-cols-5">
         {/* График */}
@@ -60,17 +82,16 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase }) => {
         </div>
         <section className="col-span-3">
           <ul className="flex flex-col gap-3">
-            {/* //
-          Выводим список из редакса
-          // */}
-            {employeeSectionList.map((item, index) => (
+            {phaseTaskList?.map((item, index) => (
               <Fragment key={index}>
                 <li className="grid grid-cols-6 justify-center items-center">
                   <p className="flex col-span-2">{item.task}</p>
-                  <p className="col-span-2">{item.time}</p>
+                  <p className="col-span-2">{item.duration}</p>
                   <div className="flex justify-between col-span-2">
                     <p>{item.price} &#8381;</p>
-                    <span>
+                    <span
+                      onClick={() => instance.delete(`phase-tasks/${item.id}`)}
+                    >
                       <RiDeleteBinLine />
                     </span>
                   </div>
@@ -78,7 +99,6 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase }) => {
                 <div className="w-full h-[1px] bg-gray" />
               </Fragment>
             ))}
-            {/* //Открывает форму */}
             <button
               className="text-blue text-end"
               onClick={(): void => setOpenForm(!openForm)}
@@ -86,7 +106,11 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase }) => {
               Добавить задачу
             </button>
           </ul>
-          <ProjectPhaseForm openForm={openForm} setOpenForm={setOpenForm} />
+          <ProjectPhaseForm
+            openForm={openForm}
+            setOpenForm={setOpenForm}
+            id={id}
+          />
         </section>
       </section>
     </section>

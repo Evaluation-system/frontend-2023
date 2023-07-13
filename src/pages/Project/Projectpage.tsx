@@ -1,12 +1,5 @@
 import * as yup from "yup";
-import {
-  ChangeEvent,
-  FC,
-  useCallback,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,6 +13,8 @@ import {
   useGetProjectImageQuery,
 } from "api/project.api";
 import ProjectPhaseMain from "./ProjectPhase/ProjectPhaseMain";
+import { instance } from "api/axios.api";
+import { IPhases } from "types/types";
 
 type TypeForm = {
   newTitle: string;
@@ -49,15 +44,6 @@ const ProjectPage: FC = () => {
   } = useGetProjectQuery(id);
   const [editProject] = useEditProjectMutation();
   const [addProjectImage] = useAddProjectImageMutation();
-
-  const {
-    isLoading: isLoadingImage,
-    data: dataImage,
-    error: errorImage,
-  } = useGetProjectImageQuery(id);
-
-  console.log("dataImage");
-  console.log(dataImage);
 
   const onSubmit: SubmitHandler<TypeForm> = async (data) => {
     const { newTitle, newDescription } = data;
@@ -91,13 +77,31 @@ const ProjectPage: FC = () => {
     }
   };
 
-  //Состояние для добавления компонента
-  const [addSection, setAddSection] = useState([1]);
-
-  //Функция для добавления компонента
-  const handleAddSection = (): void => {
-    setAddSection(addSection.concat([addSection[addSection.length - 1] + 1]));
+  const handleAddPhase = async () => {
+    try {
+      await instance.post("/phase", {
+        ProjectId: Number(id),
+      });
+      toast.success("Новая фаза добавлена");
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const [wait, setWait] = useState<IPhases[] | null>(null);
+
+  const NumberID = Number(id);
+
+  useEffect(() => {
+    const fetchPhases = async () => {
+      const response = await instance.get<IPhases[] | null>(
+        `phase/project/${NumberID}`
+      );
+      setWait(response.data);
+    };
+    fetchPhases();
+  }, [dataProject]);
+
   return (
     <>
       {isLoadingProject ? (
@@ -112,16 +116,17 @@ const ProjectPage: FC = () => {
             openModal={openModal}
             handleImage={handleImage}
           />
-          <button
-            className="pb-10 text-blue"
-            onClick={(): void => handleAddSection()}
-          >
+          <button className="pb-10 text-blue" onClick={() => handleAddPhase()}>
             Добавить фазу
           </button>
           <section className="flex flex-col gap-10">
-            {addSection.map((it, index) => {
-              return <ProjectPhaseMain key={it + 9090} numberPhase={it} />;
-            })}
+            {wait?.map((item, index) => (
+              <ProjectPhaseMain
+                numberPhase={index + 1}
+                key={item.id}
+                id={item.id}
+              />
+            ))}
           </section>
         </section>
       ) : errorProject ? (
