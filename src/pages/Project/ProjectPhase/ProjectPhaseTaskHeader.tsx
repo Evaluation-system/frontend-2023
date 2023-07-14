@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { phaseTaskHeader } from "data/ProjectPhase";
 
 type Props = {
   numberTask: number;
@@ -7,12 +8,21 @@ type Props = {
 const ProjectPhaseTaskHeader: FC<Props> = ({ numberTask }) => {
   return (
     <header className=" grid grid-cols-9 items-center gap-4 text-secondary font-bold text-lg">
-      <p className="col-span-2">Задача №{numberTask}</p>
-      <p className="col-span-2">Описание</p>
-      <p className="text-center">Кол-во задач</p>
-      <p className="col-span-2 text-center">Роль исполняющего</p>
-      <p className="text-center">Кол-во часов (от)</p>
-      <p className="text-center">Кол-во часов (до)</p>
+      {phaseTaskHeader.map((item) => (
+        <p
+          className={
+            item.id === 1
+              ? "col-span-2"
+              : item.id === 2
+              ? "col-span-2 text-center"
+              : "text-center"
+          }
+        >
+          {item.title === "Задача"
+            ? item.title + " №" + numberTask
+            : item.title}
+        </p>
+      ))}
     </header>
   );
 };

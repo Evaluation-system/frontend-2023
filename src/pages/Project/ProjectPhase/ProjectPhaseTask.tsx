@@ -1,23 +1,23 @@
-import ProjectPhaseHeader from "./ProjectPhaseHeader";
+import ProjectPhaseTaskHeader from "./ProjectPhaseTaskHeader";
 import { FC } from "react";
 import { FiTrash2 } from "react-icons/fi";
-import { PiNotePencilFill } from "react-icons/pi";
 import { toast } from "react-hot-toast";
 import { useDeletePhaseTaskMutation } from "api/phase.api";
-import ProjectPhaseTaskHeader from "./ProjectPhaseTaskHeader";
+import { IPhaseTask } from "types/types";
 
 type Props = {
-  item: any;
+  item: IPhaseTask;
   numberTask: number;
 };
 
 const ProjectPhaseTask: FC<Props> = ({ item, numberTask }) => {
-  const [deletePhaseTask, response] = useDeletePhaseTaskMutation();
+  const [deletePhaseTask] = useDeletePhaseTaskMutation();
 
   const handleDeletePhaseTask = (id: number) => {
     deletePhaseTask(id);
     toast.success("Задача удалена");
   };
+
   return (
     <section className="flex flex-col gap-5">
       <div className="flex flex-col gap-4">

@@ -2,7 +2,10 @@ import * as yup from "yup";
 import Input from "components/ui/Input";
 import { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useEditPhaseMetricMutation } from "api/phase.api";
+import {
+  useEditPhaseMetricMutation,
+  useGetPhaseMetricQuery,
+} from "api/phase.api";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 type Form = {
@@ -50,6 +53,8 @@ const ProjectPhaseMetricForm: FC<Props> = ({ phaseId }) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
+    watch,
   } = useForm<Form>({ resolver: yupResolver(schema), mode: "onChange" });
 
   //Для показа формы при нажатии на кнопку "Добавить метрики"
@@ -70,6 +75,8 @@ const ProjectPhaseMetricForm: FC<Props> = ({ phaseId }) => {
       },
     };
     editPhaseMetric(metric);
+    setOpenMetric(false);
+    reset();
   };
   return (
     <>

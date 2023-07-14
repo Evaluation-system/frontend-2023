@@ -5,7 +5,7 @@ const baseURLS = "http://localhost:3005/";
 
 export const api = createApi({
   reducerPath: "api",
-  tagTypes: ["Project", "Project", "ProjectImage", "Phases", "Tasks"],
+  tagTypes: ["Project", "Project", "ProjectImage", "Phases", "Tasks", "Metric"],
   baseQuery: fetchBaseQuery({
     baseUrl: baseURLS,
     prepareHeaders: (headers) => {

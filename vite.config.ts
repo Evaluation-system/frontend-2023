@@ -15,6 +15,7 @@ export default defineConfig({
       types: "/src/types",
       api: "/src/api",
       pages: "/src/pages",
+      data: "/src/data",
     },
   },
 });

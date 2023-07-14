@@ -74,7 +74,7 @@ export const projectApi = api.injectEndpoints({
 
       invalidatesTags: () => [
         {
-          type: "Phases",
+          type: "Metric",
         },
       ],
     }),
@@ -84,7 +84,7 @@ export const projectApi = api.injectEndpoints({
 
       providesTags: () => [
         {
-          type: "Tasks",
+          type: "Metric",
         },
       ],
     }),

@@ -100,11 +100,8 @@ const ProjectEditField: FC<Props> = ({ project }) => {
     setOpenClient(false);
   };
 
-  const onSubmit: SubmitHandler<Form> = (data) => {
-    // console.log(data);
-  };
   return (
-    <form className="flex flex-col gap-7" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex flex-col gap-7">
       <div className="flex gap-5 items-center">
         <label className="flex gap-2 items-center">
           <IoLogoUsd /> Стоимость:

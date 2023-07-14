@@ -1,14 +1,14 @@
 import Avatar from "components/ui/Avatar";
-import { BiEdit } from "react-icons/bi";
 import { Dispatch, FC, SetStateAction, useRef } from "react";
 import { IProject } from "types/types";
 import ProjectEditField from "components/Forms/ProjectEditField";
+import ProjectTitle from "./ProjectTitle";
+import ProjectDescription from "./ProjectDescription";
 
 type Props = {
   photo: string | undefined;
   project: IProject;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
-  openModal: boolean;
   handleImage: any;
 };
 
@@ -16,7 +16,6 @@ const ProjectHeader: FC<Props> = ({
   project,
   photo,
   setOpenModal,
-  openModal,
   handleImage,
 }) => {
   const avatarRef = useRef<HTMLInputElement | null>(null);
@@ -31,22 +30,8 @@ const ProjectHeader: FC<Props> = ({
         )}
 
         <div className="flex flex-col gap-2 max-w-xl">
-          <div className="flex gap-5 items-center">
-            <h2 className="overflow-hidden whitespace-nowrap text-ellipsis">
-              {project.title}
-            </h2>
-            <span
-              className="pt-1"
-              onClick={(): void => setOpenModal(!openModal)}
-            >
-              <BiEdit />
-            </span>
-          </div>
-
-          <p className="text-gray overflow-hidden text-ellipsis line-clamp-4">
-            {project.description}
-          </p>
-
+          <ProjectTitle title={project.title} setOpenModal={setOpenModal} />
+          <ProjectDescription description={project.description} />
           <input
             className="hidden"
             type="file"

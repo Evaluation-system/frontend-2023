@@ -30,7 +30,8 @@
       "store/*": ["store/*"],
       "types/*": ["types/*"],
       "api/*": ["api/*"],
-      "pages/*": ["pages/*"]
+      "pages/*": ["pages/*"],
+      "data/*": ["data/*"]
     }
   },
   "include": ["src"],

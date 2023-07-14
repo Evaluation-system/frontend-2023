@@ -4,9 +4,6 @@ import ProjectPhaseMetricForm from "components/Forms/ProjectPhaseMetricForm";
 import ProjectPhaseTask from "./ProjectPhaseTask";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { FC } from "react";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { toast } from "react-hot-toast";
-import { useDeletePhaseMutation } from "api/phase.api";
 import { useGetPhaseTasksQuery } from "api/phase.api";
 import ProjectPhaseHeader from "./ProjectPhaseHeader";
 
@@ -15,10 +12,9 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 type Props = {
   id: number;
   numberPhase: number;
-  projectId: number;
 };
 
-const ProjectPhaseMain: FC<Props> = ({ numberPhase, id, projectId }) => {
+const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
   const phaseId = Number(id);
 
   //Получение задач

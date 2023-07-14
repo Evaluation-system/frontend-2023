@@ -66,12 +66,18 @@ export interface IProject {
 
 export interface IPhases {
   id: number;
-  ProjectId: number;
+  qa: number;
+  pmAm: number;
+  bugs: number;
+  risks: number;
 }
 
 export interface IPhaseTask {
   id: number;
-  task: string;
-  duration: number;
-  price: number;
+  titleTask: string;
+  descriptionTask: string;
+  countTask: number;
+  roleEmployee: string;
+  starTask: number;
+  endTask: number;
 }

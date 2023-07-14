@@ -45,27 +45,32 @@ const ProjectPage: FC = () => {
     }
   };
 
+  if (isLoadingProject) {
+    return <p>Идёт загрузка данных...</p>;
+  }
+
+  if (errorProject) {
+    const errorMessage =
+      errorProject instanceof Error
+        ? errorProject.message
+        : "Произошла ошибка при загрузке метрики";
+    return <p>{errorMessage}</p>;
+  }
+
+  if (!dataProject) {
+    return <p>Данные проектов не найдены</p>;
+  }
   return (
     <>
-      {isLoadingProject ? (
-        <p>Идёт загрузка данных...</p>
-      ) : dataProject ? (
-        <section className="p-5 container">
-          <ProjectHeader
-            project={dataProject}
-            photo={dataImage}
-            setOpenModal={setOpenModal}
-            openModal={openModal}
-            handleImage={handleImage}
-          />
-          <ProjectPhaseTabs id={id} dataProjectId={dataProject?.id} />
-        </section>
-      ) : errorProject ? (
-        <div>Произошла ошибка</div>
-      ) : (
-        <p className="text-center text-secondary opacity-50 m-40">Ничего нет</p>
-      )}
-
+      <section className="p-5 container">
+        <ProjectHeader
+          project={dataProject}
+          photo={dataImage}
+          setOpenModal={setOpenModal}
+          handleImage={handleImage}
+        />
+        <ProjectPhaseTabs id={id} dataProjectId={dataProject?.id} />
+      </section>
       {openModal ? (
         <ProjectEditHeaderForm
           openModal={openModal}
