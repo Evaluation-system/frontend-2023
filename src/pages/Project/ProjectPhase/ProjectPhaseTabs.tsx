@@ -27,7 +27,7 @@ const ProjectPhaseTabs: FC<Props> = ({ id, dataProjectId }) => {
   //Табы, переключения между фазами
   const [toggleState, setToggleState] = useState(0);
 
-  const toggleTab = (index) => {
+  const toggleTab = (index: number): void => {
     setToggleState(index);
   };
 
@@ -47,15 +47,15 @@ const ProjectPhaseTabs: FC<Props> = ({ id, dataProjectId }) => {
       <button className="mb-10 text-blue" onClick={() => handleAddPhase()}>
         Добавить фазу
       </button>
-      <section className="flex flex-col gap-10">
-        <ul className="flex gap-5">
+      <section className="flex flex-col gap-10 w-full">
+        <ul className="flex gap-5 overflow-x-auto">
           {dataPhases?.map((item, index) => (
             <li
               onClick={(): void => setToggleState(index)}
               className={
                 toggleState === index
-                  ? "text-blue cursor-pointer"
-                  : "cursor-pointer"
+                  ? "text-blue min-w-[70px] cursor-pointer"
+                  : "cursor-pointer min-w-[70px]"
               }
             >
               Фаза {index + 1}

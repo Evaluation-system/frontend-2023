@@ -12,7 +12,8 @@ export default {
       gray: "#FFFFFF80",
       gradient: "linear-gradient(90deg, #D2459D -13.66%, #4383FF 100%)",
       red: "#FF7777CC",
-      blue: "#4383FF  ",
+      blue: "#4383FF",
+      gree: "#3ae374",
       modal: "#00000079",
     },
     lineHeight: {

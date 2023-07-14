@@ -13,19 +13,19 @@ const Layout: FC = () => {
       </section>
       <img
         src="../img/bg/left.png"
-        className="hidden xl:flex absolute top-[80px] left-0 z-[-1]"
+        className="hidden xl:flex absolute top-[80px] left-0 z-[-1] opacity-40"
       />
       <img
         src="../img/bg/right.png"
-        className="hidden xl:flex absolute top-[300px] right-0 z-[-1]"
+        className="hidden xl:flex absolute top-[300px] right-0 z-[-1] opacity-40"
       />
       <img
         src="../img/bg/girds.webp"
-        className="fixed top-0 bottom-0 right-0 left-0 h-full w-full z-[-1] object-cover"
+        className="fixed top-0 bottom-0 right-0 left-0 h-full w-full z-[-1] object-cover opacity-70"
       />
       <img
         src="../img/bg/bgHome.jpg"
-        className="flex fixed top-0 bottom-0 right-0 left-0 h-full w-full z-[-2] object-cover opacity-50"
+        className="flex fixed top-0 bottom-0 right-0 left-0 h-full w-full z-[-2] object-cover opacity-30"
       />
       {/* <Footer /> */}
     </>
