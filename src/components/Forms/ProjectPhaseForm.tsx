@@ -38,7 +38,18 @@ const ProjectPhaseForm: FC<Props> = ({ openForm, setOpenForm, id }) => {
     startTask: yup
       .string()
       .required("Поле «Кол-во часов (от)» обязательно")
-      .matches(/^\d+$/, "Введенное значение должно быть число"),
+      .matches(/^\d+$/, "Введенное значение должно быть число")
+      .test(
+        "startTask",
+        "Начальное время не может быть больше завершающего",
+        function (value) {
+          const endTask = this.parent.endTask;
+          if (value && endTask) {
+            return parseInt(value, 10) <= parseInt(endTask, 10);
+          }
+          return true;
+        }
+      ),
     endTask: yup
       .string()
       .required("Поле «Кол-во часов (до)» обязательно")
@@ -47,28 +58,28 @@ const ProjectPhaseForm: FC<Props> = ({ openForm, setOpenForm, id }) => {
       .string()
       .required("Поле «QA» обязательно")
       .matches(
-        /^\d{2}$/,
+        /^\d{1,2}$/,
         "Введенное значение должно быть число, не более 2 символов"
       ),
     PmAm: yup
       .string()
       .required("Поле «PM/AM» обязательно")
       .matches(
-        /^\d{2}$/,
+        /^\d{1,2}$/,
         "Введенное значение должно быть число, не более 2 символов"
       ),
     Bugs: yup
       .string()
       .required("Поле «Bugs» обязательно")
       .matches(
-        /^\d{2}$/,
+        /^\d{1,2}$/,
         "Введенное значение должно быть число, не более 2 символов"
       ),
     Risks: yup
       .string()
       .required("Поле «Risks» обязательно")
       .matches(
-        /^\d{2}$/,
+        /^\d{1,2}$/,
         "Введенное значение должно быть число, не более 2 символов"
       ),
   });

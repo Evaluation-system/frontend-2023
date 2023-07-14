@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,12 +12,7 @@ import {
   useAddProjectImageMutation,
   useGetProjectImageQuery,
 } from "api/project.api";
-import ProjectPhaseMain from "./ProjectPhase/ProjectPhaseMain";
-import { IPhases } from "types/types";
-import {
-  useCreatePhaseMutation,
-  useGetProjectPhasesQuery,
-} from "api/phase.api";
+import ProjectPhaseTabs from "./ProjectPhase/ProjectPhaseTabs";
 
 type TypeForm = {
   newTitle: string;
@@ -56,16 +51,6 @@ const ProjectPage: FC = () => {
 
   const [addProjectImage] = useAddProjectImageMutation();
 
-  const NumberID = Number(id);
-
-  const {
-    isLoading: isLoadingPhases,
-    data: dataPhases,
-    error: errorPhases,
-  } = useGetProjectPhasesQuery(NumberID);
-
-  const [createPhase] = useCreatePhaseMutation();
-
   const onSubmit: SubmitHandler<TypeForm> = async (data) => {
     const { newTitle, newDescription } = data;
 
@@ -98,17 +83,6 @@ const ProjectPage: FC = () => {
     }
   };
 
-  const handleAddPhase = async () => {
-    const createProjectData = {
-      projectId: Number(id),
-    };
-
-    createPhase(createProjectData);
-    toast.success("Новая фаза добавлена");
-
-    window.scrollTo(0, document.body.scrollHeight);
-  };
-
   return (
     <>
       {isLoadingProject ? (
@@ -123,19 +97,7 @@ const ProjectPage: FC = () => {
             openModal={openModal}
             handleImage={handleImage}
           />
-          <button className="pb-10 text-blue" onClick={() => handleAddPhase()}>
-            Добавить фазу
-          </button>
-          <section className="flex flex-col gap-10">
-            {dataPhases?.map((item, index) => (
-              <ProjectPhaseMain
-                numberPhase={index + 1}
-                key={item.id}
-                id={item.id}
-                projectId={dataProject?.id}
-              />
-            ))}
-          </section>
+          <ProjectPhaseTabs id={id} dataProjectId={dataProject?.id} />
         </section>
       ) : errorProject ? (
         <div>Произошла ошибка</div>
