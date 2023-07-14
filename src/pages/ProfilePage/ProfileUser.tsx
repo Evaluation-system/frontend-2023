@@ -33,7 +33,6 @@ const ProfileUser: FC = () => {
           <BsDot />
           <div>+79996669669</div>
         </div>
-        <Link to="/admin">Перейти в админ-панель</Link>
         <span
           className="flex gap-[10px] justify-center items-center text-blue cursor-pointer mb-3 xl:justify-start"
           onClick={() => navigate("/profile")}

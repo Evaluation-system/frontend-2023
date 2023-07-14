@@ -25,6 +25,7 @@ const Input: FC<Props> = ({
         type={type}
         {...register}
         style={{ backgroundColor: bg }}
+        max={2}
       />
       <p className="text-red">{errorMessage}</p>{" "}
     </div>

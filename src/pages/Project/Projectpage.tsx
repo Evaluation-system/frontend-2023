@@ -100,11 +100,13 @@ const ProjectPage: FC = () => {
 
   const handleAddPhase = async () => {
     const createProjectData = {
-      ProjectId: Number(id),
+      projectId: Number(id),
     };
 
     createPhase(createProjectData);
     toast.success("Новая фаза добавлена");
+
+    window.scrollTo(0, document.body.scrollHeight);
   };
 
   return (

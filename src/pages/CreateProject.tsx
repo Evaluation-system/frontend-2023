@@ -64,7 +64,7 @@ const CreateProject: FC = () => {
       title: title,
       client: client,
       description: description,
-      UserId: user?.id,
+      userId: user?.id,
     };
 
     return createProject(postData)

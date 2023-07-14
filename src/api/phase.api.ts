@@ -13,7 +13,7 @@ export const projectApi = api.injectEndpoints({
     }),
 
     getPhaseTasks: builder.query({
-      query: (phaseId) => ({ url: `phase-tasks/project/${phaseId}` }),
+      query: (phaseId) => ({ url: `phase-tasks/phase/${phaseId}` }),
 
       providesTags: () => [
         {

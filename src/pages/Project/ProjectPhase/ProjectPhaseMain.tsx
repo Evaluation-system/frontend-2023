@@ -1,18 +1,17 @@
 import ProjectPhaseHeader from "./ProjectPhaseHeader";
-import { FC, useState, Fragment, useEffect } from "react";
+import { FC, useState, Fragment } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { useAppDispatch, useAppSelector } from "store/hooks/hooks";
-//React-Chart-Js
+import { useAppSelector } from "store/hooks/hooks";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Pie } from "react-chartjs-2";
 import ProjectPhaseForm from "components/Forms/ProjectPhaseForm";
-import { IPhaseTask } from "types/types";
-import { addTask } from "store/tasks/taskSlice";
 import {
   useDeletePhaseTaskMutation,
   useGetPhaseTasksQuery,
 } from "api/phase.api";
 import { useGetProjectQuery } from "api/project.api";
+import { useDeletePhaseMutation } from "api/phase.api";
+import { toast } from "react-hot-toast";
+import { FiTrash2 } from "react-icons/fi";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -23,11 +22,6 @@ type Props = {
 };
 
 const ProjectPhaseMain: FC<Props> = ({ numberPhase, id, projectId }) => {
-  const employeeSectionList = useAppSelector((state) => state.project.employee);
-  //Получение поля "Задачи"
-
-  const dispatch = useAppDispatch();
-
   //Для показа формы при нажатии на кнопку "Добавить задачу"
   const [openForm, setOpenForm] = useState(false);
 
@@ -53,73 +47,79 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase, id, projectId }) => {
     error: errorProject,
   } = useGetProjectQuery(projectId);
 
-  const data = {
-    labels: dataTasks?.task,
-    datasets: [
-      {
-        label: "Размер",
-        data: dataProject?.price,
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
+  const handleOpenForm = (): void => {
+    setOpenForm(!openForm);
+  };
+  const [deletePhase] = useDeletePhaseMutation();
+
+  const deletePhaseHandler = (id) => {
+    deletePhase(id);
+    toast.success("Фаза удалена");
   };
 
+  const handleDeletePhaseTask = (id) => {
+    deletePhaseTask(id);
+    toast.success("Задача удалена");
+  };
   return (
     <section className="flex flex-col gap-5">
-      <ProjectPhaseHeader numberPhase={numberPhase} id={id} />
+      <h4 className="flex items-center gap-3 col-span-2">
+        Фаза №{numberPhase}{" "}
+        <span
+          className="text-red cursor-pointer"
+          onClick={() => deletePhaseHandler(id)}
+        >
+          <RiDeleteBinLine />
+        </span>
+      </h4>
       <div className="w-full h-[1px] bg-gray" />
-      <section className="grid grid-cols-5">
-        {/* График */}
-        <div className="w-64 h-64 col-span-2">
-          <Pie data={data} />
-        </div>
-        <section className="col-span-3">
-          <ul className="flex flex-col gap-3">
-            {dataTasks?.map((item, index) => (
-              <Fragment key={index}>
-                <li className="grid grid-cols-6 justify-center items-center">
-                  <p className="flex col-span-2">{item.task}</p>
-                  <p className="col-span-2">{item.duration}</p>
-                  <div className="flex justify-between col-span-2">
-                    <p>{item.price} &#8381;</p>
-                    <span onClick={() => deletePhaseTask(item.id)}>
-                      <RiDeleteBinLine />
-                    </span>
-                  </div>
-                </li>
-                <div className="w-full h-[1px] bg-gray" />
-              </Fragment>
-            ))}
+      <section className="flex flex-col gap-7">
+        {dataTasks?.map((item) => (
+          <Fragment key={item.id}>
+            <div className="flex flex-col gap-4">
+              <ProjectPhaseHeader />
+              <div className="w-full h-[1px] bg-[#535c68]" />
+              <section className="grid grid-cols-9 items-center gap-5 text-sm">
+                <p className="col-span-2">{item.titleTask}</p>
+                <p className="col-span-2">{item.descriptionTask}</p>
+                <p className="text-center">{item.countTask}</p>
+                <p className="col-span-2 text-center">{item.roleEmployee}</p>
+                <p className="text-center">{item.starTask}</p>
+                <p className="text-center">{item.endTask}</p>
+              </section>
+            </div>
+            <section className="flex flex-col gap-2">
+              <h5 className="text-gray">Дополнительные поля: </h5>
+              <section className="flex justify-between text-sm">
+                <p>QA, %: {item.QA}</p>
+                <p>PM/AM, %: {item.PmAm}</p>
+                <p>Bugs, %: {item.Bugs}</p>
+                <p>Risks, %: {item.Risks}</p>
+              </section>
+            </section>
             <button
-              className="text-blue text-end"
-              onClick={(): void => setOpenForm(!openForm)}
+              className="flex gap-2 text-red items-center"
+              onClick={() => handleDeletePhaseTask(item.id)}
             >
-              Добавить задачу
+              Удалить задачу <FiTrash2 />
             </button>
-          </ul>
-          <ProjectPhaseForm
-            openForm={openForm}
-            setOpenForm={setOpenForm}
-            id={id}
-          />
-        </section>
+            <div className="w-full h-[1px] bg-[#535c68]" />
+          </Fragment>
+        ))}
       </section>
+      <div className="flex flex-col justify-end">
+        <button
+          className="text-blue text-end"
+          onClick={(): void => handleOpenForm()}
+        >
+          Добавить задачу
+        </button>
+        <ProjectPhaseForm
+          openForm={openForm}
+          setOpenForm={setOpenForm}
+          id={id}
+        />
+      </div>
     </section>
   );
 };

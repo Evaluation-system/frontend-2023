@@ -3,13 +3,12 @@ import Homepage from "pages/Homepage";
 import Layout from "components/layout/Layout";
 import Login from "pages/Login";
 import ProfilePage from "pages/ProfilePage/ProfilePage";
-import ProjectPage from "pages/Project/Projectpage";
+import ProjectPage from "pages/Project/ProjectPage";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Registartion from "pages/Registartion";
 import TestProfile from "pages/TestProfile";
 import { createBrowserRouter } from "react-router-dom";
 import CreateProject from "pages/CreateProject";
-import AdminPanel from "pages/AdminPanel";
 
 export const router = createBrowserRouter([
   {
@@ -54,14 +53,6 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoutes>
             <ProfilePage />
-          </ProtectedRoutes>
-        ),
-      },
-      {
-        path: "admin",
-        element: (
-          <ProtectedRoutes>
-            <AdminPanel />
           </ProtectedRoutes>
         ),
       },
