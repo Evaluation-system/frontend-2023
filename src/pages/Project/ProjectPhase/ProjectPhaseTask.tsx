@@ -4,12 +4,14 @@ import { FiTrash2 } from "react-icons/fi";
 import { PiNotePencilFill } from "react-icons/pi";
 import { toast } from "react-hot-toast";
 import { useDeletePhaseTaskMutation } from "api/phase.api";
+import ProjectPhaseTaskHeader from "./ProjectPhaseTaskHeader";
 
 type Props = {
   item: any;
+  numberTask: number;
 };
 
-const ProjectPhaseTask: FC<Props> = ({ item }) => {
+const ProjectPhaseTask: FC<Props> = ({ item, numberTask }) => {
   const [deletePhaseTask, response] = useDeletePhaseTaskMutation();
 
   const handleDeletePhaseTask = (id: number) => {
@@ -19,7 +21,7 @@ const ProjectPhaseTask: FC<Props> = ({ item }) => {
   return (
     <section className="flex flex-col gap-5">
       <div className="flex flex-col gap-4">
-        <ProjectPhaseHeader />
+        <ProjectPhaseTaskHeader numberTask={numberTask} />
         <div className="w-full h-[1px] bg-[#535c68]" />
         <section className="grid grid-cols-9 items-center gap-5 text-sm">
           <p className="col-span-2">{item.titleTask}</p>

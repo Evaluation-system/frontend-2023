@@ -38,8 +38,6 @@ const ProjectPhaseTabs: FC<Props> = ({ id, dataProjectId }) => {
 
     createPhase(createProjectData);
     toast.success("Новая фаза добавлена");
-
-    window.scrollTo(0, document.body.scrollHeight);
   };
 
   return (

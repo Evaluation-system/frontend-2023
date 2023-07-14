@@ -1,38 +1,19 @@
-import * as yup from "yup";
-import { ChangeEvent, FC, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useParams } from "react-router";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { toast, Toaster } from "react-hot-toast";
-import EditProject from "components/ui/EditProject";
+import ProjectEditHeaderForm from "components/Forms/ProjectEditHeaderForm";
 import ProjectHeader from "./ProjectHeader";
+import ProjectPhaseTabs from "./ProjectPhase/ProjectPhaseTabs";
+import { ChangeEvent, FC, useState } from "react";
 import {
-  useGetProjectQuery,
-  useEditProjectMutation,
   useAddProjectImageMutation,
   useGetProjectImageQuery,
+  useGetProjectQuery,
 } from "api/project.api";
-import ProjectPhaseTabs from "./ProjectPhase/ProjectPhaseTabs";
-
-type TypeForm = {
-  newTitle: string;
-  newDescription: string;
-};
+import { useParams } from "react-router";
 
 const ProjectPage: FC = () => {
+  //Id проекта
   const { id } = useParams();
 
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const schema = yup.object({
-    newTitle: yup.string().required("Поле «Новое название» обязательно"),
-    newDescription: yup.string().required("Поле «Новое описание» обязательно"),
-  });
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
   //RTK
   const {
@@ -41,8 +22,6 @@ const ProjectPage: FC = () => {
     error: errorProject,
   } = useGetProjectQuery(id);
 
-  const [editProject] = useEditProjectMutation();
-
   const {
     isLoading: isLoadingImage,
     data: dataImage,
@@ -50,23 +29,6 @@ const ProjectPage: FC = () => {
   } = useGetProjectImageQuery(id);
 
   const [addProjectImage] = useAddProjectImageMutation();
-
-  const onSubmit: SubmitHandler<TypeForm> = async (data) => {
-    const { newTitle, newDescription } = data;
-
-    const editProjectPatch = {
-      id: id,
-      patch: {
-        title: newTitle,
-        description: newDescription,
-      },
-    };
-    editProject(editProjectPatch);
-
-    reset();
-    setOpenModal(!openModal);
-    toast.success("Проект отредактирован");
-  };
 
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -89,7 +51,6 @@ const ProjectPage: FC = () => {
         <p>Идёт загрузка данных...</p>
       ) : dataProject ? (
         <section className="p-5 container">
-          <Toaster />
           <ProjectHeader
             project={dataProject}
             photo={dataImage}
@@ -106,14 +67,10 @@ const ProjectPage: FC = () => {
       )}
 
       {openModal ? (
-        <EditProject
-          registerInput={{ ...register("newTitle") }}
-          registerTextArea={{ ...register("newDescription") }}
-          errorMessageTextArea={errors.newDescription?.message}
-          errorMessageInput={errors.newTitle?.message}
-          handleSubmit={handleSubmit}
-          onSubmit={onSubmit}
+        <ProjectEditHeaderForm
+          openModal={openModal}
           setOpenModal={setOpenModal}
+          projectId={id}
         />
       ) : (
         ""

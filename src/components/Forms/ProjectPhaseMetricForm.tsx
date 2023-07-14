@@ -1,9 +1,9 @@
+import * as yup from "yup";
 import Input from "components/ui/Input";
 import { FC, useState } from "react";
-import { useForm } from "react-hook-form";
-4;
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useEditPhaseMetricMutation } from "api/phase.api";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 
 type Form = {
   Qa: string;
@@ -12,7 +12,10 @@ type Form = {
   Risks: string;
 };
 
-const ProjectPhaseMetric: FC = () => {
+type Props = {
+  phaseId: number;
+};
+const ProjectPhaseMetricForm: FC<Props> = ({ phaseId }) => {
   const schema = yup.object({
     Qa: yup
       .string()
@@ -47,12 +50,27 @@ const ProjectPhaseMetric: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<Form>({ resolver: yupResolver(schema), mode: "onChange" });
 
   //Для показа формы при нажатии на кнопку "Добавить метрики"
   const [openMetric, setOpenMetric] = useState(false);
 
+  const [editPhaseMetric] = useEditPhaseMetricMutation();
+  //Функция отправки данных на сервер
+  const onSubmit: SubmitHandler<Form> = async (data) => {
+    const { Qa, PmAm, Bugs, Risks } = data;
+
+    const metric = {
+      id: phaseId,
+      patch: {
+        qa: Number(Qa),
+        pmAm: Number(PmAm),
+        bugs: Number(Bugs),
+        risks: Number(Risks),
+      },
+    };
+    editPhaseMetric(metric);
+  };
   return (
     <>
       <button
@@ -61,7 +79,10 @@ const ProjectPhaseMetric: FC = () => {
       >
         Добавить метрики
       </button>
-      <form className={openMetric ? "flex flex-col gap-5" : "hidden"}>
+      <form
+        className={openMetric ? "flex flex-col gap-5" : "hidden"}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <h3>Метрики:</h3>
         <div className="flex justify-between gap-6">
           <Input
@@ -108,4 +129,4 @@ const ProjectPhaseMetric: FC = () => {
   );
 };
 
-export default ProjectPhaseMetric;
+export default ProjectPhaseMetricForm;

@@ -1,15 +1,34 @@
+import { useDeletePhaseMutation } from "api/phase.api";
 import { FC } from "react";
+import { Toaster, toast } from "react-hot-toast";
+import { RiDeleteBinLine } from "react-icons/ri";
 
-const ProjectPhaseHeader: FC = () => {
+type Props = {
+  numberPhase: number;
+  id: number;
+};
+
+const ProjectPhaseHeader: FC<Props> = ({ numberPhase, id }) => {
+  const [deletePhase] = useDeletePhaseMutation();
+
+  const deletePhaseHandler = (id: number) => {
+    deletePhase(id);
+    toast.success("Фаза удалена");
+  };
+
   return (
-    <header className=" grid grid-cols-9 items-center gap-4 text-secondary font-bold text-lg">
-      <p className="col-span-2">Задача</p>
-      <p className="col-span-2">Описание</p>
-      <p className="text-center">Кол-во задач</p>
-      <p className="col-span-2 text-center">Роль исполняющего</p>
-      <p className="text-center">Кол-во часов (от)</p>
-      <p className="text-center">Кол-во часов (до)</p>
-    </header>
+    <>
+      <Toaster />
+      <h4 className="flex items-center gap-3 col-span-2">
+        Фаза №{numberPhase}{" "}
+        <span
+          className="text-red cursor-pointer"
+          onClick={() => deletePhaseHandler(id)}
+        >
+          <RiDeleteBinLine />
+        </span>
+      </h4>
+    </>
   );
 };
 
