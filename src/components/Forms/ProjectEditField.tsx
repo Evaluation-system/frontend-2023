@@ -101,7 +101,7 @@ const ProjectEditField: FC<Props> = ({ project }) => {
   };
 
   return (
-    <form className="flex flex-col gap-7">
+    <div className="flex flex-col gap-7">
       <div className="flex gap-5 items-center">
         <label className="flex gap-2 items-center">
           <IoLogoUsd /> Стоимость:
@@ -117,35 +117,35 @@ const ProjectEditField: FC<Props> = ({ project }) => {
               bg="inherit"
               errorMessage={errors.price?.message}
             />
-            <button
+            <span
               onClick={(): void => {
                 handleFetchPrice();
               }}
             >
               <IoMdCheckmark />
-            </button>
+            </span>
 
-            <button onClick={(): void => setOpenPrice(false)}>
+            <span onClick={(): void => setOpenPrice(false)}>
               <AiOutlineClose />
-            </button>
+            </span>
           </div>
         ) : (
           <div className="flex gap-2 items-center">
             <span>{project?.price} &#8381;</span>
             {project?.price ? (
-              <button
+              <span
                 className="flex gap-2 items-center text-gray"
                 onClick={(): void => setOpenPrice(true)}
               >
                 <AiOutlineEdit />
-              </button>
+              </span>
             ) : (
-              <button
+              <span
                 className="flex gap-2 items-center text-gray"
                 onClick={(): void => setOpenPrice(true)}
               >
                 Редактировать <AiOutlineEdit />
-              </button>
+              </span>
             )}
           </div>
         )}
@@ -167,31 +167,31 @@ const ProjectEditField: FC<Props> = ({ project }) => {
               bg="inherit"
               errorMessage={errors.date?.message}
             />
-            <button onClick={(): void => handleFetchDate()}>
+            <span onClick={(): void => handleFetchDate()}>
               <IoMdCheckmark />
-            </button>
+            </span>
 
-            <button onClick={(): void => setOpenDate(false)}>
+            <span onClick={(): void => setOpenDate(false)}>
               <AiOutlineClose />
-            </button>
+            </span>
           </div>
         ) : (
           <div className="flex gap-2 items-center">
             <span>{project?.terms} дней</span>
             {project?.terms ? (
-              <button
+              <div
                 className="flex gap-2 items-center text-gray"
                 onClick={(): void => setOpenDate(true)}
               >
                 <AiOutlineEdit />
-              </button>
+              </div>
             ) : (
-              <button
+              <div
                 className="flex gap-2 items-center text-gray"
                 onClick={(): void => setOpenDate(true)}
               >
                 Редактировать <AiOutlineEdit />
-              </button>
+              </div>
             )}
           </div>
         )}
@@ -219,36 +219,35 @@ const ProjectEditField: FC<Props> = ({ project }) => {
               bg="inherit"
               errorMessage={errors.client?.message}
             />
-            <button onClick={(): void => handleFetchClient()}>
+            <span onClick={(): void => handleFetchClient()}>
               <IoMdCheckmark />
-            </button>
-            <button onClick={(): void => setOpenClient(false)}>
+            </span>
+            <span onClick={(): void => setOpenClient(false)}>
               <AiOutlineClose />
-            </button>
+            </span>
           </div>
         ) : (
           <div className="flex gap-2 items-center">
             <span>{project.client}</span>
             {project.client ? (
-              <button
+              <span
                 className="flex gap-2 items-center text-gray"
                 onClick={(): void => setOpenClient(true)}
-                type="submit"
               >
                 <AiOutlineEdit />
-              </button>
+              </span>
             ) : (
-              <button
+              <span
                 className="flex gap-2 items-center text-gray"
                 onClick={(): void => setOpenClient(true)}
               >
                 Редактировать <AiOutlineEdit />
-              </button>
+              </span>
             )}
           </div>
         )}
       </div>
-    </form>
+    </div>
   );
 };
 

@@ -4,7 +4,7 @@ import ProfileProjectList from "./ProfileProjectList";
 
 const ProfilePage: FC = () => {
   return (
-    <section className="flex flex-col gap-20 bg-opacity-70 bg-primary px-0 py-7 xl:px-32 xl:py-12  ">
+    <section className="flex flex-col gap-20 bg-opacity-70 bg-primary px-0 py-7 xl:px-32 xl:py-12 containerMain mt-40  ">
       <ProfileUser />
       <ProfileProjectList />
     </section>

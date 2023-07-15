@@ -62,7 +62,7 @@ const ProjectPage: FC = () => {
   }
   return (
     <>
-      <section className="p-5 container">
+      <section className="p-5 containerMain mt-32">
         <ProjectHeader
           project={dataProject}
           photo={dataImage}

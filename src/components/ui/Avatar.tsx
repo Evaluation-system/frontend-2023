@@ -17,12 +17,15 @@ const Avatar: FC<Props> = ({ photo = "../img/proj.jpg", avatarRef }) => {
       className="relative w-36 h-36 rounded-full overflow-hidden cursor-pointer"
       onClick={(): void => handleAvatar()}
     >
-      <div className="absolute flex w-full h-full bg-primary z-10 top-28 opacity-80">
+      <div className="absolute flex w-full h-full bg-primary z-10 top-28 opacity-80 ">
         <div className="mx-auto pt-2">
           <MdMonochromePhotos />
         </div>
       </div>
-      <img src={photo} className="absolute rounded-full z-0" />
+      <img
+        src={photo}
+        className="absolute rounded-full z-0 w-40 h-40 object-cover"
+      />
     </div>
   );
 };
