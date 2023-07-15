@@ -101,151 +101,153 @@ const ProjectEditField: FC<Props> = ({ project }) => {
   };
 
   return (
-    <div className="flex flex-col gap-7">
-      <div className="flex gap-5 items-center">
-        <label className="flex gap-2 items-center">
-          <IoLogoUsd /> Стоимость:
-        </label>
+    <div className="flex flex-col gap-2">
+      <span className="text-gray text-sm">Дополнительные поля:</span>
+      <div className="flex flex-col gap-4">
+        <div className="flex gap-5 items-center">
+          <label className="flex gap-2 items-center">
+            <IoLogoUsd /> Стоимость:
+          </label>
 
-        {openPrice ? (
-          <div className="flex gap-2 items-center">
-            <Input
-              register={{ ...register("price") }}
-              id="price"
-              placeholder={project?.price || "Введите стоимость"}
-              type="text"
-              bg="inherit"
-              errorMessage={errors.price?.message}
-            />
-            <span
-              onClick={(): void => {
-                handleFetchPrice();
-              }}
-            >
-              <IoMdCheckmark />
-            </span>
-
-            <span onClick={(): void => setOpenPrice(false)}>
-              <AiOutlineClose />
-            </span>
-          </div>
-        ) : (
-          <div className="flex gap-2 items-center">
-            <span>{project?.price} &#8381;</span>
-            {project?.price ? (
+          {openPrice ? (
+            <div className="flex gap-2 items-center">
+              <Input
+                register={{ ...register("price") }}
+                id="price"
+                placeholder={project?.price || "Введите стоимость"}
+                type="text"
+                bg="inherit"
+                errorMessage={errors.price?.message}
+              />
               <span
-                className="flex gap-2 items-center text-gray"
-                onClick={(): void => setOpenPrice(true)}
+                onClick={(): void => {
+                  handleFetchPrice();
+                }}
               >
-                <AiOutlineEdit />
+                <IoMdCheckmark />
               </span>
-            ) : (
-              <span
-                className="flex gap-2 items-center text-gray"
-                onClick={(): void => setOpenPrice(true)}
-              >
-                Редактировать <AiOutlineEdit />
+
+              <span onClick={(): void => setOpenPrice(false)}>
+                <AiOutlineClose />
               </span>
-            )}
-          </div>
-        )}
-      </div>
+            </div>
+          ) : (
+            <div className="flex gap-2 items-center">
+              <span>{project?.price} &#8381;</span>
+              {project?.price ? (
+                <span
+                  className="flex gap-2 items-center text-gray"
+                  onClick={(): void => setOpenPrice(true)}
+                >
+                  <AiOutlineEdit />
+                </span>
+              ) : (
+                <span
+                  className="flex gap-2 items-center text-gray"
+                  onClick={(): void => setOpenPrice(true)}
+                >
+                  Редактировать <AiOutlineEdit />
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="flex gap-5 items-center">
+          <label className="flex gap-2 items-center">
+            <BsCalendarDate />
+            Сроки:
+          </label>
 
-      <div className="flex gap-5 items-center">
-        <label className="flex gap-2 items-center">
-          <BsCalendarDate />
-          Сроки:
-        </label>
-
-        {openDate ? (
-          <div className="flex gap-2 items-center">
-            <Input
-              register={{ ...register("date") }}
-              id="date"
-              placeholder={project?.terms || "Введите сроки"}
-              type="text"
-              bg="inherit"
-              errorMessage={errors.date?.message}
-            />
-            <span onClick={(): void => handleFetchDate()}>
-              <IoMdCheckmark />
-            </span>
-
-            <span onClick={(): void => setOpenDate(false)}>
-              <AiOutlineClose />
-            </span>
-          </div>
-        ) : (
-          <div className="flex gap-2 items-center">
-            <span>{project?.terms} дней</span>
-            {project?.terms ? (
-              <div
-                className="flex gap-2 items-center text-gray"
-                onClick={(): void => setOpenDate(true)}
-              >
-                <AiOutlineEdit />
-              </div>
-            ) : (
-              <div
-                className="flex gap-2 items-center text-gray"
-                onClick={(): void => setOpenDate(true)}
-              >
-                Редактировать <AiOutlineEdit />
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-      <div className="flex gap-2 items-center">
-        <span className="flex text-secondary">
-          <RiAdminFill />
-        </span>
-        Создатель проекта:
-        <span>{adminPerson?.email}</span>
-      </div>
-      <div className="flex gap-5 items-center">
-        <label className="flex gap-2 items-center">
-          <MdOutlinePerson />
-          Клиент:
-        </label>
-
-        {openClient ? (
-          <div className="flex gap-2 items-center">
-            <Input
-              register={{ ...register("client") }}
-              id="client"
-              placeholder={project?.client || "Введите клиента"}
-              type="text"
-              bg="inherit"
-              errorMessage={errors.client?.message}
-            />
-            <span onClick={(): void => handleFetchClient()}>
-              <IoMdCheckmark />
-            </span>
-            <span onClick={(): void => setOpenClient(false)}>
-              <AiOutlineClose />
-            </span>
-          </div>
-        ) : (
-          <div className="flex gap-2 items-center">
-            <span>{project.client}</span>
-            {project.client ? (
-              <span
-                className="flex gap-2 items-center text-gray"
-                onClick={(): void => setOpenClient(true)}
-              >
-                <AiOutlineEdit />
+          {openDate ? (
+            <div className="flex gap-2 items-center">
+              <Input
+                register={{ ...register("date") }}
+                id="date"
+                placeholder={project?.terms || "Введите сроки"}
+                type="text"
+                bg="inherit"
+                errorMessage={errors.date?.message}
+              />
+              <span onClick={(): void => handleFetchDate()}>
+                <IoMdCheckmark />
               </span>
-            ) : (
-              <span
-                className="flex gap-2 items-center text-gray"
-                onClick={(): void => setOpenClient(true)}
-              >
-                Редактировать <AiOutlineEdit />
+
+              <span onClick={(): void => setOpenDate(false)}>
+                <AiOutlineClose />
               </span>
-            )}
-          </div>
-        )}
+            </div>
+          ) : (
+            <div className="flex gap-2 items-center">
+              <span>{project?.terms} дней</span>
+              {project?.terms ? (
+                <div
+                  className="flex gap-2 items-center text-gray"
+                  onClick={(): void => setOpenDate(true)}
+                >
+                  <AiOutlineEdit />
+                </div>
+              ) : (
+                <div
+                  className="flex gap-2 items-center text-gray"
+                  onClick={(): void => setOpenDate(true)}
+                >
+                  Редактировать <AiOutlineEdit />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="flex gap-2 items-center">
+          <span className="flex text-secondary">
+            <RiAdminFill />
+          </span>
+          Создатель проекта:
+          <span>{adminPerson?.email}</span>
+        </div>
+        <div className="flex gap-5 items-center">
+          <label className="flex gap-2 items-center">
+            <MdOutlinePerson />
+            Клиент:
+          </label>
+
+          {openClient ? (
+            <div className="flex gap-2 items-center">
+              <Input
+                register={{ ...register("client") }}
+                id="client"
+                placeholder={project?.client || "Введите клиента"}
+                type="text"
+                bg="inherit"
+                errorMessage={errors.client?.message}
+              />
+              <span onClick={(): void => handleFetchClient()}>
+                <IoMdCheckmark />
+              </span>
+              <span onClick={(): void => setOpenClient(false)}>
+                <AiOutlineClose />
+              </span>
+            </div>
+          ) : (
+            <div className="flex gap-2 items-center">
+              <span>{project.client}</span>
+              {project.client ? (
+                <span
+                  className="flex gap-2 items-center text-gray"
+                  onClick={(): void => setOpenClient(true)}
+                >
+                  <AiOutlineEdit />
+                </span>
+              ) : (
+                <span
+                  className="flex gap-2 items-center text-gray"
+                  onClick={(): void => setOpenClient(true)}
+                >
+                  Редактировать <AiOutlineEdit />
+                </span>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

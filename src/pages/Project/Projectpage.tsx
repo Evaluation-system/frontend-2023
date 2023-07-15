@@ -61,8 +61,8 @@ const ProjectPage: FC = () => {
     return <p>Данные проектов не найдены</p>;
   }
   return (
-    <>
-      <section className="p-5 containerMain mt-32">
+    <section className="xl:px-32 xl:py-12">
+      <section className="p-5 mt-32">
         <ProjectHeader
           project={dataProject}
           photo={dataImage}
@@ -80,7 +80,11 @@ const ProjectPage: FC = () => {
       ) : (
         ""
       )}
-    </>
+      <img
+        src="../img/bg/bgLines.png"
+        className="absolute top-0 bottom-0 right-0 left-0 z-[-1] w-full h-full object-cover opacity-50"
+      />
+    </section>
   );
 };
 

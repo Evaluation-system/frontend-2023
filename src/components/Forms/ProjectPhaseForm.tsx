@@ -103,7 +103,7 @@ const ProjectPhaseForm: FC<Props> = ({ id }) => {
         onSubmit={handleSubmit(onSubmit)}
         className={openForm ? "flex flex-col gap-10" : "hidden"}
       >
-        <section className="flex flex-col gap-5">
+        <section className="flex flex-col gap-8">
           <h3>Добавьте задачу:</h3>
           <Input
             bg="inherit"
@@ -113,6 +113,7 @@ const ProjectPhaseForm: FC<Props> = ({ id }) => {
             register={{ ...register("titleTask") }}
             errorMessage={errors.titleTask?.message}
           />
+
           <Input
             bg="inherit"
             placeholder="Описание"

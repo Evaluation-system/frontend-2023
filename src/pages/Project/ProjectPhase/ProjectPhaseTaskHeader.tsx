@@ -7,7 +7,7 @@ type Props = {
 
 const ProjectPhaseTaskHeader: FC<Props> = ({ numberTask }) => {
   return (
-    <header className=" grid grid-cols-9 items-center gap-4 text-secondary font-bold text-lg">
+    <header className=" grid grid-cols-9 items-center gap-4 text-primary font-normal text-sm">
       {phaseTaskHeader.map((item) => (
         <p
           className={

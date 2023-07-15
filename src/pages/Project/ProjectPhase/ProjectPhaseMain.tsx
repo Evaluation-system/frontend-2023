@@ -28,9 +28,11 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
     <section className="flex flex-col gap-5">
       <div className="w-full h-[1px] bg-gray" />
       <ProjectPhaseHeader numberPhase={numberPhase} id={id} />
-      <section className="flex flex-col gap-7">
+      <section className="grid grid-cols-4 gap-10">
         {dataTasks?.map((item: any, index: number) => (
-          <ProjectPhaseTask key={item.id} item={item} numberTask={index + 1} />
+          <section key={item.id} className="relative group ">
+            <ProjectPhaseTask item={item} numberTask={index + 1} />
+          </section>
         ))}
       </section>
       <ProjectPhaseMetric phaseId={phaseId} />

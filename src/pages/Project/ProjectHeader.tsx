@@ -22,13 +22,14 @@ const ProjectHeader: FC<Props> = ({
 
   return (
     <header className="flex flex-col justify-between gap-10 p-4 mb-12">
-      <div className="flex gap-5 items-center ">
-        {project.pathImage ? (
-          <Avatar photo={photo} avatarRef={avatarRef} />
-        ) : (
-          <Avatar avatarRef={avatarRef} />
-        )}
-
+      <div className="flex gap-10 items-center">
+        <div>
+          {project.pathImage ? (
+            <Avatar photo={photo} avatarRef={avatarRef} />
+          ) : (
+            <Avatar avatarRef={avatarRef} />
+          )}
+        </div>
         <div className="flex flex-col gap-2 max-w-xl">
           <ProjectTitle title={project.title} setOpenModal={setOpenModal} />
           <ProjectDescription description={project.description} />

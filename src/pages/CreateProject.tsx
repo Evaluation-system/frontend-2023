@@ -69,17 +69,7 @@ const CreateProject: FC = () => {
 
     return createProject(postData)
       .then((response) => {
-        console.log("postData");
-        console.log(postData);
-
-        console.log("response");
-        console.log(response);
-
         const projectId = response?.data?.id;
-
-        console.log("projectId");
-        console.log(projectId);
-
         const formData = new FormData();
 
         if (selectImage) {
@@ -91,21 +81,12 @@ const CreateProject: FC = () => {
           data: formData,
         };
 
-        console.log("formData");
-        console.log(formData);
-        console.log("addProjectImageData.data");
-        console.log(addProjectImageData.data);
-
         // ВЫДАЧА РОЛИ АДМИНА (временно)
         // const rolePatch = {
         //   id: user?.id,
         //   patch: { role: "admin" },
         // };
         // updateRole(rolePatch);
-
-        console.log("addProjectImageData");
-        console.log(addProjectImageData);
-
         addProjectImage(addProjectImageData);
       })
       .then(() => navigate("/profile"))

@@ -6,6 +6,7 @@ import {
   useGetProjectPhasesQuery,
 } from "api/phase.api";
 import { IPhases } from "types/types";
+import { motion } from "framer-motion";
 
 type Props = {
   id: string | undefined;
@@ -62,17 +63,25 @@ const ProjectPhaseTabs: FC<Props> = ({ id }) => {
         <div>
           <div>
             {dataPhases?.length > 0 ? (
-              <ul className="flex gap-5 overflow-x-auto">
+              <ul className="flex space-x-1 overflow-x-auto items-center">
                 {dataPhases?.map((item: IPhases, index: number) => (
                   <li
+                    key={item.id}
                     onClick={(): void => setToggleState(index)}
-                    className={
-                      toggleState === index
-                        ? "text-blue min-w-[70px] cursor-pointer"
-                        : "cursor-pointer min-w-[70px]"
-                    }
+                    className={`${
+                      toggleState === index ? "" : "hover:opacity-50"
+                    } relative rounded-full px-3 py-1.5 cursor-pointer`}
                   >
-                    Фаза № {index + 1}
+                    {toggleState === index && (
+                      <motion.div
+                        layoutId="active-pill"
+                        className="absolute inset-0 rounded-full bg-secondary"
+                        transition={{ duration: 1 }}
+                      />
+                    )}
+                    <span className="relative z-10 mix-blend-exclusion">
+                      Фаза № {index + 1}
+                    </span>
                   </li>
                 ))}
               </ul>
