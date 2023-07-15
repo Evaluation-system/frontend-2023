@@ -18,7 +18,6 @@ const Header: FC = () => {
         <img src="../img/Vector.png" alt="Логотип" className="w-auto h-auto" />
         <p className="hidden xl:flex font-bold uppercase text-xl">Community</p>
       </Link>
-
       {/* Меняет положения кнопки и профиля, если авторизован */}
       {isAuth ? (
         <>
