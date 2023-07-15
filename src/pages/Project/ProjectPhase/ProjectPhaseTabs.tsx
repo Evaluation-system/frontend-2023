@@ -92,7 +92,10 @@ const ProjectPhaseTabs: FC<Props> = ({ id }) => {
         </div>
         <section>
           {dataPhases?.map((item: IPhases, index: number) => (
-            <section className={toggleState === index ? "" : "hidden"}>
+            <section
+              className={toggleState === index ? "" : "hidden"}
+              key={item.id}
+            >
               <ProjectPhaseMain
                 numberPhase={index + 1}
                 key={item.id}
