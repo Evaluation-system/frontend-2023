@@ -6,6 +6,7 @@ import {
   useDeleteProjectMutation,
 } from "api/project.api";
 import { useAppSelector } from "store/hooks/hooks";
+import ProfileEmptyProjects from "components/Section/ProfilePage/ProfileEmptyProjects";
 
 const ProfileProjectList: FC = () => {
   const user = useAppSelector((state) => state.user.user);
@@ -20,7 +21,8 @@ const ProfileProjectList: FC = () => {
       {isLoading ? (
         <p>Идёт загрузка данных...</p>
       ) : data?.length > 0 ? (
-        <ol className="flex flex-col gap-3 font-light text-lg">
+        <ol className="flex flex-col gap-10 font-light text-lg">
+          <h2>Список проектов: </h2>
           {data.map((item, index) => (
             <li
               key={item.id}
@@ -47,9 +49,7 @@ const ProfileProjectList: FC = () => {
       ) : error ? (
         <div>Произошла ошибка</div>
       ) : (
-        <p className="text-center text-secondary opacity-50 m-40">
-          Нет созданных проектов :(
-        </p>
+        <ProfileEmptyProjects />
       )}
     </section>
   );
