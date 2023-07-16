@@ -17,6 +17,8 @@ type Props = {
 };
 
 const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
+  const phaseId = Number(id);
+
   //Получение задач
   const {
     isLoading: isLoadingTasks,

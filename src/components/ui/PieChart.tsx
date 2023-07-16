@@ -5,7 +5,7 @@ import { Pie } from "react-chartjs-2";
 import { BsPieChartFill } from "react-icons/bs";
 
 type Props = {
-  dataTasks: IPhaseTask;
+  dataTasks: IPhaseTask[];
 };
 ChartJS.register(ArcElement, Tooltip);
 
