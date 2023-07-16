@@ -1,12 +1,16 @@
 import * as yup from "yup";
-import Input from "components/ui/Input";
-import { FC, useState } from "react";
+
+import { FC, SetStateAction, Dispatch } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreatePhaseTaskMutation } from "api/phase.api";
 import { yupResolver } from "@hookform/resolvers/yup";
+import DynamicForm from "./DynamicForm";
+import Modal from "components/ui/Modal";
 
 type Props = {
   id: number;
+  openForm: boolean;
+  setOpenForm: Dispatch<SetStateAction<boolean>>;
 };
 
 type Form = {
@@ -18,7 +22,7 @@ type Form = {
   endTask: string;
 };
 
-const ProjectPhaseForm: FC<Props> = ({ id }) => {
+const ProjectPhaseForm: FC<Props> = ({ id, setOpenForm, openForm }) => {
   const schema = yup.object({
     titleTask: yup.string().required("Поле «Задача» обязательно"),
     descriptionTask: yup.string().required("Поле «Описание» обязательно"),
@@ -60,7 +64,6 @@ const ProjectPhaseForm: FC<Props> = ({ id }) => {
   const phaseId = Number(id);
 
   const onSubmit: SubmitHandler<Form> = async (data) => {
-    //Забираем поля из формы
     const {
       titleTask,
       descriptionTask,
@@ -70,7 +73,6 @@ const ProjectPhaseForm: FC<Props> = ({ id }) => {
       endTask,
     } = data;
 
-    //Вот сюда эти поля нужно вставить
     const taskPhase = {
       phaseId: phaseId,
       titleTask: titleTask,
@@ -80,91 +82,50 @@ const ProjectPhaseForm: FC<Props> = ({ id }) => {
       starTask: Number(startTask),
       endTask: Number(endTask),
     };
-
-    // dispatch(addEmployee(data));
-
+    setOpenForm(false);
     createPhaseTask(taskPhase);
-
-    setOpenForm(!openForm);
     reset();
   };
-
-  const [openForm, setOpenForm] = useState(false);
-
+  const fields = [
+    {
+      placeholder: "Название задачи",
+      name: "titleTask",
+    },
+    {
+      placeholder: "Описание задачи",
+      name: "descriptionTask",
+    },
+    {
+      placeholder: "Кол-во задач",
+      name: "countTask",
+    },
+    {
+      placeholder: "Роль исполняющего",
+      name: "roleEmployee",
+    },
+    {
+      placeholder: "Кол-во часов (от)",
+      name: "startTask",
+    },
+    {
+      placeholder: "Кол-во часов (до)",
+      name: "endTask",
+    },
+  ];
   return (
-    <section className="flex flex-col gap-20">
-      <button
-        className="text-blue text-end"
-        onClick={(): void => setOpenForm(!openForm)}
-      >
-        Добавить задачу
-      </button>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className={openForm ? "flex flex-col gap-10" : "hidden"}
-      >
-        <section className="flex flex-col gap-8">
-          <h3>Добавьте задачу:</h3>
-          <Input
-            bg="inherit"
-            placeholder="Задача"
-            id="titleTask"
-            type="text"
-            register={{ ...register("titleTask") }}
-            errorMessage={errors.titleTask?.message}
+    <>
+      {openForm && (
+        <Modal>
+          <DynamicForm
+            onSubmit={onSubmit}
+            fields={fields}
+            schema={schema}
+            headerText="Новая задача"
+            setOpenForm={setOpenForm}
           />
-
-          <Input
-            bg="inherit"
-            placeholder="Описание"
-            id="descriptionTask"
-            type="text"
-            register={{ ...register("descriptionTask") }}
-            errorMessage={errors.descriptionTask?.message}
-          />
-          <div className="flex justify-between gap-6">
-            <Input
-              bg="inherit"
-              placeholder="Кол-во задач"
-              id="countTask"
-              type="text"
-              register={{ ...register("countTask") }}
-              errorMessage={errors.countTask?.message}
-            />
-            <Input
-              bg="inherit"
-              placeholder="Роль исполняющего"
-              id="roleEmployee"
-              type="text"
-              register={{ ...register("roleEmployee") }}
-              errorMessage={errors.roleEmployee?.message}
-            />
-            <Input
-              bg="inherit"
-              placeholder="Кол-во часов (от)"
-              id="starTask"
-              type="text"
-              register={{ ...register("startTask") }}
-              errorMessage={errors.startTask?.message}
-            />
-            <Input
-              bg="inherit"
-              placeholder="Кол-во часов (до)"
-              id="endTask"
-              type="text"
-              register={{ ...register("endTask") }}
-              errorMessage={errors.endTask?.message}
-            />
-          </div>
-        </section>
-        <button
-          type="submit"
-          className="mt-10 p-5 rounded-full border-secondary border-2"
-        >
-          Добавить
-        </button>
-      </form>
-    </section>
+        </Modal>
+      )}
+    </>
   );
 };
 

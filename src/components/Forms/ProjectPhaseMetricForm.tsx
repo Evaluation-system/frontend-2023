@@ -1,47 +1,51 @@
 import * as yup from "yup";
-import Input from "components/ui/Input";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  useEditPhaseMetricMutation,
-  useGetPhaseMetricQuery,
-} from "api/phase.api";
+import { useEditPhaseMetricMutation } from "api/phase.api";
 import { yupResolver } from "@hookform/resolvers/yup";
+import DynamicForm from "./DynamicForm";
+import Modal from "components/ui/Modal";
 
 type Form = {
-  Qa: string;
-  PmAm: string;
-  Bugs: string;
-  Risks: string;
+  qa: string;
+  pmAm: string;
+  bugs: string;
+  risks: string;
 };
 
 type Props = {
   phaseId: number;
+  setOpenForm: any;
+  openForm: boolean;
 };
-const ProjectPhaseMetricForm: FC<Props> = ({ phaseId }) => {
+const ProjectPhaseMetricForm: FC<Props> = ({
+  phaseId,
+  setOpenForm,
+  openForm,
+}) => {
   const schema = yup.object({
-    Qa: yup
+    qa: yup
       .string()
       .required("Поле «QA» обязательно")
       .matches(
         /^\d{1,2}$/,
         "Введенное значение должно быть число, не более 2 символов"
       ),
-    PmAm: yup
+    pmAm: yup
       .string()
       .required("Поле «PM/AM» обязательно")
       .matches(
         /^\d{1,2}$/,
         "Введенное значение должно быть число, не более 2 символов"
       ),
-    Bugs: yup
+    bugs: yup
       .string()
       .required("Поле «Bugs» обязательно")
       .matches(
         /^\d{1,2}$/,
         "Введенное значение должно быть число, не более 2 символов"
       ),
-    Risks: yup
+    risks: yup
       .string()
       .required("Поле «Risks» обязательно")
       .matches(
@@ -49,89 +53,62 @@ const ProjectPhaseMetricForm: FC<Props> = ({ phaseId }) => {
         "Введенное значение должно быть число, не более 2 символов"
       ),
   });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    watch,
-  } = useForm<Form>({ resolver: yupResolver(schema), mode: "onChange" });
-
-  //Для показа формы при нажатии на кнопку "Добавить метрики"
-  const [openMetric, setOpenMetric] = useState(false);
+  const { reset } = useForm<Form>({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+  });
 
   const [editPhaseMetric] = useEditPhaseMetricMutation();
   //Функция отправки данных на сервер
   const onSubmit: SubmitHandler<Form> = async (data) => {
-    const { Qa, PmAm, Bugs, Risks } = data;
+    const { qa, pmAm, bugs, risks } = data;
 
     const metric = {
       id: phaseId,
       patch: {
-        qa: Number(Qa),
-        pmAm: Number(PmAm),
-        bugs: Number(Bugs),
-        risks: Number(Risks),
+        qa: Number(qa),
+        pmAm: Number(pmAm),
+        bugs: Number(bugs),
+        risks: Number(risks),
       },
     };
     editPhaseMetric(metric);
-    setOpenMetric(false);
+    setOpenForm(false);
     reset();
   };
+
+  const fields = [
+    {
+      placeholder: "QA %",
+      name: "qa",
+    },
+    {
+      placeholder: "PM/AM %",
+      name: "pmAm",
+    },
+    {
+      placeholder: "Bugs %",
+      name: "bugs",
+    },
+    {
+      placeholder: "Risks %",
+      name: "risks",
+    },
+  ];
+
   return (
     <>
-      <button
-        className="text-blue text-end"
-        onClick={(): void => setOpenMetric(!openMetric)}
-      >
-        Добавить метрики
-      </button>
-      <form
-        className={openMetric ? "flex flex-col gap-5" : "hidden"}
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <h3>Метрики:</h3>
-        <div className="flex justify-between gap-6">
-          <Input
-            bg="inherit"
-            placeholder="QA %"
-            id="Qa"
-            type="text"
-            register={{ ...register("Qa") }}
-            errorMessage={errors.Qa?.message}
+      {openForm && (
+        <Modal>
+          <DynamicForm
+            fields={fields}
+            onSubmit={onSubmit}
+            schema={schema}
+            headerText="Добавить метрики"
+            setOpenForm={setOpenForm}
           />
-          <Input
-            bg="inherit"
-            placeholder="PM/AM %"
-            id="PmAm"
-            type="text"
-            register={{ ...register("PmAm") }}
-            errorMessage={errors.PmAm?.message}
-          />
-          <Input
-            bg="inherit"
-            placeholder="Bugs %"
-            id="Bugs"
-            type="text"
-            register={{ ...register("Bugs") }}
-            errorMessage={errors.Bugs?.message}
-          />
-          <Input
-            bg="inherit"
-            placeholder="Risks %"
-            id="Risks"
-            type="text"
-            register={{ ...register("Risks") }}
-            errorMessage={errors.Risks?.message}
-          />
-        </div>
-        <button
-          type="submit"
-          className="mt-10 p-5 rounded-full border-secondary border-2"
-        >
-          Добавить
-        </button>
-      </form>
+        </Modal>
+      )}
     </>
   );
 };

@@ -6,10 +6,12 @@ import { Dispatch, FC, SetStateAction } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useEditPhaseTaskMutation } from "api/phase.api";
 import { yupResolver } from "@hookform/resolvers/yup";
+import DynamicForm from "./DynamicForm";
 
 type Props = {
-  openForm: Dispatch<SetStateAction<boolean>>;
+  setOpenForm: Dispatch<SetStateAction<boolean>>;
   numberTask: number;
+  openForm: boolean;
 };
 type Form = {
   titleTask: string | undefined;
@@ -19,7 +21,11 @@ type Form = {
   starTask: string | undefined;
   endTask: string | undefined;
 };
-const ProjectPhaseTaskEditForm: FC<Props> = ({ openForm, numberTask }) => {
+const ProjectPhaseTaskEditForm: FC<Props> = ({
+  numberTask,
+  setOpenForm,
+  openForm,
+}) => {
   const schema = yup.object({
     titleTask: yup.string(),
     descriptionTask: yup.string(),
@@ -79,83 +85,51 @@ const ProjectPhaseTaskEditForm: FC<Props> = ({ openForm, numberTask }) => {
         endTask: Number(endTask),
       },
     };
-
+    setOpenForm(false);
     editPhaseTask(newEditTask);
-    openForm(false);
     reset();
   };
-  return (
-    <Modal>
-      <header className="flex justify-between items-center">
-        <h4>Изменить задачу</h4>
-        <span onClick={(): void => openForm(false)} className="cursor-pointer">
-          <AiOutlineClose />
-        </span>
-      </header>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10">
-        <section className="flex flex-col gap-8">
-          <Input
-            bg="inherit"
-            placeholder="Задача"
-            id="titleTask"
-            type="text"
-            register={{ ...register("titleTask") }}
-            errorMessage={errors.titleTask?.message}
-          />
 
-          <Input
-            bg="inherit"
-            placeholder="Описание"
-            id="descriptionTask"
-            type="text"
-            register={{ ...register("descriptionTask") }}
-            errorMessage={errors.descriptionTask?.message}
+  const fields = [
+    {
+      placeholder: "Название задачи",
+      name: "titleTask",
+    },
+    {
+      placeholder: "Описание задачи",
+      name: "descriptionTask",
+    },
+    {
+      placeholder: "Кол-во задач",
+      name: "countTask",
+    },
+    {
+      placeholder: "Роль исполняющего",
+      name: "roleEmployee",
+    },
+    {
+      placeholder: "Кол-во часов (от)",
+      name: "starTask",
+    },
+    {
+      placeholder: "Кол-во часов (до)",
+      name: "endTask",
+    },
+  ];
+  return (
+    <>
+      {openForm && (
+        <Modal>
+          <DynamicForm
+            fields={fields}
+            onSubmit={onSubmit}
+            schema={schema}
+            headerText="Изменить задачу"
+            setOpenForm={setOpenForm}
           />
-          <div className="flex justify-between gap-6">
-            <Input
-              bg="inherit"
-              placeholder="Кол-во задач"
-              id="countTask"
-              type="text"
-              register={{ ...register("countTask") }}
-              errorMessage={errors.countTask?.message}
-            />
-            <Input
-              bg="inherit"
-              placeholder="Роль исполняющего"
-              id="roleEmployee"
-              type="text"
-              register={{ ...register("roleEmployee") }}
-              errorMessage={errors.roleEmployee?.message}
-            />
-          </div>
-          <div className="flex justify-between gap-6">
-            <Input
-              bg="inherit"
-              placeholder="Кол-во часов (от)"
-              id="starTask"
-              type="text"
-              register={{ ...register("starTask") }}
-              errorMessage={errors.starTask?.message}
-            />
-            <Input
-              bg="inherit"
-              placeholder="Кол-во часов (до)"
-              id="endTask"
-              type="text"
-              register={{ ...register("endTask") }}
-              errorMessage={errors.endTask?.message}
-            />
-          </div>
-        </section>
-        <button
-          type="submit"
-          className="mt-10 p-5 rounded-full border-secondary border-2"
-        >
-          Изменить
-        </button>
-      </form>
-    </Modal>
+        </Modal>
+      )}
+    </>
   );
 };
 

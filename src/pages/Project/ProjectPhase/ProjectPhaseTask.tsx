@@ -35,7 +35,8 @@ const ProjectPhaseTask: FC<Props> = ({ item, numberTask, numTsk }) => {
     <>
       {openEditForm && (
         <ProjectPhaseTaskEditForm
-          openForm={setOpenEditForm}
+          setOpenForm={setOpenEditForm}
+          openForm={openEditForm}
           numberTask={aboba}
         />
       )}

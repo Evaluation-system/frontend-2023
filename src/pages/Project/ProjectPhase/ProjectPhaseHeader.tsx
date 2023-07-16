@@ -19,11 +19,27 @@ const ProjectPhaseHeader: FC<Props> = ({ numberPhase, id }) => {
     toast.success("Фаза удалена");
   };
 
-  const [openEditName, setOpenEditName] = useState(false);
-  const phaseId = Number(id);
+  const [openEditName, setOpenEditName] = useState<boolean>(false);
+  const phaseId: number = Number(id);
 
+  const [openMetric, setOpenMetric] = useState<boolean>(false);
+  const [openTaskField, setOpenTaskField] = useState<boolean>(false);
   return (
     <>
+      {openTaskField && (
+        <ProjectPhaseForm
+          id={id}
+          setOpenForm={setOpenTaskField}
+          openForm={openTaskField}
+        />
+      )}
+      {openMetric && (
+        <ProjectPhaseMetricForm
+          phaseId={phaseId}
+          setOpenForm={setOpenMetric}
+          openForm={openMetric}
+        />
+      )}
       <Toaster />
       <section className="flex justify-between items-center">
         <h4 className="flex items-center gap-3 col-span-2">
@@ -41,9 +57,19 @@ const ProjectPhaseHeader: FC<Props> = ({ numberPhase, id }) => {
             <RiDeleteBinLine />
           </span>
         </h4>
-        <div className="flex gap-5 ">
-          <ProjectPhaseForm id={id} />
-          <ProjectPhaseMetricForm phaseId={phaseId} />
+        <div className="flex gap-5">
+          <span
+            className="cursor-pointer text-blue"
+            onClick={(): void => setOpenTaskField(!openTaskField)}
+          >
+            Добавить задачу
+          </span>
+          <span
+            className="cursor-pointer text-blue"
+            onClick={(): void => setOpenMetric(!openMetric)}
+          >
+            Изменить метрики
+          </span>
         </div>
       </section>
       {openEditName && (
