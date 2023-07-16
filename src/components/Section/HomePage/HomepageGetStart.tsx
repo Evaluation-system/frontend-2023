@@ -28,7 +28,7 @@ const HomepageGetStart: FC = () => {
             <div className="absolute -inset-0.5 bg-gradient-to-r from-[#e84393] animate-tilt  to-[#6c5ce7] rounded-lg blur-sm opacity-75 group-hover:opacity-100 transistion duration-200"></div>
             <button className="relative bg-[#000] rounded-lg">
               <Link
-                to="/create"
+                to="/login"
                 className="flex gap-5 text-[20px] p-5 font-geo font-extralight  "
               >
                 Cоздайте свой первый проект

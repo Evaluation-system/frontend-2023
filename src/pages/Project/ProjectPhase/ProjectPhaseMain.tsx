@@ -26,6 +26,7 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
     error: errorTasks,
   } = useGetPhaseTasksQuery(phaseId);
 
+  //Подсчитывают кол-во дней для решения задачи
   const totalEndTask: number | undefined = dataTasks
     ? dataTasks.reduce((acc, item) => acc + item.endTask, 0)
     : 0;

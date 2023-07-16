@@ -10,10 +10,11 @@ import {
   useAddProjectImageMutation,
   useCreateProjectMutation,
 } from "api/project.api";
-import { useAppSelector } from "store/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "store/hooks/hooks";
 import { useNavigate } from "react-router";
 import { useUpdateRoleMutation } from "api/api";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { openCreate } from "store/ui/ui.slice";
 
 type Form = {
   imageProject: any;
@@ -92,6 +93,7 @@ const CreateProject: FC = () => {
       .then(() => reset());
   };
 
+  const dispatch = useAppDispatch();
   //Реф на кнопку загрузки проекта
   const refIconProject = useRef<HTMLInputElement | null>(null);
   //Функция клика по другому компоненту рефа
@@ -101,7 +103,7 @@ const CreateProject: FC = () => {
     <Modal text="Создать проект">
       <header className="flex justify-between items-center">
         <h3>Создать проект</h3>
-        <button onClick={() => navigate(-1)}>
+        <button onClick={() => dispatch(openCreate(false))}>
           <TfiClose />
         </button>
       </header>

@@ -4,6 +4,7 @@ import taskReducer from "./tasks/taskSlice";
 import projectReducer from "./projects/projectSlice";
 import { api } from "api/api";
 import { createLogger } from "redux-logger";
+import uiReducer from "./ui/ui.slice";
 
 const logger = createLogger({
   // collapsed: true,
@@ -13,6 +14,7 @@ const reducers = combineReducers({
   user: userReducer,
   tasker: taskReducer,
   project: projectReducer,
+  ui: uiReducer,
   [api.reducerPath]: api.reducer,
 });
 

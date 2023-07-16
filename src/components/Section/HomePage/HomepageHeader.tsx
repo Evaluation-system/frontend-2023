@@ -1,6 +1,10 @@
 import { FC, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, useCycle } from "framer-motion";
+import { useAppDispatch, useAppSelector } from "store/hooks/hooks";
+import { openCreate } from "store/ui/ui.slice";
+import CreateProject from "pages/CreateProject";
+import CheckAuthCreateButton from "components/ui/CheckAuthCreateButton";
 
 const HomepageHeader: FC = () => {
   const [text, cycleText] = useCycle("превосходству", "успеху", "достижению");
@@ -13,6 +17,10 @@ const HomepageHeader: FC = () => {
     return () => clearInterval(interval);
   }, [cycleText]);
 
+  const dispatch = useAppDispatch();
+  const isAuth = useAppSelector((state) => state.user.isAuth);
+  const openCreateForm = useAppSelector((state) => state.ui.value);
+  const navigate = useNavigate();
   return (
     <>
       <section className="relative h-[800px] w-full bg-[#090909] pt-32">
@@ -44,9 +52,7 @@ const HomepageHeader: FC = () => {
             </h1>
             <h3 className="slug">создайте свой первый проект</h3>
           </div>
-          <Link to="/create" className="btnGradient ">
-            Создать проект
-          </Link>
+          <CheckAuthCreateButton />
         </motion.main>
         <img
           src="../img/bg/left.png"
@@ -65,6 +71,7 @@ const HomepageHeader: FC = () => {
           className="flex fixed top-0 bottom-0 right-0 left-0 h-full w-full object-cover opacity-30"
         /> */}
       </section>
+      {openCreateForm && <CreateProject />}
     </>
   );
 };
