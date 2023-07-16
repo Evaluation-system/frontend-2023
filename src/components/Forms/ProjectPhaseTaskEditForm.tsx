@@ -54,36 +54,6 @@ const ProjectPhaseTaskEditForm: FC<Props> = ({ openForm, numberTask }) => {
     reset,
   } = useForm<Form>({ resolver: yupResolver(schema), mode: "onChange" });
 
-  //Хук RTK-Query для изменнеия задания
-  const [editPhaseTask] = useEditPhaseTaskMutation();
-
-  //Функция редактирования задания
-  const onSubmit: SubmitHandler<Form> = (data) => {
-    const {
-      titleTask,
-      descriptionTask,
-      countTask,
-      roleEmployee,
-      starTask,
-      endTask,
-    } = data;
-
-    const newEditTask = {
-      id: Number(numberTask),
-      patch: {
-        titleTask: titleTask,
-        descriptionTask: descriptionTask,
-        countTask: Number(countTask),
-        roleEmployee: roleEmployee,
-        starTask: Number(starTask),
-        endTask: Number(endTask),
-      },
-    };
-
-    editPhaseTask(newEditTask);
-    openForm(false);
-    reset();
-  };
   return (
     <Modal>
       <header className="flex justify-between items-center">

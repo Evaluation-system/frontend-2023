@@ -92,7 +92,7 @@ const ProjectPhaseForm: FC<Props> = ({ id }) => {
   const [openForm, setOpenForm] = useState(false);
 
   return (
-    <>
+    <section className="flex flex-col gap-20">
       <button
         className="text-blue text-end"
         onClick={(): void => setOpenForm(!openForm)}
@@ -164,7 +164,7 @@ const ProjectPhaseForm: FC<Props> = ({ id }) => {
           Добавить
         </button>
       </form>
-    </>
+    </section>
   );
 };
 

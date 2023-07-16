@@ -17,8 +17,6 @@ type Props = {
 };
 
 const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
-  const phaseId = Number(id);
-
   //Получение задач
   const {
     isLoading: isLoadingTasks,
@@ -38,7 +36,7 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
   const totalDays: number | undefined = Math.round(
     (totalEndTask - totalStartTask) / 24
   );
-
+  console.log(dataTasks);
   return (
     <section className="flex flex-col gap-5">
       <div className="w-full h-[1px] bg-gray" />
@@ -58,6 +56,7 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
       <ProjectPhaseAdditionalInfo
         totalDays={totalDays}
         totalTasks={dataTasks?.length}
+        dataTasks={dataTasks}
       />
       <section className="flex flex-col gap-5 justify-end">
         <ProjectPhaseForm id={id} />

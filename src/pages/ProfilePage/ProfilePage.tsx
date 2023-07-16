@@ -27,7 +27,7 @@ const ProfilePage: FC = () => {
             className={
               chooseCategory === item.id
                 ? "relative rounded-3xl px-3 py-1.5  cursor-pointer"
-                : "cursor-pointer"
+                : "cursor-pointer px-3 py-1.5"
             }
           >
             {chooseCategory === item.id && (

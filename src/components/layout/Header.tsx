@@ -20,7 +20,7 @@ const Header: FC = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0  py-5 px-8 flex justify-between items-center  backdrop-blur-3xl xl:py-[27px] xl:px-40 z-50`}
+        className={`fixed top-0 left-0 right-0  py-5 px-8 flex justify-between items-center  backdrop-blur-3xl xl:py-[27px] xl:px-40 z-[9999]`}
       >
         <Link to="/" className="flex items-center gap-3">
           <img

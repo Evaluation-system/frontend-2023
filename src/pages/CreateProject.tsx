@@ -56,6 +56,8 @@ const CreateProject: FC = () => {
     const file = e.target.files?.[0];
     setSelectImage(file);
   };
+
+  const dispatch = useAppDispatch();
   // --- ДЛЯ КАРТИНКИ ---
   const onSubmit: SubmitHandler<Form> = async (data) => {
     const { title, client, description } = data;
@@ -66,7 +68,7 @@ const CreateProject: FC = () => {
       description: description,
       userId: user?.id,
     };
-
+    dispatch(openCreate(false));
     return createProject(postData)
       .then((response) => {
         const projectId = response?.data?.id;
@@ -93,7 +95,6 @@ const CreateProject: FC = () => {
       .then(() => reset());
   };
 
-  const dispatch = useAppDispatch();
   //Реф на кнопку загрузки проекта
   const refIconProject = useRef<HTMLInputElement | null>(null);
   //Функция клика по другому компоненту рефа
