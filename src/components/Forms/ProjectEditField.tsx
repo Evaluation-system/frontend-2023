@@ -6,7 +6,7 @@ import { FC, useState } from "react";
 import { IoLogoUsd, IoMdCheckmark } from "react-icons/io";
 import { IProject } from "types/types";
 import { MdOutlinePerson } from "react-icons/md";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useEditProjectMutation } from "api/project.api";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RiAdminFill } from "react-icons/ri";
@@ -45,7 +45,6 @@ const ProjectEditField: FC<Props> = ({ project }) => {
   const {
     register,
     watch,
-    handleSubmit,
     formState: { errors },
   } = useForm<Form>({
     defaultValues: {
@@ -57,7 +56,7 @@ const ProjectEditField: FC<Props> = ({ project }) => {
     mode: "onChange",
   });
 
-  const adminPerson = useAppSelector((state) => state.user.user);
+  const adminPerson = useAppSelector((state: any) => state.user.user);
 
   //Отслеживают введенное в инпуты
   const watchPrice = watch("price");

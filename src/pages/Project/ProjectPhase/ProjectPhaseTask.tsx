@@ -1,32 +1,43 @@
-import { FC, useState } from "react";
-import { FiTrash2 } from "react-icons/fi";
-import { toast } from "react-hot-toast";
-import { useDeletePhaseTaskMutation } from "api/phase.api";
-import { IPhaseTask } from "types/types";
-import { motion, AnimatePresence } from "framer-motion";
 import ProjectPhaseTaskEditForm from "components/Forms/ProjectPhaseTaskEditForm";
 import { AiOutlineEdit } from "react-icons/ai";
+import { AnimatePresence, motion } from "framer-motion";
+import { FC, useState } from "react";
+import { FiTrash2 } from "react-icons/fi";
+import { IPhaseTask } from "types/types";
+import { toast } from "react-hot-toast";
+import { useDeletePhaseTaskMutation } from "api/phase.api";
 
 type Props = {
   item: IPhaseTask;
   numberTask: number;
+  numTsk: number;
 };
 
-const ProjectPhaseTask: FC<Props> = ({ item, numberTask }) => {
+const ProjectPhaseTask: FC<Props> = ({ item, numberTask, numTsk }) => {
+  //Хук RTK-query для удаления задания
   const [deletePhaseTask] = useDeletePhaseTaskMutation();
 
+  //ID задания
+  const aboba = Number(numTsk);
+
+  //Функция удаления таска
   const handleDeletePhaseTask = (id: number) => {
     deletePhaseTask(id);
     toast.success("Задача удалена");
   };
+
+  //Отвечает за раскрытие карточки задания
   const [openTask, setOpenTask] = useState<boolean>(false);
+
+  //Отвечает за открытие формы редактирования задания
   const [openEditForm, setOpenEditForm] = useState<boolean>(false);
   return (
     <>
-      {openEditForm ? (
-        <ProjectPhaseTaskEditForm openForm={setOpenEditForm} />
-      ) : (
-        ""
+      {openEditForm && (
+        <ProjectPhaseTaskEditForm
+          openForm={setOpenEditForm}
+          numberTask={aboba}
+        />
       )}
       <section
         className="p-6 rounded-xl borderd-primary border-[1px] border-solid cursor-pointer relative overflow-hidden"

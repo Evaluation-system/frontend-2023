@@ -31,7 +31,11 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
       <section className="grid grid-cols-4 gap-10">
         {dataTasks?.map((item: any, index: number) => (
           <section key={item.id} className="relative group ">
-            <ProjectPhaseTask item={item} numberTask={index + 1} />
+            <ProjectPhaseTask
+              item={item}
+              numberTask={index + 1}
+              numTsk={item.id}
+            />
           </section>
         ))}
       </section>
