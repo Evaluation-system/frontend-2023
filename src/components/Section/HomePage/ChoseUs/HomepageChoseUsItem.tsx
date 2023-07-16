@@ -38,7 +38,7 @@ const HomepageChoseUsItem: FC<Props> = ({ item }) => {
           alt={title}
           className="cursor-pointer h-[300px] w-full object-cover rounded-lg border-solid border-[1px] border-gray"
         />
-        <div className="absolute inset-0 bg-gradient-to-bl from-purple-950 via-blue to-transparent mix-blend-multiply opacity-0 hover:opacity-50 transition-opacity duration-300"></div>
+        <div className="absolute inset-0 rounded-lg bg-gradient-to-bl from-purple-950 via-blue to-transparent mix-blend-multiply opacity-0 hover:opacity-50 transition-opacity duration-300"></div>
       </div>
     </section>
   );

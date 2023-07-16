@@ -56,7 +56,6 @@ const CreateProject: FC = () => {
     setSelectImage(file);
   };
   // --- ДЛЯ КАРТИНКИ ---
-
   const onSubmit: SubmitHandler<Form> = async (data) => {
     const { title, client, description } = data;
 
@@ -122,7 +121,14 @@ const CreateProject: FC = () => {
             onClick={(): void => handleIconProject()}
           >
             <RiImageEditFill />
-            Загрузить фото
+            {selectImage ? (
+              <div className="flex flex-col gap-2">
+                <span className="text-green-500">Фото загружено</span>
+                <span className="text-sm text-gray">{selectImage.name}</span>
+              </div>
+            ) : (
+              <span>Загрузить фото</span>
+            )}
           </span>
           <input
             {...register("imageProject")}
