@@ -20,7 +20,7 @@ const HomepageChoseUsItem: FC<Props> = ({ item }) => {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 2 }}
+      transition={{ duration: 1 }}
       className="flex flex-col gap-10"
     >
       <article className="flex flex-col gap-5 w-[500px]">
