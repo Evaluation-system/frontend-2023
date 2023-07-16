@@ -25,26 +25,10 @@ const ProjectPhaseTabs: FC<Props> = ({ id }) => {
 
   //Создание фазы через RTK-Query
   const [createPhase] = useCreatePhaseMutation();
-
-  if (isLoadingPhases) {
-    return <p>Идёт загрузка фаз...</p>;
-  }
-
-  if (errorPhases) {
-    const errorMessage =
-      errorPhases instanceof Error
-        ? errorPhases.message
-        : "Произошла ошибка при загрузке фазы";
-    return <p>{errorMessage}</p>;
-  }
-
-  if (!dataPhases) {
-    return <p>Данные фаз не найдены</p>;
-  }
   //Табы, переключения между фазами
   const [toggleState, setToggleState] = useState(0);
 
-  const handleAddPhase = async () => {
+  const handleAddPhase = () => {
     const createProjectData = {
       projectId: Number(id),
     };
@@ -63,14 +47,14 @@ const ProjectPhaseTabs: FC<Props> = ({ id }) => {
         <div>
           <div>
             {dataPhases?.length > 0 ? (
-              <ul className="flex space-x-1 overflow-x-auto items-center">
+              <ul className="flex space-x-1 overflow-x-auto w-full items-center">
                 {dataPhases?.map((item: IPhases, index: number) => (
                   <li
                     key={item.id}
                     onClick={(): void => setToggleState(index)}
                     className={`${
                       toggleState === index ? "" : "hover:opacity-50"
-                    } relative rounded-full px-3 py-1.5 cursor-pointer`}
+                    } relative rounded-full px-3 py-1.5 cursor-pointer min-w-[120px] text-center`}
                   >
                     {toggleState === index && (
                       <motion.div

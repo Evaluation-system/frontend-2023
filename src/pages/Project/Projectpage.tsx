@@ -60,6 +60,7 @@ const ProjectPage: FC = () => {
   if (!dataProject) {
     return <p>Данные проектов не найдены</p>;
   }
+  console.log(dataProject);
   return (
     <section className="xl:px-32 xl:py-12">
       <section className="p-5 mt-32">

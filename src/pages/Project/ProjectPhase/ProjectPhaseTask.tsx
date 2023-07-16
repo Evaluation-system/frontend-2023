@@ -14,7 +14,7 @@ type Props = {
 };
 
 const ProjectPhaseTask: FC<Props> = ({ item, numberTask, numTsk }) => {
-  //Хук RTK-query для удаления задания
+  //Хук RTK-query для удаления
   const [deletePhaseTask] = useDeletePhaseTaskMutation();
 
   //ID задания

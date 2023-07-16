@@ -67,7 +67,7 @@ const ProjectPhaseMetric: FC<Props> = ({ phaseId }) => {
                   </button>
                 </>
               ) : (
-                <p className="text-sm text-gray ">Добавьте метрики</p>
+                <p className="text-sm text-gray ">0%</p>
               )}
             </li>
           ))}

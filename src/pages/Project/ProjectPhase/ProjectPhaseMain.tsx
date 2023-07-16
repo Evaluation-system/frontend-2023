@@ -3,9 +3,11 @@ import ProjectPhaseMetric from "./ProjectPhaseMetric";
 import ProjectPhaseMetricForm from "components/Forms/ProjectPhaseMetricForm";
 import ProjectPhaseTask from "./ProjectPhaseTask";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useGetPhaseTasksQuery } from "api/phase.api";
 import ProjectPhaseHeader from "./ProjectPhaseHeader";
+
+import ProjectPhaseAdditionalInfo from "./ProjectPhaseAdditionalInfo";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -24,6 +26,18 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
     error: errorTasks,
   } = useGetPhaseTasksQuery(phaseId);
 
+  const totalEndTask: number | undefined = dataTasks
+    ? dataTasks.reduce((acc, item) => acc + item.endTask, 0)
+    : 0;
+
+  const totalStartTask: number | undefined = dataTasks
+    ? dataTasks.reduce((acc, item) => acc + item.starTask, 0)
+    : 0;
+
+  const totalDays: number | undefined = Math.round(
+    (totalEndTask - totalStartTask) / 24
+  );
+
   return (
     <section className="flex flex-col gap-5">
       <div className="w-full h-[1px] bg-gray" />
@@ -40,6 +54,10 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
         ))}
       </section>
       <ProjectPhaseMetric phaseId={phaseId} />
+      <ProjectPhaseAdditionalInfo
+        totalDays={totalDays}
+        totalTasks={dataTasks?.length}
+      />
       <section className="flex flex-col gap-5 justify-end">
         <ProjectPhaseForm id={id} />
         <ProjectPhaseMetricForm phaseId={phaseId} />

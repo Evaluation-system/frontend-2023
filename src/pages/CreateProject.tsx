@@ -100,7 +100,7 @@ const CreateProject: FC = () => {
   return (
     <Modal text="Создать проект">
       <header className="flex justify-between items-center">
-        <h3>Добро пожаловать</h3>
+        <h3>Создать проект</h3>
         <button onClick={() => navigate(-1)}>
           <TfiClose />
         </button>

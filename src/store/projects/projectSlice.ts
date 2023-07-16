@@ -23,12 +23,14 @@ export interface stateInterface {
   pricing: IPricing[];
   tasks: ITasks[];
   employee: IEmployee[];
+  totalDays: number;
 }
 //Начальное состояние
 const initialState: stateInterface = {
   pricing: [],
   tasks: [],
   employee: [] as Array<IEmployee>,
+  totalDays: 0,
 };
 
 export const projectSlice = createSlice({
@@ -41,10 +43,14 @@ export const projectSlice = createSlice({
     addEmployee: (state, action) => {
       state.employee.push(action.payload);
     },
+    updateTotalDays: (state, action) => {
+      state.totalDays = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addPricing, addEmployee } = projectSlice.actions;
+export const { addPricing, addEmployee, updateTotalDays } =
+  projectSlice.actions;
 
 export default projectSlice.reducer;
