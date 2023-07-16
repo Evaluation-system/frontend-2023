@@ -60,12 +60,7 @@ const ProjectPhaseMetric: FC<Props> = ({ phaseId }) => {
             <li key={item.title} className="flex gap-4 items-center">
               <p>{item.title}</p>
               {item.field ? (
-                <>
-                  {item.field + "%"}
-                  <button className="text-gray">
-                    <AiOutlineEdit />
-                  </button>
-                </>
+                <span>{item.field + "%"}</span>
               ) : (
                 <p className="text-sm text-gray ">0%</p>
               )}
