@@ -113,12 +113,12 @@ const ProjectEditField: FC<Props> = ({ project }) => {
               <Input
                 register={{ ...register("price") }}
                 id="price"
-                placeholder={project?.price || "Введите стоимость"}
                 type="text"
                 bg="inherit"
                 errorMessage={errors.price?.message}
               />
               <span
+                className="cursor-pointer"
                 onClick={(): void => {
                   handleFetchPrice();
                 }}
@@ -126,7 +126,10 @@ const ProjectEditField: FC<Props> = ({ project }) => {
                 <IoMdCheckmark />
               </span>
 
-              <span onClick={(): void => setOpenPrice(false)}>
+              <span
+                onClick={(): void => setOpenPrice(false)}
+                className="cursor-pointer"
+              >
                 <AiOutlineClose />
               </span>
             </div>
@@ -135,14 +138,14 @@ const ProjectEditField: FC<Props> = ({ project }) => {
               <span>{project?.price} &#8381;</span>
               {project?.price ? (
                 <span
-                  className="flex gap-2 items-center text-gray"
+                  className="flex gap-2 items-center text-gray cursor-pointer"
                   onClick={(): void => setOpenPrice(true)}
                 >
                   <AiOutlineEdit />
                 </span>
               ) : (
                 <span
-                  className="flex gap-2 items-center text-gray"
+                  className="flex gap-2 items-center text-gray cursor-pointer"
                   onClick={(): void => setOpenPrice(true)}
                 >
                   Редактировать <AiOutlineEdit />
@@ -162,16 +165,21 @@ const ProjectEditField: FC<Props> = ({ project }) => {
               <Input
                 register={{ ...register("date") }}
                 id="date"
-                placeholder={project?.terms || "Введите сроки"}
                 type="text"
                 bg="inherit"
                 errorMessage={errors.date?.message}
               />
-              <span onClick={(): void => handleFetchDate()}>
+              <span
+                className="cursor-pointer"
+                onClick={(): void => handleFetchDate()}
+              >
                 <IoMdCheckmark />
               </span>
 
-              <span onClick={(): void => setOpenDate(false)}>
+              <span
+                className="cursor-pointer"
+                onClick={(): void => setOpenDate(false)}
+              >
                 <AiOutlineClose />
               </span>
             </div>
@@ -180,14 +188,14 @@ const ProjectEditField: FC<Props> = ({ project }) => {
               <span>{project?.terms} дней</span>
               {project?.terms ? (
                 <div
-                  className="flex gap-2 items-center text-gray"
+                  className="flex gap-2 items-center text-gray cursor-pointer"
                   onClick={(): void => setOpenDate(true)}
                 >
                   <AiOutlineEdit />
                 </div>
               ) : (
                 <div
-                  className="flex gap-2 items-center text-gray"
+                  className="flex gap-2 items-center text-gray cursor-pointer"
                   onClick={(): void => setOpenDate(true)}
                 >
                   Редактировать <AiOutlineEdit />
@@ -214,15 +222,20 @@ const ProjectEditField: FC<Props> = ({ project }) => {
               <Input
                 register={{ ...register("client") }}
                 id="client"
-                placeholder={project?.client || "Введите клиента"}
                 type="text"
                 bg="inherit"
                 errorMessage={errors.client?.message}
               />
-              <span onClick={(): void => handleFetchClient()}>
+              <span
+                className="cursor-pointer"
+                onClick={(): void => handleFetchClient()}
+              >
                 <IoMdCheckmark />
               </span>
-              <span onClick={(): void => setOpenClient(false)}>
+              <span
+                className="cursor-pointer"
+                onClick={(): void => setOpenClient(false)}
+              >
                 <AiOutlineClose />
               </span>
             </div>
@@ -231,14 +244,14 @@ const ProjectEditField: FC<Props> = ({ project }) => {
               <span>{project.client}</span>
               {project.client ? (
                 <span
-                  className="flex gap-2 items-center text-gray"
+                  className="flex gap-2 items-center text-gray cursor-pointer"
                   onClick={(): void => setOpenClient(true)}
                 >
                   <AiOutlineEdit />
                 </span>
               ) : (
                 <span
-                  className="flex gap-2 items-center text-gray"
+                  className="flex gap-2 items-center text-gray cursor-pointer"
                   onClick={(): void => setOpenClient(true)}
                 >
                   Редактировать <AiOutlineEdit />

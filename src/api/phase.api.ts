@@ -78,20 +78,20 @@ export const projectApi = api.injectEndpoints({
         },
       ],
     }),
-    editPhaseTask: builder.mutation({
+
+    editPhase: builder.mutation({
       query: ({ id, patch }) => ({
         body: patch,
-        url: `/phase-tasks/${id}`,
+        url: `/phase/${id}`,
         method: "PATCH",
       }),
 
       invalidatesTags: () => [
         {
-          type: "Tasks",
+          type: "Phases",
         },
       ],
     }),
-
     getPhaseMetric: builder.query({
       query: (phaseId) => ({ url: `phase/${phaseId}` }),
 
@@ -122,6 +122,7 @@ export const projectApi = api.injectEndpoints({
 export const {
   useGetPhaseMetricQuery,
   useEditPhaseMetricMutation,
+  useEditPhaseMutation,
   useEditPhaseTaskMutation,
   useCreatePhaseMutation,
   useGetProjectPhasesQuery,

@@ -27,17 +27,15 @@ const ProjectPhaseMain: FC<Props> = ({ numberPhase, id }) => {
   } = useGetPhaseTasksQuery(phaseId);
 
   //Подсчитывают кол-во дней для решения задачи
-  const totalEndTask: number | undefined = dataTasks
+  const totalEndTask: number = dataTasks
     ? dataTasks.reduce((acc, item) => acc + item.endTask, 0)
     : 0;
 
-  const totalStartTask: number | undefined = dataTasks
+  const totalStartTask: number = dataTasks
     ? dataTasks.reduce((acc, item) => acc + item.starTask, 0)
     : 0;
 
-  const totalDays: number | undefined = Math.round(
-    (totalEndTask - totalStartTask) / 24
-  );
+  const totalDays: number = Math.ceil((totalEndTask - totalStartTask) / 24);
   console.log(dataTasks);
   return (
     <section className="flex flex-col gap-5">

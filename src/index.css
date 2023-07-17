@@ -21,7 +21,7 @@
     @apply text-xl leading-h4XL;
   }
   input {
-    @apply outline-none pb-5  border-solid border-b-2 border-gray text-base text-secondary;
+    @apply outline-none pb-0  border-solid border-b-2 border-gray text-base text-secondary;
   }
   textarea {
     @apply bg-primary outline-none pb-0 border-solid border-b-2 border-gray text-lg text-secondary resize-none;
