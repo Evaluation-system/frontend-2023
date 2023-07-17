@@ -28,7 +28,7 @@ function App() {
     //   isSuccess: isSuccessGetMe,
     // } = await useGetMeQuery(undefined);
 
-    const token = getTokenFromLocalStorage();
+    // const token = getTokenFromLocalStorage();
 
     // if (token) {
     // const response = await AuthService.getMe();

@@ -59,7 +59,7 @@ const Login: FC = () => {
     console.log(response);
 
     if (response?.data) {
-      setTokenToLocalStorage("token", response.token);
+      // setTokenToLocalStorage("token", response.token);
 
       dispatch(login(response?.data));
 
