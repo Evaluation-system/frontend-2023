@@ -64,7 +64,7 @@ const ProjectPhaseTabs: FC<Props> = ({ id }) => {
                       />
                     )}
                     <span className="relative z-10 mix-blend-exclusion">
-                      {item.title || "Фаза № " + index + 1}
+                      {item.title || "Фаза № " + (1 + index)}
                     </span>
                   </li>
                 ))}

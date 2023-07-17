@@ -5,11 +5,7 @@ import { FC, useState } from "react";
 import { IoMdCheckmark } from "react-icons/io";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { toast, Toaster } from "react-hot-toast";
-import {
-  useDeletePhaseMutation,
-  useEditPhaseMetricMutation,
-  useEditPhaseMutation,
-} from "api/phase.api";
+import { useDeletePhaseMutation, useEditPhaseMutation } from "api/phase.api";
 import { useGetProjectPhasesQuery } from "api/phase.api";
 
 type Props = {
@@ -46,12 +42,6 @@ const ProjectPhaseHeader: FC<Props> = ({ numberPhase, id }) => {
   const [openMetric, setOpenMetric] = useState<boolean>(false);
   const [openTaskField, setOpenTaskField] = useState<boolean>(false);
 
-  const {
-    isLoading: isLoadingPhases,
-    data: dataPhases,
-    error: errorPhases,
-  } = useGetProjectPhasesQuery(phaseId);
-
   const handleApplyNewTitle = () => {
     fetchTitlePhase();
     setOpenEditName(false);
@@ -76,12 +66,7 @@ const ProjectPhaseHeader: FC<Props> = ({ numberPhase, id }) => {
       <Toaster />
       <section className="flex justify-between items-center">
         <h4 className="flex items-center gap-3 col-span-2">
-          <>
-            {dataPhases.map((item) => (
-              <p>{item.title || "Фаза №" + numberPhase}</p>
-            ))}
-          </>
-
+          Фаза № {numberPhase}
           <span
             className="cursor-pointer hover:opacity-50"
             onClick={(): void => setOpenEditName(!openEditName)}
