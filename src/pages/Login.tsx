@@ -55,17 +55,17 @@ const Login: FC = () => {
 
     const response = await doLogin(loginData);
 
-    // console.log("login response");
-    // console.log(response);
+    console.log("login response");
+    console.log(response);
 
-    // if (response?.data) {
-    // setTokenToLocalStorage("token", response.token);
+    if (response?.data) {
+      setTokenToLocalStorage("token", response.token);
 
-    dispatch(login(response?.data));
+      dispatch(login(response?.data));
 
-    toast.success("Вы авторизированы");
-    navigate("/");
-    // }
+      toast.success("Вы авторизированы");
+      navigate("/");
+    }
     // try {
     // } catch (error) {}
 
