@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import Input from "components/ui/Input";
 import Modal from "components/ui/Modal";
-import { AuthService } from "services/auth.service";
+// import { AuthService } from "services/auth.service";
 import { FC } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -9,6 +9,7 @@ import { TfiClose } from "react-icons/tfi";
 import { toast, Toaster } from "react-hot-toast";
 import { useAuth } from "hooks/useAuth";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRegisterMutation } from "api/auth.api";
 
 type Form = {
   name: string;
@@ -52,16 +53,37 @@ const Registartion: FC = () => {
   // const subPass: string = watch("submitPassword");
   const navigate = useNavigate();
 
+  const [doRegister, error] = useRegisterMutation();
+
   const onSubmit: SubmitHandler<Form> = async (data) => {
     const { email, password, name } = data;
-    try {
-      const response: any = AuthService.registartion({ email, password });
-      if (response) {
-        toast.success(`Аккаунт ${name} зарегистрирован`);
-        reset();
-        navigate("/login");
-      }
-    } catch (error: any) {
+
+    // try {
+    // const response: any = AuthService.registartion({ email, password });
+
+    const registerData = {
+      email: email,
+      password: password,
+    };
+
+    const response = doRegister(registerData);
+
+    console.log("register response");
+    console.log(response);
+
+    // if (response) {
+    toast.success(`Аккаунт ${name} зарегистрирован`);
+    reset();
+    navigate("/login");
+    //   }
+    // } catch (error: any) {
+    //   toast.error(error.toString());
+    // }
+
+    if (error.isError) {
+      console.log("register error");
+      console.log(error);
+
       toast.error(error.toString());
     }
   };
