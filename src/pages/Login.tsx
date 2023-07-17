@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import Input from "components/ui/Input";
 import Modal from "components/ui/Modal";
-import { AuthService } from "services/auth.service";
+// import { AuthService } from "services/auth.service";
 import { FC } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { login } from "store/user/userSlice";
@@ -12,6 +12,7 @@ import { toast } from "react-hot-toast";
 import { useAppDispatch } from "store/hooks/hooks";
 import { useAuth } from "hooks/useAuth";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useLoginMutation } from "api/auth.api";
 
 type Form = {
   email: string;
@@ -40,17 +41,39 @@ const Login: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const [doLogin, error] = useLoginMutation();
+
   const onSubmit: SubmitHandler<Form> = async (data) => {
     const { email, password } = data;
-    const response = await AuthService.login({ email, password });
-    if (response) {
-      setTokenToLocalStorage("token", response.token);
-      dispatch(login(response));
-      toast.success("Вы авторизированы");
-      navigate("/");
+
+    // const response = await AuthService.login({ email, password });
+
+    const loginData = {
+      email: email,
+      password: password,
+    };
+
+    const response = await doLogin(loginData);
+
+    // console.log("login response");
+    // console.log(response);
+
+    // if (response?.data) {
+    // setTokenToLocalStorage("token", response.token);
+
+    dispatch(login(response?.data));
+
+    toast.success("Вы авторизированы");
+    navigate("/");
+    // }
+    // try {
+    // } catch (error) {}
+
+    if (error?.isError) {
+      console.log("login error");
+      console.log(error);
     }
-    try {
-    } catch (error) {}
+
     reset();
   };
 
